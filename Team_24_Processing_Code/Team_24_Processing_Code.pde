@@ -1,61 +1,74 @@
-java.sql.Connection conn;
-java.sql.Statement stmt;
-boolean queryExecuted = false;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 
 void setup() {
+  String filename = "C:/Users/rache/Team_24_Programming-project/Team_24_Processing_Code/flights2k.csv";
+  String delimiter = ",";
   
-    size(400, 400);
-    
-    // JBDC Driver
-    try {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        println("MySQL JDBC Driver loaded successfully");
-    } 
-    catch (ClassNotFoundException e) {
-        println("Error loading MySQL JDBC Driver: " + e.getMessage());
-        return;
-    }
-    
+  // MySQL database connection parameters
+  String url = "jdbc:mysql://localhost:3306/programming_project";
+  String username = "root";
+  String password = "password1234!";
+
+  try {
     // Connect to MySQL
-    String url = "jdbc:mysql://localhost:3306/programming_project";
-    String user = "root";
-    String password = "password1234!"; //REPLACE
+    Connection connection = DriverManager.getConnection(url, username, password);
+    Statement statement = connection.createStatement();
     
-    try {
-        conn = java.sql.DriverManager.getConnection(url, user, password);
-        println("Connected to the database");
-    } catch (java.sql.SQLException e) {
-        println("SQLException: " + e.getMessage());
-        println("SQLState: " + e.getSQLState());
-        println("VendorError: " + e.getErrorCode());
+    // Open and read the CSV file
+    BufferedReader reader = new BufferedReader(new FileReader(filename));
+    boolean skipHeader = true; // Flag to skip the first line (header)
+    while (reader.ready()) {
+      String line = reader.readLine();
+      if (skipHeader) {
+        skipHeader = false;
+        continue; // Skip the header row
+      }
+      
+      String[] data = parseCSVLine(line);
+      
+      // Construct and execute the INSERT INTO statement
+      String query = "INSERT INTO flight_data (FL_DATE, MKT_CARRIER, MKT_CARRIER_FL_NUM, ORIGIN, ORIGIN_CITY_NAME, ORIGIN_STATE_ABR, ORIGIN_WAC, DEST, DEST_CITY_NAME, DEST_STATE_ABR, DEST_WAC, CRS_DEP_TIME, DEP_TIME, CRS_ARR_TIME, ARR_TIME, CANCELLED, DIVERTED, DISTANCE) VALUES (";
+      for (int i = 0; i < data.length; i++) {
+        if (data[i].isEmpty()) {
+          query += "NULL";
+        } else {
+          if (i == 2 || i == 6 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17) { // Integer fields
+            query += Integer.parseInt(data[i]);
+          } else {
+            query += "'" + data[i] + "'";
+          }
+        }
+        if (i < data.length - 1) {
+          query += ",";
+        }
+      }
+      query += ")";
+      
+      statement.executeUpdate(query);
     }
+    
+    // Close connections
+    statement.close();
+    connection.close();
+    
+    println("Data inserted successfully!");
+  } catch (Exception e) {
+    e.printStackTrace();
+  }
 }
 
-void draw() {
-    if (!queryExecuted) {
-        String query = "SELECT * FROM flight_data";
-        try {
-            stmt = conn.createStatement();
-            java.sql.ResultSet rs = stmt.executeQuery(query);
-            
-            while (rs.next()) {
-                String ORIGIN = rs.getString("ORIGIN");
-                String ORIGIN_CITY_NAME = rs.getString("ORIGIN_CITY_NAME");
-                String ORIGIN_STATE_ABR = rs.getString("ORIGIN_STATE_ABR");
-                int ORIGIN_WAC = rs.getInt("ORIGIN_WAC");
-                println("ORIGIN: " + ORIGIN 
-                + ", ORIGIN_CITY_NAME: " + ORIGIN_CITY_NAME
-                + ", ORIGIN_STATE_ABR: " + ORIGIN_STATE_ABR
-                + ", ORIGIN_WAC: " + ORIGIN_WAC);
-            }
-            rs.close();
-            stmt.close();
-            
-            queryExecuted = true; // Set the flag to true after executing the query
-        } catch (java.sql.SQLException e) {
-            println("SQLException: " + e.getMessage());
-            println("SQLState: " + e.getSQLState());
-            println("VendorError: " + e.getErrorCode());
-        }
-    }
+String[] parseCSVLine(String line) {
+  // Split line by commas, taking into account quoted values
+  String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+  
+  // Remove surrounding quotes from each part
+  for (int i = 0; i < parts.length; i++) {
+    parts[i] = parts[i].replaceAll("^\"|\"$", "");
+  }
+  
+  return parts;
 }
