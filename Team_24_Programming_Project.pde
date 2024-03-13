@@ -3,5 +3,5 @@ void setup() {
 }
 
 void draw() {
-  // Do stuff
+  // Do stuff.
 }
