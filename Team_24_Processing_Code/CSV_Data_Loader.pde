@@ -80,8 +80,11 @@ void setup() {
   catch (Exception e) {
     e.printStackTrace();
   }
+  
   fullScreen();
 }
+// Setup Display Objects
+DisplayMaster DisplayMaster = new DisplayMaster();
 
 String[] parseCSVLine(String line) {
   // Split line by commas, taking into account quoted values
@@ -93,4 +96,9 @@ String[] parseCSVLine(String line) {
   }
 
   return parts;
+}
+void draw(){
+  background(255,255,255);
+  DisplayMaster.renderDIP();
+  DisplayMaster.renderQuitButton();
 }
