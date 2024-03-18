@@ -1,4 +1,4 @@
-class Datapoint {
+class rawDatapoint {
   
   String FL_DATE;
   String MKT_CARRIER;
@@ -23,7 +23,7 @@ class Datapoint {
   int DIVERTED;
   int DISTANCE;
   
-  Datapoint (java.sql.ResultSet resultSet) {
+  rawDatapoint (java.sql.ResultSet resultSet) {
     try {
       
       FL_DATE = resultSet.getString("FL_DATE");
