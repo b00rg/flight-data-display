@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.Scanner;
+import java.util.ArrayList;
+
+static ArrayList<TimeTextbox> textBoxList = new ArrayList<TimeTextbox>();
 
 // Read username and password from a file in "Team_24_Processing_Code\creds.csv". This is in the
 // .gitignore to prevent publishing it.
@@ -11,6 +14,14 @@ import java.util.Scanner;
 // "username,password" without the quotes and no space after the comment.
 
 void setup() {
+  // Display setup
+  // Tab 1 setup
+  // please do not move this outside of setup void, for some reason processing does not likey likey that
+  TimeTextbox departureTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
+  textBoxList.add(departureTimeSelections);
+  departureTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL + 500, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
+
+  
   String filename = sketchPath() + "/flights2k.csv";
   String delimiter = ",";
 
@@ -84,7 +95,10 @@ void setup() {
   fullScreen();
 }
 // Setup Display Objects
+byte currentlyActiveTab = 0;
 DisplayMaster DisplayMaster = new DisplayMaster();
+// Tab 1 objects
+boolean isDropDownActive = false;
 
 String[] parseCSVLine(String line) {
   // Split line by commas, taking into account quoted values
@@ -99,6 +113,52 @@ String[] parseCSVLine(String line) {
 }
 void draw(){
   background(255,255,255);
+  if(currentlyActiveTab == 0)
+  {
   DisplayMaster.renderDIP();
+  }
   DisplayMaster.renderQuitButton();
 }
+void mouseClicked(){
+  if(currentlyActiveTab == 0) // what buttons and textboxes should the programme watch out for
+  {
+    if(isDropDownActive)
+    {
+      // todo
+    } else 
+    {
+      for(int i  = 0; i < textBoxList.size(); i++)
+      {
+        textBoxList.get(i).isClicked();
+      }
+    }
+  }
+}
+void keyPressed(){
+    switch(currentlyActiveTab) 
+    {
+      case 0:   // User is on tab 1
+        if (isAnyTab1UIActive())  // check if there is any active button on screen
+        {
+          for(int i  = 0; i < textBoxList.size(); i++)
+          {
+            if(textBoxList.get(i).active)
+          {
+            textBoxList.get(i).input(key);
+            delay(10); // We must delay to stop the user from accidentally holding a key causing many inputs at once
+          }
+            }
+        }
+    }
+}
+boolean isAnyTab1UIActive()
+  {
+    for(int i  = 0; i < textBoxList.size(); i++)
+      {
+        if(textBoxList.get(i).active)
+        {
+          return true;
+        }
+      }
+      return false;
+  }
