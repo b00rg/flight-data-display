@@ -19,7 +19,8 @@ void setup() {
   // please do not move this outside of setup void, for some reason processing does not likey likey that
   TimeTextbox departureTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
   textBoxList.add(departureTimeSelections);
-  departureTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL + 500, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
+  TimeTextbox ArrivalTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL + 500, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
+  textBoxList.add(ArrivalTimeSelections);
 
   
   String filename = sketchPath() + "/flights2k.csv";
