@@ -27,8 +27,8 @@ void setup() {
 
   // MySQL database connection parameters
   String url = "jdbc:mysql://localhost:3306/programming_project";
-  String username = "root";
-  String password = "new_password";
+  String username = "";
+  String password = "";
   try {
     println(sketchPath() + "creds.csv");
     BufferedReader credsFile = new BufferedReader(new FileReader(sketchPath() + "/creds.csv"));
@@ -91,7 +91,6 @@ void setup() {
   catch (Exception e) {
     e.printStackTrace();
   }
-  
   fullScreen();
 }
 // Setup Display Objects
