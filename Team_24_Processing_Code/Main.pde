@@ -8,30 +8,17 @@ import java.util.ArrayList;
 
 static ArrayList<TimeTextbox> textBoxList = new ArrayList<TimeTextbox>();
 
-// Read username and password from a file in "Team_24_Processing_Code\creds.csv". This is in the
-// .gitignore to prevent publishing it.
-// To make this work you MUST create a creds.csv file in the Team_24_Processing_Code folder with contents:
-// "username,password" without the quotes and no space after the comment.
+// Read username and password from a file in "Team_24_Processing_Code\creds.csv". This is in the .gitignore to prevent publishing it.
+// To make this work you MUST create a creds.csv file in the Team_24_Processing_Code folder with contents: "username,password" without the quotes and no space after the comment.
 
 void setup() {
-  // Display setup
-  // Tab 1 setup
-  // please do not move this outside of setup void, for some reason processing does not likey likey that
-  TimeTextbox departureTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
-  textBoxList.add(departureTimeSelections);
-  TimeTextbox ArrivalTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL + 500, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
-  textBoxList.add(ArrivalTimeSelections);
-
-  
-  String filename = sketchPath() + "/flights2k.csv";
-  String delimiter = ",";
 
   // MySQL database connection parameters
+  String filename = sketchPath() + "/flights2k.csv";
   String url = "jdbc:mysql://localhost:3306/programming_project";
   String username = "";
   String password = "";
   try {
-    println(sketchPath() + "creds.csv");
     BufferedReader credsFile = new BufferedReader(new FileReader(sketchPath() + "/creds.csv"));
     Scanner credsScanner = new Scanner(credsFile);
     credsScanner.useDelimiter(",");
@@ -45,14 +32,15 @@ void setup() {
     exit();
   }
 
+
+  // Connect to MySQL
   try {
-    // Connect to MySQL
+    
     Connection connection = DriverManager.getConnection(url, username, password);
     Statement statement = connection.createStatement();
 
-    // Open and read the CSV file
     BufferedReader reader = new BufferedReader(new FileReader(filename));
-    boolean skipHeader = true; // Flag to skip the first line (header)
+    boolean skipHeader = true;
     while (reader.ready()) {
       String line = reader.readLine();
       if (skipHeader) {
@@ -92,6 +80,16 @@ void setup() {
   catch (Exception e) {
     e.printStackTrace();
   }
+  
+  // Display setup
+  
+  // Tab 1 setup
+  // please do not move this outside of setup void, for some reason processing does not likey likey that
+  TimeTextbox departureTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
+  textBoxList.add(departureTimeSelections);
+  TimeTextbox ArrivalTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL + 500, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
+  textBoxList.add(ArrivalTimeSelections);
+  
   fullScreen();
 }
 // Setup Display Objects
@@ -151,6 +149,7 @@ void keyPressed(){
         }
     }
 }
+
 boolean isAnyTab1UIActive()
   {
     for(int i  = 0; i < textBoxList.size(); i++)

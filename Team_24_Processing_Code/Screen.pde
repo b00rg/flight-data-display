@@ -1,11 +1,14 @@
 class DisplayMaster
 {
-  DisplayMaster(){}
+  
+DisplayMaster(){}
   // THEME-------------------
+  
   // todo.md
   color PRIMARY_COLOR = color(0,50,100);
   color SECONDARY_COLOR = color(200,200, 255);
   color TERTIARY_COLOR = color(100, 200, 200);
+  
   // Quit button config
   int QUIT_B_RIGHT = 20;
   int QUIT_B_DOWN = 20;
@@ -17,7 +20,9 @@ class DisplayMaster
     fill(255,0,0);
     rect(QUIT_B_RIGHT, QUIT_B_DOWN, QUIT_B_SIZE, QUIT_B_SIZE, QUIT_B_ROUNDNESS);
   }
+  
   // TAB 1----------------
+  
   // Database interaction panel (DIP)
   int TAB_WIDTH = 500;
   int TAB_BORDER_WIDTH = 20;
@@ -27,6 +32,7 @@ class DisplayMaster
   int HORIZONTAL_DISTANCE_FROM_WALL = 100;
   int HEIGHT_B = 70;
   int WIDTH_B = 200;
+  
   // drop down buttons
   int NUMBER_OF_DROPDOWNS = 5;
   
@@ -34,15 +40,10 @@ class DisplayMaster
     fill(PRIMARY_COLOR);
     rect(0,0,TAB_WIDTH, displayHeight);
     rect(TAB_WIDTH + TAB_BORDER_WIDTH,0,TAB_BORDER_WIDTH, displayHeight);
-    renderDropButton();
+    
   }
-  void renderDropButton(){
-    fill(SECONDARY_COLOR);
-    for(int i = 0; i < textBoxList.size(); i++)
-    {
-      CSV_Data_Loader.textBoxList.get(i).render();;
-    }
-  }
+  
+
   void renderDropMenu(){
   
   }
