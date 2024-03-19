@@ -15,9 +15,3 @@ class Button{
     return (mouseX > xpos && mouseX < xpos + wide) && (mouseY > ypos && mouseY < heigh + ypos);
   }
 }
-/*
-  todo
-  Add a selection button at the bottom of tab 1 that allows the user to filter cancelled flights or not
-  additionally add a second button so the user can select flights that were not cancelled
-  the user should not be able to have both
-*/
