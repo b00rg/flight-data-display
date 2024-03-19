@@ -21,6 +21,9 @@ void setup() {
   textBoxList.add(departureTimeSelections);
   TimeTextbox ArrivalTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL + 500, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
   textBoxList.add(ArrivalTimeSelections);
+  
+  //DisplayMaster.renderTestButton();
+  //println("1");
 
   
   String filename = sketchPath() + "/flights2k.csv";

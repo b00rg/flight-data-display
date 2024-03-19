@@ -36,17 +36,38 @@ class DisplayMaster
     rect(TAB_WIDTH + TAB_BORDER_WIDTH,0,TAB_BORDER_WIDTH, displayHeight);
     renderDropButton();
   }
+  
   void renderDropButton(){
     fill(SECONDARY_COLOR);
     for(int i = 0; i < textBoxList.size(); i++)
     {
-      CSV_Data_Loader.textBoxList.get(i).render();;
+      A_CSV_Data_Loader.textBoxList.get(i).render();;
     }
   }
+  
+  Button testButton = new Button(20, 20, 200, 200, 0);;
+  void renderTestButton()
+  {
+    testButton.renderButton(SECONDARY_COLOR);
+  }
+  
   void renderDropMenu(){
   
   }
   void renderButtons(){
   
+  }
+  
+  void EventHandler(int event)
+  {
+    switch(event)
+    {
+      case 0:
+        println("Event");
+        break;
+      default:
+        println("No event found");
+        break;
+    }
   }
 }
