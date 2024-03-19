@@ -27,7 +27,7 @@ class QueriesSelect extends Queries {
     super();
   }
   
-  ArrayList<RawDatapoint> getRowsBarGraph(String filterDate, ) {
+  ArrayList<RawDatapoint> getRowsBarGraph(String filterDate ) {
     
     ArrayList<RawDatapoint> dataList = new ArrayList<RawDatapoint>();
     
