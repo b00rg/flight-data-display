@@ -68,7 +68,6 @@ class RawDataPoint {
 
 }
 
-
 class BarDataPoint extends RawDataPoint {
   
   String MKT_CARRIER = null;
@@ -83,9 +82,13 @@ class BarDataPoint extends RawDataPoint {
       println("SQLException: " + e.getMessage());
     }
   }
+  public int getTOTAL_DIST() {
+    return TOTAL_DIST;
+  }
+  public String getMKT_CARRIER() {
+    return MKT_CARRIER;
+  }
 }
-
-
 
 class PieDataPoint extends RawDataPoint {
   
@@ -103,9 +106,16 @@ class PieDataPoint extends RawDataPoint {
       println("SQLException: " + e.getMessage());
     }
   }
+  public int getCOUNT_CANCELLED() {
+    return COUNT_CANCELLED;
+  }
+  public int getCOUNT_DIVERTED() {
+    return COUNT_DIVERTED;
+  }
+  public String getMTK_CARRIER() {
+    return MKT_CARRIER;
+  }
 }
-
-
 
 class DisplayDataPoint extends RawDataPoint {
   
