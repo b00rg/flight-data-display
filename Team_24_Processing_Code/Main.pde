@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 
 void setup() {
-  
+
   //DO NOT DELETE
   QueriesInitial setupQuery = new QueriesInitial();
   
@@ -13,8 +13,6 @@ void setup() {
   setupQuery.useDatabase();
   setupQuery.dropAndCreateTable();
   setupQuery.insertRows();
-  //DO NOT DELETE
-  
-  
+  //DO NOT DELETE  
   
 }
