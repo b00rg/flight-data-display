@@ -109,6 +109,15 @@ class PieDataPoint extends RawDataPoint {
       println("SQLException: " + e.getMessage());
     }
   }
+  public int getCOUNT_CANCELLED() {
+    return COUNT_CANCELLED;
+  }
+  public int getCOUNT_DIVERTED() {
+    return COUNT_DIVERTED;
+  }
+  public String getMTK_CARRIER() {
+    return MKT_CARRIER;
+  }
 }
 
 
