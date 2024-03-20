@@ -83,6 +83,12 @@ class BarDataPoint extends RawDataPoint {
       println("SQLException: " + e.getMessage());
     }
   }
+  public int getTOTAL_DIST() {
+    return TOTAL_DIST;
+  }
+  public String getMKT_CARRIER() {
+    return MKT_CARRIER;
+  }
 }
 
 
