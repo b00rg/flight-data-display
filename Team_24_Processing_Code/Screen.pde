@@ -1,7 +1,6 @@
-class DisplayMaster
+class Screen
 {
-  
-DisplayMaster(){}
+ 
   // THEME-------------------
   
   // todo.md
@@ -15,10 +14,14 @@ DisplayMaster(){}
   int QUIT_B_SIZE = 50;
   int QUIT_B_ROUNDNESS = 10;
   
+  ArrayList<Widget_Button> buttonList = new ArrayList<Widget_Button>();
+  ArrayList<Widget_DropDown> dropDownList = new ArrayList<Widget_DropDown>();
+  ArrayList<Widget_TextBox> TextBoxList = new ArrayList<Widget_TextBox>();
+  int buttonListSize = 0, dropDownListSize = 0, textBoxListSize = 0;
+
+  
   void renderQuitButton()
   {
-    fill(255,0,0);
-    rect(QUIT_B_RIGHT, QUIT_B_DOWN, QUIT_B_SIZE, QUIT_B_SIZE, QUIT_B_ROUNDNESS);
   }
   
   // TAB 1----------------
@@ -33,21 +36,49 @@ DisplayMaster(){}
   int HEIGHT_B = 70;
   int WIDTH_B = 200;
   
-  // drop down buttons
-  int NUMBER_OF_DROPDOWNS = 5;
-  
   void renderDIP(){
     fill(PRIMARY_COLOR);
     rect(0,0,TAB_WIDTH, displayHeight);
     rect(TAB_WIDTH + TAB_BORDER_WIDTH,0,TAB_BORDER_WIDTH, displayHeight);
     
   }
-  
-
-  void renderDropMenu(){
-  
+  void draw()
+  {
+    for(int i = 0; i < buttonListSize; i++)
+    {
+      buttonList.get(i).draw();
+    }
+ for(int i = 0; i < dropDownListSize; i++)
+    {
+      dropDownList.get(i).draw();
+    }
+ for(int i = 0; i < textBoxListSize; i++)
+    {
+      textBoxList.get(i).draw();
+    }
   }
-  void renderButtons(){
+
+  void addElement(Widget_Button widget)
+  {
+    buttonList.add(widget);
+    buttonListSize++;
+  }
+  void addElement(Widget_DropDown widget)
+  {
+    dropDownList.add(widget);
+    dropDownListSize++;
+  }
+  void addElement(Widget_TextBox widget)
+  {
+    textBoxList.add(widget);
+    textBoxListSize++;
+  }
   
+  void printTable()
+  {
+    for(int i = 0, n = 20 /*temp length*/; i <n; i++)
+    {
+      
+    }
   }
 }
