@@ -15,10 +15,13 @@ void setup() {
   setupQuery.insertRows();
   //DO NOT DELETE  
 
+  /*
+  //draw the pie chart
   size(500, 500);
   QueriesSelect queries = new QueriesSelect();
   ArrayList<BarDataPoint> values = queries.getRowsBarGraph();
   
   Graph_Bar graph = new Graph_Bar();
   graph.drawBarChart(values);
+  */
 }
