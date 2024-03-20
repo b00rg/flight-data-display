@@ -1,10 +1,65 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Collections;
+import java.io.FileReader;
+import java.util.Arrays;
+
 class QueriesInitial extends Queries {
   
   QueriesInitial() {
     super();
   }
-  
-  void insertRows(){
+
+    public void dropDatabase(String databaseName) {
+        if (connection != null) {
+            try (Statement statement = connection.createStatement()) {
+                String sql = "DROP DATABASE " + databaseName;
+                statement.executeUpdate(sql);
+                System.out.println("Database '" + databaseName + "' dropped successfully!");
+            } catch (SQLException e) {
+                System.out.println("Error dropping database: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Connection to the database is not established.");
+        }
+    }
+
+    public void use(String databaseName) {
+        if (connection != null) {
+            try (Statement statement = connection.createStatement()) {
+                String sql = "USE " + databaseName;
+                statement.executeUpdate(sql);
+                System.out.println("Database '" + databaseName + "' used successfully!");
+            } catch (SQLException e) {
+                System.out.println("Error using database: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Connection to the database is not established.");
+        }
+    }
+
+    public void insertInto(String table_name, String[] columns, String[] values) {
+        if (connection != null) {
+            if (columns.length != values.length) {
+                System.out.println("Number of columns does not match the number of values.");
+                return;
+            }
+            try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO " + table_name + " (" + String.join(",", columns) + ") VALUES (" + String.join(",", Collections.nCopies(values.length, "?")) + ")")) {
+                for (int i = 0; i < values.length; i++) {
+                    preparedStatement.setString(i + 1, values[i]);
+                }
+                preparedStatement.executeUpdate();
+                System.out.println("Values inserted into table '" + table_name + "' successfully!");
+            } catch (SQLException e) {
+                System.out.println("Error inserting values: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Connection to the database is not established.");
+        }
+    }
+  public void insertRows(){
     try {
       Statement statement = connection.createStatement();
       BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -45,5 +100,7 @@ class QueriesInitial extends Queries {
       e.printStackTrace();
     }
   }
-
+  public String[] parseCSVLine(String line) {
+     return line.split(",");
+  }
 }
