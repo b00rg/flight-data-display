@@ -1,17 +1,22 @@
 class Button{
-  int xpos, ypos, wide, heigh;
+  private int xpos, ypos, wide, high, event;
   
-  Button(int xpos,int ypos, int W, int H){
+  Button(int xpos,int ypos, int W, int H, int event){
     this.xpos = xpos;
     this.ypos = ypos;
     wide = W;
-    heigh = H;
+    high = H;
+    this.event = event;
   }
   void renderButton(color myColor){
     fill(myColor);
-    rect(xpos, ypos, wide, heigh);
+    rect(xpos, ypos, wide, high);
   }
-  boolean MousePress(){
-    return (mouseX > xpos && mouseX < xpos + wide) && (mouseY > ypos && mouseY < heigh + ypos);
+  void mousePressed(){
+    if((mouseX > xpos && mouseX < xpos + wide) && (mouseY > ypos && mouseY < high + ypos))
+    {
+      DisplayMaster.EventHandler(event);
+      //print(2);
+    }
   }
 }

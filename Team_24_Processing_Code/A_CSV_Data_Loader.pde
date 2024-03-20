@@ -1,5 +1,8 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -27,11 +30,79 @@ void setup() {
 ========
 >>>>>>>> 696ac417465ad7c0fd3aa93898752119a6076a8a:Team_24_Processing_Code/Main.pde
 
+  // MySQL database connection parameters
+  String filename = sketchPath() + "/flights2k.csv";
+  String url = "jdbc:mysql://localhost:3306/programming_project";
+  String username = "";
+  String password = "";
+  try {
+    BufferedReader credsFile = new BufferedReader(new FileReader(sketchPath() + "/creds.csv"));
+    Scanner credsScanner = new Scanner(credsFile);
+    credsScanner.useDelimiter(",");
+    username = credsScanner.next();
+    password = credsScanner.next();
+    credsScanner.close();
+    credsFile.close();
+  }
+  catch (Exception e) {
+    println("Error cannot find file creds.csv");
+    exit();
+  }
+
+
+  // Connect to MySQL
+  try {
+    
+    Connection connection = DriverManager.getConnection(url, username, password);
+    Statement statement = connection.createStatement();
+
+    BufferedReader reader = new BufferedReader(new FileReader(filename));
+    boolean skipHeader = true;
+    while (reader.ready()) {
+      String line = reader.readLine();
+      if (skipHeader) {
+        skipHeader = false;
+        continue; // Skip the header row
+      }
+
+      String[] data = parseCSVLine(line);
+
+      // Construct and execute the INSERT INTO statement
+      String query = "INSERT INTO flight_data (FL_DATE, MKT_CARRIER, MKT_CARRIER_FL_NUM, ORIGIN, ORIGIN_CITY_NAME, ORIGIN_STATE_ABR, ORIGIN_WAC, DEST, DEST_CITY_NAME, DEST_STATE_ABR, DEST_WAC, CRS_DEP_TIME, DEP_TIME, CRS_ARR_TIME, ARR_TIME, CANCELLED, DIVERTED, DISTANCE) VALUES (";
+      for (int i = 0; i < data.length; i++) {
+        if (data[i].isEmpty()) {
+          query += "NULL";
+        } else {
+          if (i == 2 || i == 6 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17) { // Integer fields
+            query += Integer.parseInt(data[i]);
+          } else {
+            query += "'" + data[i] + "'";
+          }
+        }
+        if (i < data.length - 1) {
+          query += ",";
+        }
+      }
+      query += ")";
+
+      statement.executeUpdate(query);
+    }
+
+    // Close connections
+    statement.close();
+    connection.close();
+
+    println("Data inserted successfully!");
+  }
+  catch (Exception e) {
+    e.printStackTrace();
+  }
+  
   // Display setup
   
   // Tab 1 setup
   // please do not move this outside of setup void, for some reason processing does not likey likey that
-/*  TimeTextbox departureTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
+  TimeTextbox departureTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
   textBoxList.add(departureTimeSelections);
   TimeTextbox ArrivalTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL + 500, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
   textBoxList.add(ArrivalTimeSelections);
@@ -53,18 +124,17 @@ String[] parseCSVLine(String line) {
     parts[i] = parts[i].replaceAll("^\"|\"$", "");
   }
 
-  return parts;*/
+  return parts;
 }
 void draw(){
-  println();
-  /*background(255,255,255);
+  background(255,255,255);
   if(currentlyActiveTab == 0)
   {
   DisplayMaster.renderDIP();
   }
-  DisplayMaster.renderQuitButton();*/
+  DisplayMaster.renderQuitButton();
 }
-/*void mouseClicked(){
+void mouseClicked(){
   if(currentlyActiveTab == 0) // what buttons and textboxes should the programme watch out for
   {
     if(isDropDownActive)
@@ -107,4 +177,4 @@ boolean isAnyTab1UIActive()
         }
       }
       return false;
-  }*/
+  }
