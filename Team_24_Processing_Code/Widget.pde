@@ -17,9 +17,14 @@ class Widget{
     
   }
   boolean isInputValidtimeRange(String input){
-    String regex = "^(?:[01]?[0-9]|2[0-3]):[0-5][0-9]$";
-    Pattern pattern = Pattern.compile(regex);
-    Matcher matcher = pattern.matcher(input);
-    return matcher.matches();
+    try{
+      String regex = "^(?:[01]?[0-9]|2[0-3]):[0-5][0-9]$";
+      Pattern pattern = Pattern.compile(regex);
+      Matcher matcher = pattern.matcher(input);
+      return matcher.matches();
+    } catch (Exception e)
+    {
+      return false; //if anytihng goes wrong with this most likely the user's input is bad
+    }
   }
 }

@@ -30,6 +30,11 @@ class TimeTextbox extends Widget {
         if (isStringValind())
         {
           println("this is a valid time range");
+          String[] uservalues = textValue.split("-");
+          uservalues[0] = uservalues[0].trim();// we trim the whitespaces from the values
+          uservalues[1] = uservalues[1].trim();
+          uservalues[0] = uservalues[0].replace(":","");// we remove the colon to have the user input in pure integer format
+          uservalues[1] = uservalues[1].replace(":","");
         } else 
         {
           textValue = "??:?? - ??:??";
@@ -47,7 +52,7 @@ class TimeTextbox extends Widget {
           //println("textValue now is " + textValue);
         } catch ( Exception e)
         {
-          
+          textValue = "";
           // The user used backspace even tho nothing is written, do nothing
         }
       } else
@@ -65,16 +70,27 @@ class TimeTextbox extends Widget {
     } else 
     {
       active = false;
-      textValue = "??:?? - ??:??";
+      if(isStringValind())
+      {
+        // do nothing
+      } else 
+      {
+        textValue = "??:?? - ??:??";
+      }
     }
   }
   boolean isStringValind() 
   {
-    String[] uservalues = textValue.split("-");
-    uservalues[0] = uservalues[0].trim();
-    uservalues[1] = uservalues[1].trim();
-    return(isInputValidtimeRange(uservalues[0]) && isInputValidtimeRange(uservalues[1]));
-    
+    try{
+      String[] uservalues = textValue.split("-");
+      uservalues[0] = uservalues[0].trim();
+      uservalues[1] = uservalues[1].trim();
+      print("value 1 is ");
+      return(isInputValidtimeRange(uservalues[0]) && isInputValidtimeRange(uservalues[1]));
+    } catch (Exception e)
+    {
+      return false;
+    }
     
     // old method for checking if the string input is valid
     /*
