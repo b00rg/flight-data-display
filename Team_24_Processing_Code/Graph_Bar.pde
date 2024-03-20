@@ -10,6 +10,7 @@ class Graph_Bar extends Graph {
     float barSpacing = 20;
     float topMargin = 50;
     float leftMargin = 50;
+    int barColour = 50;
         float barWidth = width / values.length - leftMargin / values.length;
     for (int i = 0; i < values.length; i++) {
       // Calculate the height of each bar relative to the canvas height
@@ -20,8 +21,9 @@ class Graph_Bar extends Graph {
       float y = height - barHeight;
       
       // Draw the bar
+      fill(barColour);
       rect(x, y, barWidth - barSpacing, barHeight);
-      
+
       // Draw the label
       textAlign(CENTER, CENTER);
       text(labels[i], x + barWidth/2, y - 10);
