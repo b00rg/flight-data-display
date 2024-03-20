@@ -16,7 +16,7 @@ class Queries {
   Connection connection;
   
   String databaseName = "programming_project";
-  String tableName = "flights_data";
+  String tableName = "flight_data";
   
   Queries(){
     try {
