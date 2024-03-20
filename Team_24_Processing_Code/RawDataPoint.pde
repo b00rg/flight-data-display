@@ -68,7 +68,6 @@ class RawDataPoint {
 
 }
 
-
 class BarDataPoint extends RawDataPoint {
   
   String MKT_CARRIER = null;
@@ -90,8 +89,6 @@ class BarDataPoint extends RawDataPoint {
     return MKT_CARRIER;
   }
 }
-
-
 
 class PieDataPoint extends RawDataPoint {
   
@@ -119,8 +116,6 @@ class PieDataPoint extends RawDataPoint {
     return MKT_CARRIER;
   }
 }
-
-
 
 class DisplayDataPoint extends RawDataPoint {
   
