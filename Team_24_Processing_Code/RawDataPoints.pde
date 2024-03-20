@@ -1,29 +1,29 @@
-class rawDatapoint {
+class RawDatapoint {
   
-  String FL_DATE;
-  String MKT_CARRIER;
-  int MKT_CARRIER_FL_NUM;
+  String FL_DATE = null;
+  String MKT_CARRIER = null;
+  int MKT_CARRIER_FL_NUM = 0;
   
-  String ORIGIN;
-  String ORIGIN_CITY_NAME;
-  String ORIGIN_STATE_ABR;
-  int ORIGIN_WAC;
+  String ORIGIN = null;
+  String ORIGIN_CITY_NAME = null;
+  String ORIGIN_STATE_ABR = null;
+  int ORIGIN_WAC = 0;
   
-  String DEST;
-  String DEST_CITY_NAME;
-  String DEST_STATE_ABR;
-  int DEST_WAC;
+  String DEST = null;
+  String DEST_CITY_NAME = null;
+  String DEST_STATE_ABR = null;
+  int DEST_WAC = 0;
   
-  int CRS_DEP_TIME;
-  int DEP_TIME;
-  int CRS_ARR_TIME;
-  int ARR_TIME;
+  int CRS_DEP_TIME = 0;
+  int DEP_TIME = 0;
+  int CRS_ARR_TIME = 0;
+  int ARR_TIME = 0;
   
-  int CANCELLED;
-  int DIVERTED;
-  int DISTANCE;
+  int CANCELLED = 0;
+  int DIVERTED = 0;
+  int DISTANCE = 0;
   
-  rawDatapoint (java.sql.ResultSet resultSet) {
+  RawDatapoint (java.sql.ResultSet resultSet) {
     try {
       
       FL_DATE = resultSet.getString("FL_DATE");
@@ -49,21 +49,10 @@ class rawDatapoint {
       DIVERTED = resultSet.getInt("DIVERTED");
       DISTANCE = resultSet.getInt("DISTANCE");
       
-    } catch (java.sql.SQLException e) {
-            println("SQLException: " + e.getMessage());
-        }
-}
-  
-  public String toString()
-  {
-    String result = "";
-    
-    result += ("\nFL_DATE: " + FL_DATE + ", MKT_CARRIER: " + MKT_CARRIER + ", MKT_CARRIER_FL_NUM: " + MKT_CARRIER_FL_NUM);
-    result += ("\nORIGIN: " + ORIGIN + ", ORIGIN_CITY_NAME: " + ORIGIN_CITY_NAME + ", ORIGIN_STATE_ABR: " + ORIGIN_STATE_ABR + ", ORIGIN_WAC: " + ORIGIN_WAC);
-    result += ("\nDEST: " + DEST + ", DEST_CITY_NAME: " + DEST_CITY_NAME + ", DEST_STATE_ABR: " + DEST_STATE_ABR + ", DEST_WAC: " + DEST_WAC);
-    result += ("\nCRS_DEP_TIME: " + CRS_DEP_TIME + ", DEP_TIME: " + DEP_TIME + ", CRS_ARR_TIME: " + CRS_ARR_TIME + ", ARR_TIME: " + ARR_TIME);
-    result += ("\nCANCELLED: " + CANCELLED + ", DIVERTED: " + DIVERTED + ", DISTANCE: " + DISTANCE);
-    
-    return result;
+    } 
+    catch (java.sql.SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
   }
+
 }
