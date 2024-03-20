@@ -1,129 +1,146 @@
-class rawDatapoint {
-  
-  String FL_DATE;
-  String MKT_CARRIER;
-  int MKT_CARRIER_FL_NUM;
-  
-  String ORIGIN;
-  String ORIGIN_CITY_NAME;
-  String ORIGIN_STATE_ABR;
-  int ORIGIN_WAC;
-  
-  String DEST;
-  String DEST_CITY_NAME;
-  String DEST_STATE_ABR;
-  int DEST_WAC;
-  
-  int CRS_DEP_TIME;
-  int DEP_TIME;
-  int CRS_ARR_TIME;
-  int ARR_TIME;
-  
-  int CANCELLED;
-  int DIVERTED;
-  int DISTANCE;
-  
-  rawDatapoint (java.sql.ResultSet resultSet) {
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+class RawDataPoint {
+
+  String FL_DATE = null;
+  String MKT_CARRIER = null;
+  int MKT_CARRIER_FL_NUM = 0;
+
+  String ORIGIN = null;
+  String ORIGIN_CITY_NAME = null;
+  String ORIGIN_STATE_ABR = null;
+  int ORIGIN_WAC = 0;
+
+  String DEST = null;
+  String DEST_CITY_NAME = null;
+  String DEST_STATE_ABR = null;
+  int DEST_WAC = 0;
+
+  int CRS_DEP_TIME = 0;
+  int DEP_TIME = 0;
+  int CRS_ARR_TIME = 0;
+  int ARR_TIME = 0;
+
+  int CANCELLED = 0;
+  int DIVERTED = 0;
+  int DISTANCE = 0;
+
+  RawDataPoint(ResultSet resultSet) {
     try {
-      
-      FL_DATE = resultSet.getString("FL_DATE");
-      MKT_CARRIER = resultSet.getString("MKT_CARRIER");
-      MKT_CARRIER_FL_NUM = resultSet.getInt("MKT_CARRIER_FL_NUM");
-      
-      ORIGIN = resultSet.getString("ORIGIN");
-      ORIGIN_CITY_NAME = resultSet.getString("ORIGIN_CITY_NAME");
-      ORIGIN_STATE_ABR = resultSet.getString("ORIGIN_STATE_ABR");
-      ORIGIN_WAC = resultSet.getInt("ORIGIN_WAC");
-      
-      DEST = resultSet.getString("DEST");
-      DEST_CITY_NAME = resultSet.getString("DEST_CITY_NAME");
-      DEST_STATE_ABR = resultSet.getString("DEST_STATE_ABR");
-      DEST_WAC = resultSet.getInt("DEST_WAC");
-      
-      CRS_DEP_TIME = resultSet.getInt("CRS_DEP_TIME");      
-      DEP_TIME = resultSet.getInt("DEP_TIME");
-      CRS_ARR_TIME = resultSet.getInt("CRS_ARR_TIME");
-      ARR_TIME = resultSet.getInt("ARR_TIME");
-      
-      CANCELLED = resultSet.getInt("CANCELLED");
-      DIVERTED = resultSet.getInt("DIVERTED");
-      DISTANCE = resultSet.getInt("DISTANCE");
-      
-    } catch (java.sql.SQLException e) {
-            println("SQLException: " + e.getMessage());
-        }
-}
-  
-  public String toString()
-  {
-    String result = "";
-    for(int i = 0; i < 18; i++)
-    {
-      if(statsShown[i])
-      {
-        switch(i)
-        {
-          case 0:
-            result += ("FL_DATE: " + FL_DATE + ", ");
-            break;
-          case 1:
-            result += ("MKT_CARRIER: " + MKT_CARRIER + ", ");
-            break;
-          case 2:
-            result += ("MKT_CARRIER_FL_NUM: " + MKT_CARRIER_FL_NUM + ", ");
-            break;
-          case 3:
-            result += ("ORIGIN: " + ORIGIN + ", ");
-            break;
-          case 4:
-            result += ("ORIGIN_CITY_NAME: " + ORIGIN_CITY_NAME + ", ");
-            break;
-          case 5:
-            result += ("ORIGIN_STATE_ABR: " + ORIGIN_STATE_ABR + ", ");
-            break;
-          case 6:
-            result += ("ORIGIN_WAC: " + ORIGIN_WAC + ", ");
-            break;
-          case 7:
-            result += ("DEST: " + DEST + ", ");
-            break;
-          case 8:
-            result += ("DEST_CITY_NAME: " + DEST_CITY_NAME + ", ");
-            break;
-          case 9:
-            result += ("DEST_STATE_ABR: " + DEST_STATE_ABR + ", ");
-            break;
-          case 10:
-            result += ("DEST_WAC: " + DEST_WAC + ", ");
-            break;
-          case 11:
-            result += ("CRS_DEP_TIME: " + CRS_DEP_TIME + ", ");
-            break;
-          case 12:
-            result += ("DEP_TIME: " + DEP_TIME + ",");
-            break;
-          case 13:
-            result += ("CRS_ARR_TIME: " + CRS_ARR_TIME + ", ");
-            break;
-          case 14:
-            result += ("ARR_TIME: " + ARR_TIME + ", ");
-            break;
-          case 15:
-            result += ("CANCELLED: " + CANCELLED + ", ");
-            break;
-          case 16:
-            result += ("DIVERTED: " + DIVERTED + ", ");
-            break;
-          case 17:
-            result += ("DISTANCE: " + DISTANCE + ", ");
-            break;
-          default:
-            println("No data found at address i");
-            break;
-        }
-      }
+      FL_DATE = columnExists(resultSet, "FL_DATE") ? resultSet.getString("FL_DATE") : null;
+      MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
+      MKT_CARRIER_FL_NUM = columnExists(resultSet, "MKT_CARRIER_FL_NUM") ? resultSet.getInt("MKT_CARRIER_FL_NUM") : 0;
+
+      ORIGIN = columnExists(resultSet, "ORIGIN") ? resultSet.getString("MKT_CARRIER") : null;
+      ORIGIN_CITY_NAME = columnExists(resultSet, "ORIGIN_CITY_NAME") ? resultSet.getString("MKT_CARRIER") : null;
+      ORIGIN_STATE_ABR = columnExists(resultSet, "ORIGIN_STATE_ABR") ? resultSet.getString("MKT_CARRIER") : null;
+      ORIGIN_WAC = columnExists(resultSet, "ORIGIN_WAC") ? resultSet.getInt("MKT_CARRIER_FL_NUM") : 0;
+
+      DEST = columnExists(resultSet, "DEST") ? resultSet.getString("MKT_CARRIER") : null;
+      DEST_CITY_NAME = columnExists(resultSet, "DEST_CITY_NAME") ? resultSet.getString("MKT_CARRIER") : null;
+      DEST_STATE_ABR = columnExists(resultSet, "DEST_STATE_ABR") ? resultSet.getString("MKT_CARRIER") : null;
+      DEST_WAC = columnExists(resultSet, "DEST_WAC") ? resultSet.getInt("MKT_CARRIER_FL_NUM") : 0;
+
+      CRS_DEP_TIME = columnExists(resultSet, "CRS_DEP_TIME") ? resultSet.getInt("MKT_CARRIER_FL_NUM") : 0;
+      DEP_TIME = columnExists(resultSet, "DEP_TIME") ? resultSet.getInt("MKT_CARRIER_FL_NUM") : 0;
+      CRS_ARR_TIME = columnExists(resultSet, "CRS_ARR_TIME") ? resultSet.getInt("MKT_CARRIER_FL_NUM") : 0;
+      ARR_TIME = columnExists(resultSet, "ARR_TIME") ? resultSet.getInt("MKT_CARRIER_FL_NUM") : 0;
+
+      CANCELLED = columnExists(resultSet, "CANCELLED") ? resultSet.getInt("MKT_CARRIER_FL_NUM") : 0;
+      DIVERTED = columnExists(resultSet, "DIVERTED") ? resultSet.getInt("MKT_CARRIER_FL_NUM") : 0;
+      DISTANCE = columnExists(resultSet, "DISTANCE") ? resultSet.getInt("MKT_CARRIER_FL_NUM") : 0;
+
+    } catch (SQLException e) {
+        println("SQLException: " + e.getMessage());
     }
-    
-    return result;
+  }
+
+  boolean columnExists(ResultSet resultSet, String columnLabel) {
+    try {
+        resultSet.findColumn(columnLabel);
+        return true;
+    } 
+    catch (SQLException e) {
+        return false;
+    }
+  }
+
+}
+
+class BarDataPoint extends RawDataPoint {
+  
+  String MKT_CARRIER = null;
+  int TOTAL_DIST = 0;
+
+  BarDataPoint(ResultSet resultSet) {
+    super(resultSet); // Call superclass constructor
+    try {
+      MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
+      TOTAL_DIST = columnExists(resultSet, "TOTAL_DIST") ? resultSet.getInt("TOTAL_DIST") : 0;
+    } catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+  }
+  public int getTOTAL_DIST() {
+    return TOTAL_DIST;
+  }
+  public String getMKT_CARRIER() {
+    return MKT_CARRIER;
+  }
+}
+
+class PieDataPoint extends RawDataPoint {
+  
+  String MKT_CARRIER = null;
+  int COUNT_CANCELLED = 0;
+  int COUNT_DIVERTED = 0;
+
+  PieDataPoint(ResultSet resultSet) {
+    super(resultSet); // Call superclass constructor
+    try {
+      MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
+      COUNT_CANCELLED = columnExists(resultSet, "COUNT_CANCELLED") ? resultSet.getInt("COUNT_CANCELLED") : 0;
+      COUNT_DIVERTED = columnExists(resultSet, "COUNT_DIVERTED") ? resultSet.getInt("COUNT_DIVERTED") : 0;
+    } catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+  }
+  public int getCOUNT_CANCELLED() {
+    return COUNT_CANCELLED;
+  }
+  public int getCOUNT_DIVERTED() {
+    return COUNT_DIVERTED;
+  }
+  public String getMTK_CARRIER() {
+    return MKT_CARRIER;
+  }
+}
+
+class DisplayDataPoint extends RawDataPoint {
+  
+  String FL_DATE = null;
+  String MKT_CARRIER = null;
+  String ORIGIN = null;
+  String DEST = null;
+  int DEP_TIME = 0;
+  int ARR_TIME = 0;
+  int CANCELLED = 0;
+  int DIVERTED = 0;
+
+  DisplayDataPoint(ResultSet resultSet) {
+    super(resultSet);
+    try {
+      FL_DATE = columnExists(resultSet, "FL_DATE") ? resultSet.getString("FL_DATE") : null;
+      MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
+      ORIGIN = columnExists(resultSet, "ORIGIN") ? resultSet.getString("ORIGIN") : null;
+      DEST = columnExists(resultSet, "DEST") ? resultSet.getString("DEST") : null;
+      DEP_TIME = columnExists(resultSet, "DEP_TIME") ? resultSet.getInt("DEP_TIME") : 0;
+      ARR_TIME = columnExists(resultSet, "ARR_TIME") ? resultSet.getInt("ARR_TIME") : 0;
+      CANCELLED = columnExists(resultSet, "CANCELLED") ? resultSet.getInt("CANCELLED") : 0;
+      DIVERTED = columnExists(resultSet, "DIVERTED") ? resultSet.getInt("DIVERTED") : 0;
+    } catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
   }
 }
