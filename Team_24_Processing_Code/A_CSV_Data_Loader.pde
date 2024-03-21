@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-static ArrayList<RawDatapoint> allDatapoints = new ArrayList<RawDatapoint>();
+static ArrayList<RawDataPoint> allDatapoints = new ArrayList<RawDataPoint>();
 static ArrayList<Widget_TextBox> textBoxList = new ArrayList<Widget_TextBox>();
 Screen screen1 = new Screen();
 static boolean[] statsShown = new boolean[18];
