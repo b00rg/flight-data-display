@@ -1,5 +1,8 @@
 class Screen
+class Screen
 {
+  
+Screen(){}
  
   // THEME-------------------
   
@@ -36,11 +39,18 @@ class Screen
   int HEIGHT_B = 70;
   int WIDTH_B = 200;
   
-  void renderDIP(){
+  // drop down buttons
+  int NUMBER_OF_DROPDOWNS = 5;
+
+  void renderTab1(){
     fill(PRIMARY_COLOR);
     rect(0,0,TAB_WIDTH, displayHeight);
+    fill(SECONDARY_COLOR);
     rect(TAB_WIDTH + TAB_BORDER_WIDTH,0,TAB_BORDER_WIDTH, displayHeight);
-    
+    for(int i = 0; i < textBoxList.size(); i++)
+    {
+      textBoxList.get(i).render();
+    }
   }
   void draw()
   {
