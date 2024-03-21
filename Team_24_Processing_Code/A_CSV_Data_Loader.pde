@@ -5,9 +5,10 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.regex.*;
 
 static ArrayList<RawDataPoint> allDatapoints = new ArrayList<RawDataPoint>();
-static ArrayList<Widget_TextBox> textBoxList = new ArrayList<Widget_TextBox>();
+static ArrayList<WidgetTextBox> textBoxList = new ArrayList<WidgetTextBox>();
 Screen screen1 = new Screen();
 static boolean[] statsShown = new boolean[18];
 

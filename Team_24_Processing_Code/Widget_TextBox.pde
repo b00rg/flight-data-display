@@ -1,4 +1,4 @@
-class Widget_TextBox extends Widget{
+class WidgetTextBox extends Widget{
   String textValue = "??:?? - ??:??";
   boolean active = false;
   //int xpos, ypos, wide, heigh;
