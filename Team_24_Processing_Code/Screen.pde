@@ -1,5 +1,4 @@
 class Screen
-class Screen
 {
   
 Screen(){}
