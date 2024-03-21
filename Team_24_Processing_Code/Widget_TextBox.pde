@@ -1,8 +1,8 @@
-class TimeTextbox {
+class Widget_TextBox extends Widget{
   String textValue = "??:?? - ??:??";
   boolean active = false;
   int xpos, ypos, wide, heigh;
-  TimeTextbox(int x, int y, int w, int h){
+  Widget_TextBox(int x, int y, int w, int h){
     xpos = x;
     ypos = y;
     wide = w;
