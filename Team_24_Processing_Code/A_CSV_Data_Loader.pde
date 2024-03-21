@@ -6,29 +6,19 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-static ArrayList<TimeTextbox> textBoxList = new ArrayList<TimeTextbox>();
+static ArrayList<RawDatapoint> allDatapoints = new ArrayList<RawDatapoint>();
+static ArrayList<Widget_TextBox> textBoxList = new ArrayList<Widget_TextBox>();
+Screen screen1 = new Screen();
+
+static boolean[] statsShown = new boolean[18];
 
 // Read username and password from a file in "Team_24_Processing_Code\creds.csv". This is in the .gitignore to prevent publishing it.
 // To make this work you MUST create a creds.csv file in the Team_24_Processing_Code folder with contents: "username,password" without the quotes and no space after the comment.
 
 void setup() {
-<<<<<<<< HEAD:Team_24_Processing_Code/A_CSV_Data_Loader.pde
   // Display setup
   // Tab 1 setup
   // please do not move this outside of setup void, for some reason processing does not likey likey that
-  TimeTextbox departureTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
-  textBoxList.add(departureTimeSelections);
-  TimeTextbox ArrivalTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL + 500, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
-  textBoxList.add(ArrivalTimeSelections);
-  
-  //DisplayMaster.renderTestButton();
-  //println("1");
-
-  
-  String filename = sketchPath() + "/flights2k.csv";
-  String delimiter = ",";
-========
->>>>>>>> 696ac417465ad7c0fd3aa93898752119a6076a8a:Team_24_Processing_Code/Main.pde
 
   // MySQL database connection parameters
   String filename = sketchPath() + "/flights2k.csv";
@@ -98,20 +88,26 @@ void setup() {
     e.printStackTrace();
   }
   
+  //Make Datapoints
+  
+  for;
+  
   // Display setup
   
   // Tab 1 setup
   // please do not move this outside of setup void, for some reason processing does not likey likey that
-  TimeTextbox departureTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
-  textBoxList.add(departureTimeSelections);
-  TimeTextbox ArrivalTimeSelections = new TimeTextbox(DisplayMaster.HORIZONTAL_DISTANCE_FROM_WALL, DisplayMaster.VERTICAL_DISTANCE_FROM_WALL + 500, DisplayMaster.WIDTH_B, DisplayMaster.HEIGHT_B);
-  textBoxList.add(ArrivalTimeSelections);
+  Widget_TextBox departureTimeSelections = new Widget_TextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL, screen1.WIDTH_B, screen1.HEIGHT_B);
+  screen1.addElement(departureTimeSelections);
+  Widget_TextBox ArrivalTimeSelections = new Widget_TextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B);
+  screen1.addElement(ArrivalTimeSelections);
+  
+  Widget_Button quitButton = new Widget_Button(20, 20, 50, 50, 0);
+  screen1.addElement(quitButton);
   
   fullScreen();
 }
 // Setup Display Objects
 byte currentlyActiveTab = 0;
-DisplayMaster DisplayMaster = new DisplayMaster();
 // Tab 1 objects
 boolean isDropDownActive = false;
 
@@ -128,11 +124,7 @@ String[] parseCSVLine(String line) {
 }
 void draw(){
   background(255,255,255);
-  if(currentlyActiveTab == 0)
-  {
-  DisplayMaster.renderDIP();
-  }
-  DisplayMaster.renderQuitButton();
+  screen1.draw();
 }
 void mouseClicked(){
   if(currentlyActiveTab == 0) // what buttons and textboxes should the programme watch out for
