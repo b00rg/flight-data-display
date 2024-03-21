@@ -1,7 +1,9 @@
 class Screen
+class Screen
 {
   
 Screen(){}
+ 
   // THEME-------------------
   
   // todo.md
@@ -15,10 +17,14 @@ Screen(){}
   int QUIT_B_SIZE = 50;
   int QUIT_B_ROUNDNESS = 10;
   
+  ArrayList<Widget_Button> buttonList = new ArrayList<Widget_Button>();
+  ArrayList<Widget_DropDown> dropDownList = new ArrayList<Widget_DropDown>();
+  ArrayList<Widget_TextBox> TextBoxList = new ArrayList<Widget_TextBox>();
+  int buttonListSize = 0, dropDownListSize = 0, textBoxListSize = 0;
+
+  
   void renderQuitButton()
   {
-    fill(255,0,0);
-    rect(QUIT_B_RIGHT, QUIT_B_DOWN, QUIT_B_SIZE, QUIT_B_SIZE, QUIT_B_ROUNDNESS);
   }
   
   // TAB 1----------------
@@ -46,12 +52,43 @@ Screen(){}
       textBoxList.get(i).render();
     }
   }
-  
-
-  void renderDropMenu(){
-  
+  void draw()
+  {
+    for(int i = 0; i < buttonListSize; i++)
+    {
+      buttonList.get(i).draw();
+    }
+ for(int i = 0; i < dropDownListSize; i++)
+    {
+      dropDownList.get(i).draw();
+    }
+ for(int i = 0; i < textBoxListSize; i++)
+    {
+      textBoxList.get(i).draw();
+    }
   }
-  void renderButtons(){
+
+  void addElement(Widget_Button widget)
+  {
+    buttonList.add(widget);
+    buttonListSize++;
+  }
+  void addElement(Widget_DropDown widget)
+  {
+    dropDownList.add(widget);
+    dropDownListSize++;
+  }
+  void addElement(Widget_TextBox widget)
+  {
+    textBoxList.add(widget);
+    textBoxListSize++;
+  }
   
+  void printTable()
+  {
+    for(int i = 0, n = 20 /*temp length*/; i <n; i++)
+    {
+      
+    }
   }
 }
