@@ -1,6 +1,6 @@
-class Graph_Pie extends Graph {
-  Graph_Pie(){
-    super();
+class GraphPie extends Graph {
+  GraphPie(){
+     super();
   }
   void drawPieChart(ArrayList<PieDataPoint> values){
     String[] labels = {"Flights Cancelled", "Flights Diverted", "Flights As Expected"};

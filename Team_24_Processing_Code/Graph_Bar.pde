@@ -1,5 +1,5 @@
-class Graph_Bar extends Graph {
-    Graph_Bar(){
+class GraphBar extends Graph {
+    GraphBar(){
         super();
     }
   
