@@ -1,26 +1,26 @@
-class Graph_Pie extends Graph {
-  Graph_Pie(){
-    super();
+class GraphPie extends Graph {
+  GraphPie(){
+     super();
   }
-  void drawPieChart(float[] values, String[] labels){
-    float total = 0;
-    for (int i = 0; i<values.length; i++){
-      total += values[i];
-    }
+  void drawPieChart(ArrayList<PieDataPoint> values){
+    String[] labels = {"Flights Cancelled", "Flights Diverted", "Flights As Expected"};
+    int totalFlights = values.size();
     float startAngle = 0; 
     float labelX = 10;
     float labelY = 5;
     float colour = 0.0; 
-    for (int i = 0; i < values.length; i++) {
-      float angle = radians(map(values[i], 0, total, 0, 360)); // Calculate angle for this slice
+    for (int i = 0; i < labels.length; i++) {
+      float angle = radians(map(i, 0, labels.length, 0, 360)); ; // Calculate angle for this slice
       float endAngle = startAngle + angle;
       
-      // Calculate slice color (you can define your own color scheme)
+      // Calculate slice color 
+      // ugly colours
       //colorMode(HSB);
-      //fill(map(i, 0, values.length, 0, 255), 255, 255);
+      //fill(map(i, 0, labels.length, 0, 255), 255, 255);
+      // greyscale 
+      fill(map(i, 0, totalFlights, colour, colour), colour, colour);
+      colour += 255.0/totalFlights*2;
       
-      fill(map(i, 0, values.length, colour, colour), colour,colour);
-      colour += 255.0/values.length;
       // Draw slice
       arc(width/2, height/2, 300, 300, startAngle, endAngle);
       
@@ -32,4 +32,4 @@ class Graph_Pie extends Graph {
       startAngle += angle;
     }
   }
-}
+} 

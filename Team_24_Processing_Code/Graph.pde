@@ -1,2 +1,3 @@
 class Graph{
+  Graph(){}
 }

@@ -1,5 +1,4 @@
 class Screen
-class Screen
 {
   
 Screen(){}
@@ -17,9 +16,9 @@ Screen(){}
   int QUIT_B_SIZE = 50;
   int QUIT_B_ROUNDNESS = 10;
   
-  ArrayList<Widget_Button> buttonList = new ArrayList<Widget_Button>();
-  ArrayList<Widget_DropDown> dropDownList = new ArrayList<Widget_DropDown>();
-  ArrayList<Widget_TextBox> TextBoxList = new ArrayList<Widget_TextBox>();
+  ArrayList<WidgetButton> buttonList = new ArrayList<WidgetButton>();
+  ArrayList<WidgetDropDown> dropDownList = new ArrayList<WidgetDropDown>();
+  ArrayList<WidgetTextBox> TextBoxList = new ArrayList<WidgetTextBox>();
   int buttonListSize = 0, dropDownListSize = 0, textBoxListSize = 0;
 
   
@@ -52,37 +51,7 @@ Screen(){}
       textBoxList.get(i).render();
     }
   }
-  void draw()
-  {
-    for(int i = 0; i < buttonListSize; i++)
-    {
-      buttonList.get(i).draw();
-    }
- for(int i = 0; i < dropDownListSize; i++)
-    {
-      dropDownList.get(i).draw();
-    }
- for(int i = 0; i < textBoxListSize; i++)
-    {
-      textBoxList.get(i).draw();
-    }
-  }
 
-  void addElement(Widget_Button widget)
-  {
-    buttonList.add(widget);
-    buttonListSize++;
-  }
-  void addElement(Widget_DropDown widget)
-  {
-    dropDownList.add(widget);
-    dropDownListSize++;
-  }
-  void addElement(Widget_TextBox widget)
-  {
-    textBoxList.add(widget);
-    textBoxListSize++;
-  }
   
   void printTable()
   {
