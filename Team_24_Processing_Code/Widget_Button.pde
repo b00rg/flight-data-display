@@ -1,12 +1,24 @@
 class WidgetButton extends Widget{
-    int myEvent;
-    WidgetButton(int xpos,int ypos, int W, int H, int event){
+    color ON, OFF;
+    WidgetButton(int xpos,int ypos, int W, int H, color on, color off){
     super(xpos, ypos, W, H);
-    myEvent = event;
-    
+    ON = on;
+    OFF = off;
   }
-  void renderButton(color myColor){
-    fill(myColor);
+  void isClicked(){
+    if(isMouseover())  // if the mouse is clicked, and the mouse is over the button...
+    {
+      active = !active;
+    }
+  }
+  void render(){
+    if(active)
+    {
+      fill(ON);
+    } else         // We choose the color of the botton base on it's current status
+    {
+      fill(OFF);
+    }
     rect(xpos, ypos, wide, high);
   }
   
