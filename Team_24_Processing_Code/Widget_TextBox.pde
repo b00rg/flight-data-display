@@ -3,7 +3,7 @@ class WidgetTextBox extends Widget{
   boolean active = false;
   //int xpos, ypos, wide, heigh;
   PFont font;
-  TimeTextbox(int x, int y, int w, int h, PFont font){
+  WidgetTextBox(int x, int y, int w, int h, PFont font){
     super(x,y,w,h);
     this.font = font;
   }
@@ -14,11 +14,11 @@ class WidgetTextBox extends Widget{
     } else {
       fill(200); // Color when inactive
     }
-    rect(xpos, ypos, wide, heigh);
+    rect(xpos, ypos, wide, high);
     fill(0);
     textAlign(LEFT, CENTER);
     textFont(font);
-    text(textValue, xpos + 5, ypos + heigh/3);
+    text(textValue, xpos + 5, ypos + high/3);
   }
   
   void input(char key) {
@@ -63,7 +63,7 @@ class WidgetTextBox extends Widget{
   }
   void isClicked()
   {
-    if((mouseX > xpos && mouseX < xpos + wide) && (mouseY > ypos && mouseY < heigh + ypos))
+    if((mouseX > xpos && mouseX < xpos + wide) && (mouseY > ypos && mouseY < high + ypos))
     {
       active = true; 
       textValue = "";

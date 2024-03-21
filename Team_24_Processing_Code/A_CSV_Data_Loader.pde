@@ -12,8 +12,10 @@ static ArrayList<WidgetTextBox> textBoxList = new ArrayList<WidgetTextBox>();
 Screen screen1 = new Screen();
 static boolean[] statsShown = new boolean[18];
 
+PFont TextBoxFont;
+
 void setup() {
-  
+
   //DO NOT DELETE
   QueriesInitial setupQuery = new QueriesInitial();
   
@@ -47,13 +49,12 @@ void setup() {
   
   // Tab 1 setup
   // please do not move this outside of setup void, for some reason processing does not likey likey that
-  Widget_TextBox departureTimeSelections = new Widget_TextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL, screen1.WIDTH_B, screen1.HEIGHT_B);
-  screen1.addElement(departureTimeSelections);
-  Widget_TextBox ArrivalTimeSelections = new Widget_TextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B);
-  screen1.addElement(ArrivalTimeSelections);
+  TextBoxFont = loadFont("default.vlw");
   
-  Widget_Button quitButton = new Widget_Button(20, 20, 50, 50, 0);
-  screen1.addElement(quitButton);
+  WidgetTextBox departureTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL, screen1.WIDTH_B, screen1.HEIGHT_B, TextBoxFont);
+  textBoxList.add(departureTimeSelections);
+  WidgetTextBox ArrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, TextBoxFont);
+  textBoxList.add(ArrivalTimeSelections);
   
   fullScreen();
 }
@@ -64,7 +65,7 @@ boolean isDropDownActive = false;
 
 void draw(){
   background(255,255,255);
-  screen1.draw();
+  
 }
 
 void mouseClicked(){

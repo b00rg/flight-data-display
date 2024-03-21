@@ -1,17 +1,18 @@
 class Widget{
   boolean active = false; // Is this button active?)
-  int xpos, ypos, wide, heigh; // position and size of the widget
+  int xpos, ypos, wide, high; // position and size of the widget
   String label = "";
   
   Widget(int x, int y, int w, int h){
     xpos = x;
     ypos = y;
     wide = w;
-    heigh = h;
+    high = h;
   }
+  Widget(){} // empty widget constructor
   
   boolean isMouseover(){
-    return (xpos < mouseX && xpos > mouseX + wide) && (ypos < mouseY && ypos > mouseY + heigh);
+    return (xpos < mouseX && xpos > mouseX + wide) && (ypos < mouseY && ypos > mouseY + high);
   }
   void printLabel(){
     
