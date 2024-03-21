@@ -100,6 +100,14 @@ void mouseClicked(){
       {
         textBoxList.get(i).isClicked();
       }
+      for(int i = 0; i < buttonList.size(); i++)
+      {
+        
+      }
+      for(int i = 0; i < TabButtons.size(); i++)
+      {
+        TabButtons.get(i).isClicked();
+      }
     }
   }
 }

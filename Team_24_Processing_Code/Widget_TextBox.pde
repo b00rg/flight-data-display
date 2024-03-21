@@ -85,7 +85,6 @@ class WidgetTextBox extends Widget{
       String[] uservalues = textValue.split("-");
       uservalues[0] = uservalues[0].trim();
       uservalues[1] = uservalues[1].trim();
-      print("value 1 is ");
       return(isInputValidtimeRange(uservalues[0]) && isInputValidtimeRange(uservalues[1]));
     } catch (Exception e)
     {

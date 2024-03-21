@@ -8,7 +8,11 @@ class WidgetButton extends Widget{
   void isClicked(){
     if(isMouseover())  // if the mouse is clicked, and the mouse is over the button...
     {
+      
       active = !active;
+    } else 
+    {
+      println("tab");
     }
   }
   void render(){
