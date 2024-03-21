@@ -1,49 +1,28 @@
 class QueriesSelect extends Queries {
   
-  String FL_DATE = null;
-  String MKT_CARRIER = null;
-  int MKT_CARRIER_FL_NUM = 0;
-  
-  String ORIGIN = null;
-  String ORIGIN_CITY_NAME = null;
-  String ORIGIN_STATE_ABR = null;
-  int ORIGIN_WAC = 0;
-  
-  String DEST = null;
-  String DEST_CITY_NAME = null;
-  String DEST_STATE_ABR = null;
-  int DEST_WAC = 0;
-  
-  int CRS_DEP_TIME = 0;
-  int DEP_TIME = 0;
-  int CRS_ARR_TIME = 0;
-  int ARR_TIME = 0;
-  
-  int CANCELLED = 0;
-  int DIVERTED = 0;
-  int DISTANCE = 0;
-  
   QueriesSelect() {
     super();
   }
   
-  ArrayList<RawDatapoint> getRowsBarGraph(String filterDate ) {
+  
+  ArrayList<BarDataPoint> getRowsBarGraph() {
     
-    ArrayList<RawDatapoint> dataList = new ArrayList<RawDatapoint>();
-    
+    ArrayList<BarDataPoint> dataList = new ArrayList<BarDataPoint>();
     try {
       Statement stmt = connection.createStatement();
-      String query = "SELECT * FROM " + super.tableName;
+      String query = "SELECT MKT_CARRIER, SUM(DISTANCE) AS TOTAL_DIST FROM " + super.tableName + " GROUP BY MKT_CARRIER;";
+      
       ResultSet resultSet = stmt.executeQuery(query);
       
       while (resultSet.next()) {
-        RawDatapoint dataPoint = new RawDatapoint(resultSet);
-        dataList.add(dataPoint);
+        BarDataPoint data = new BarDataPoint(resultSet);
+        dataList.add(data);
       }
       
       resultSet.close();
       stmt.close();
-    } catch (SQLException e) {
+    } 
+    catch (SQLException e) {
       println("SQLException: " + e.getMessage());
     }
     
@@ -51,5 +30,58 @@ class QueriesSelect extends Queries {
   }
   
   
+  ArrayList<PieDataPoint> getRowsPieChart() {
+    
+    ArrayList<PieDataPoint> dataList = new ArrayList<PieDataPoint>();
+    try {
+      Statement stmt = connection.createStatement();
+      String query = "SELECT MKT_CARRIER, SUM(CANCELLED=1) AS 'COUNT_CANCELLED' , SUM(DIVERTED=1) AS 'COUNT_DIVERTED' FROM " + super.tableName + " GROUP BY MKT_CARRIER;";
+      println(query);
+      ResultSet resultSet = stmt.executeQuery(query);
+      
+      while (resultSet.next()) {
+        PieDataPoint data = new PieDataPoint(resultSet);
+        dataList.add(data);
+      }
+      
+      resultSet.close();
+      stmt.close();
+    } 
+    catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+    
+    return dataList;
+  }
+  
+  
+  ArrayList<DisplayDataPoint> getRowsDisplay(boolean depTrue, int lowerVal, int upperVal) {
+    
+    ArrayList<DisplayDataPoint> dataList = new ArrayList<>();
+    try {   
+      
+      Statement stmt = connection.createStatement();
+      String column = depTrue ? "DEP_TIME" : "ARR_TIME";
+      String betweenClause = lowerVal < upperVal ? "BETWEEN" : "NOT BETWEEN";
+      String query = "SELECT FL_DATE, MKT_CARRIER, ORIGIN, DEST, DEP_TIME, ARR_TIME, CANCELLED, DIVERTED FROM " + super.tableName + " WHERE " + column + " " + betweenClause + " " + lowerVal + " AND " + upperVal + ";";
+      println(query);
+      ResultSet resultSet = stmt.executeQuery(query);
+        
+      while (resultSet.next()) {
+        DisplayDataPoint data = new DisplayDataPoint(resultSet);
+        dataList.add(data);
+      }
+       
+      resultSet.close();
+      stmt.close();
+    } 
+    catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+    
+    return dataList;
+  }
+
+
   
 }

@@ -1,63 +1,167 @@
-public static class Queries_Initial extends Queries {
-    Queries_Initial() {
-      super();
+class QueriesInitial extends Queries {
+  
+  QueriesInitial() {
+    super();
+  }
+  
+  
+  // CREATE DATABASE IF NOT EXISTS programming_project;
+  void createDatabase() {
+    if (connection != null) {
+      try{
+        Statement statement = connection.createStatement();
+        String sql = "CREATE DATABASE IF NOT EXISTS " + super.databaseName + ";";
+        statement.executeUpdate(sql);
+        System.out.println("Database " + super.databaseName + " created successfully!");
+      } 
+      catch (SQLException e) {
+        System.out.println("Error creating database: " + e.getMessage());
+      }
+    } 
+    else {
+      System.out.println("Connection to the database is not established.");
     }
+  }
+  
+  
+  // USE programming_project;
+  void useDatabase() {
+    if (connection != null) {
+      try{
+        Statement statement = connection.createStatement();
+        String sql = "USE " + super.databaseName + ";";
+        statement.executeUpdate(sql);
+        System.out.println("Database " + super.databaseName + " used successfully!");
+      } 
+      catch (SQLException e) {
+        System.out.println("Error using database: " + e.getMessage());
+      }
+    } 
+    else {
+      System.out.println("Connection to the database is not established.");
+    }
+  }
+  
+  
+  // DROP TABLE flight_data;
+  // CREATE TABLE flight_data;
+  void dropAndCreateTable() {
+    try {
+        Statement statement = connection.createStatement();
 
-    public static void dropDatabase(String databaseName) {
-        if (connection != null) {
-            try (Statement statement = connection.createStatement()) {
-                String sql = "DROP DATABASE " + databaseName;
-                statement.executeUpdate(sql);
-                System.out.println("Database '" + databaseName + "' dropped successfully!");
-            } catch (SQLException e) {
-                System.out.println("Error dropping database: " + e.getMessage());
-            }
-        } else {
-            System.out.println("Connection to the database is not established.");
+        // Check if table exists
+        DatabaseMetaData metaData = connection.getMetaData();
+        ResultSet tables = metaData.getTables(null, null,  super.tableName, null);
+
+        if (tables.next()) {
+            // Table exists, drop it
+            String dropQuery = "DROP TABLE " + super.tableName;
+            statement.executeUpdate(dropQuery);
+            System.out.println("Table " +  super.tableName + " dropped successfully.");
         }
-    }
 
-    public static void use(String databaseName) {
-        if (connection != null) {
-            try (Statement statement = connection.createStatement()) {
-                String sql = "USE " + databaseName;
-                statement.executeUpdate(sql);
-                System.out.println("Database '" + databaseName + "' used successfully!");
-            } catch (SQLException e) {
-                System.out.println("Error using database: " + e.getMessage());
+        // Create the table
+        String createQuery = "CREATE TABLE " +  super.tableName + " ("
+                + "FL_DATE VARCHAR(50), "
+                + "MKT_CARRIER VARCHAR(50), "
+                + "MKT_CARRIER_FL_NUM INT, "
+                + "ORIGIN VARCHAR(50), "
+                + "ORIGIN_CITY_NAME VARCHAR(50), "
+                + "ORIGIN_STATE_ABR VARCHAR(50), "
+                + "ORIGIN_WAC INT, "
+                + "DEST VARCHAR(50), "
+                + "DEST_CITY_NAME VARCHAR(50), "
+                + "DEST_STATE_ABR VARCHAR(50), "
+                + "DEST_WAC INT, "
+                + "CRS_DEP_TIME INT, "
+                + "DEP_TIME INT, "
+                + "CRS_ARR_TIME INT, "
+                + "ARR_TIME INT, "
+                + "CANCELLED VARCHAR(50), "
+                + "DIVERTED VARCHAR(50), "
+                + "DISTANCE INT)";
+        statement.executeUpdate(createQuery);
+        System.out.println("Table " +  super.tableName + " created successfully.");
+
+        statement.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+  }
+
+  
+  // INSERT INTO flight_data VALUES (...);
+  void insertRows() {
+    try {
+        Statement statement = connection.createStatement();
+        BufferedReader reader = new BufferedReader(new FileReader(filename));
+        boolean skipHeader = true; // Flag to skip the first line (header)
+        String queryPrefix = "INSERT INTO " + super.tableName + " VALUES ";
+        List<String> queries = new ArrayList<>();
+
+        while (reader.ready()) {
+            String line = reader.readLine();
+            if (skipHeader) {
+                skipHeader = false;
+                continue; // Skip the header row
             }
-        } else {
-            System.out.println("Connection to the database is not established.");
-        }
-    }
-    String[] parseCSVLine(String line) {
-        // Split line by commas, taking into account quoted values
-        String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
-        // Remove surrounding quotes from each part
-        for (int i = 0; i < parts.length; i++) {
-          parts[i] = parts[i].replaceAll("^\"|\"$", "");
-        }
-
-        return parts;
-    }
-    public static void insertInto(String table_name, String[] columns, String[] values) {
-        if (connection != null) {
-            if (columns.length != values.length) {
-                System.out.println("Number of columns does not match the number of values.");
-                return;
-            }
-            try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO " + table_name + " (" + String.join(",", columns) + ") VALUES (" + String.join(",", Collections.nCopies(values.length, "?")) + ")")) {
-                for (int i = 0; i < values.length; i++) {
-                    preparedStatement.setString(i + 1, values[i]);
+            String[] data = parseCSVLine(line);
+            StringBuilder queryBuilder = new StringBuilder();
+            queryBuilder.append("(");
+            for (int i = 0; i < data.length; i++) {
+                if (data[i].isEmpty()) {
+                    queryBuilder.append("NULL");
+                } 
+                else {
+                    if (i == 2 || i == 6 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17) { // Integer fields
+                        queryBuilder.append(Integer.parseInt(data[i]));
+                    } 
+                    else {
+                        queryBuilder.append("'").append(data[i]).append("'");
+                    }
                 }
-                preparedStatement.executeUpdate();
-                System.out.println("Values inserted into table '" + table_name + "' successfully!");
-            } catch (SQLException e) {
-                System.out.println("Error inserting values: " + e.getMessage());
+                
+                if (i < data.length - 1) {
+                    queryBuilder.append(",");
+                }
             }
-        } else {
-            System.out.println("Connection to the database is not established.");
+            queryBuilder.append(")");
+            queries.add(queryBuilder.toString());
         }
+
+        // Constructing the final batch insert query
+        StringBuilder batchQuery = new StringBuilder(queryPrefix);
+        for (int i = 0; i < queries.size(); i++) {
+            batchQuery.append(queries.get(i));
+            if (i < queries.size() - 1) {
+                batchQuery.append(",");
+            }
+            else {
+                batchQuery.append(";");
+            }
+        }
+        
+        statement.addBatch(batchQuery.toString());
+        statement.executeBatch();
+        reader.close();
+        statement.close();
+        connection.close();
+
+        println("Data inserted successfully!");
+    } catch (Exception e) {
+        e.printStackTrace();
     }
-} 
+  }
+  
+  
+  // Read CSV line into table
+  String[] parseCSVLine(String line) {
+    String[] parts = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+    for (int i = 0; i < parts.length; i++) {
+      parts[i] = parts[i].replaceAll("^\"|\"$", "");
+    }
+    return parts;
+  }
+  
+}
