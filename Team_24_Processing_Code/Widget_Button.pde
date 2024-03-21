@@ -1,22 +1,26 @@
-class Button{
-  private int xpos, ypos, wide, high, event;
+class Widget_Button extends Widget{
   
-  Button(int xpos,int ypos, int W, int H, int event){
-    this.xpos = xpos;
-    this.ypos = ypos;
-    wide = W;
-    high = H;
-    this.event = event;
+  Widget_Button(int xpos,int ypos, int W, int H, int event){
+    super.xpos = xpos;
+    super.ypos = ypos;
+    super.wide = W;
+    super.high = H;
+    super.event = event;
+    
+    super.rounding = 10;
   }
   void renderButton(color myColor){
     fill(myColor);
-    rect(xpos, ypos, wide, high);
+    rect(super.xpos, super.ypos, super.wide, super.high);
   }
   void mousePressed(){
-    if((mouseX > xpos && mouseX < xpos + wide) && (mouseY > ypos && mouseY < high + ypos))
+    if((mouseX > super.xpos && mouseX < super.xpos + super.wide) && (mouseY > super.ypos && mouseY < super.high + super.ypos))
     {
-      DisplayMaster.EventHandler(event);
-      //print(2);
+      print(2);
     }
+  }
+  void draw()
+  {
+    super.draw();
   }
 }

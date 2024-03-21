@@ -68,7 +68,6 @@ class RawDataPoint {
 
 }
 
-
 class BarDataPoint extends RawDataPoint {
   
   String MKT_CARRIER = null;
@@ -83,9 +82,13 @@ class BarDataPoint extends RawDataPoint {
       println("SQLException: " + e.getMessage());
     }
   }
+  public int getTOTAL_DIST() {
+    return TOTAL_DIST;
+  }
+  public String getMKT_CARRIER() {
+    return MKT_CARRIER;
+  }
 }
-
-
 
 class PieDataPoint extends RawDataPoint {
   
@@ -99,6 +102,43 @@ class PieDataPoint extends RawDataPoint {
       MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
       COUNT_CANCELLED = columnExists(resultSet, "COUNT_CANCELLED") ? resultSet.getInt("COUNT_CANCELLED") : 0;
       COUNT_DIVERTED = columnExists(resultSet, "COUNT_DIVERTED") ? resultSet.getInt("COUNT_DIVERTED") : 0;
+    } catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+  }
+  public int getCOUNT_CANCELLED() {
+    return COUNT_CANCELLED;
+  }
+  public int getCOUNT_DIVERTED() {
+    return COUNT_DIVERTED;
+  }
+  public String getMTK_CARRIER() {
+    return MKT_CARRIER;
+  }
+}
+
+class DisplayDataPoint extends RawDataPoint {
+  
+  String FL_DATE = null;
+  String MKT_CARRIER = null;
+  String ORIGIN = null;
+  String DEST = null;
+  int DEP_TIME = 0;
+  int ARR_TIME = 0;
+  int CANCELLED = 0;
+  int DIVERTED = 0;
+
+  DisplayDataPoint(ResultSet resultSet) {
+    super(resultSet);
+    try {
+      FL_DATE = columnExists(resultSet, "FL_DATE") ? resultSet.getString("FL_DATE") : null;
+      MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
+      ORIGIN = columnExists(resultSet, "ORIGIN") ? resultSet.getString("ORIGIN") : null;
+      DEST = columnExists(resultSet, "DEST") ? resultSet.getString("DEST") : null;
+      DEP_TIME = columnExists(resultSet, "DEP_TIME") ? resultSet.getInt("DEP_TIME") : 0;
+      ARR_TIME = columnExists(resultSet, "ARR_TIME") ? resultSet.getInt("ARR_TIME") : 0;
+      CANCELLED = columnExists(resultSet, "CANCELLED") ? resultSet.getInt("CANCELLED") : 0;
+      DIVERTED = columnExists(resultSet, "DIVERTED") ? resultSet.getInt("DIVERTED") : 0;
     } catch (SQLException e) {
       println("SQLException: " + e.getMessage());
     }

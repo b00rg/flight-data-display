@@ -4,6 +4,7 @@ class QueriesSelect extends Queries {
     super();
   }
   
+  
   ArrayList<BarDataPoint> getRowsBarGraph() {
     
     ArrayList<BarDataPoint> dataList = new ArrayList<BarDataPoint>();
@@ -28,6 +29,7 @@ class QueriesSelect extends Queries {
     return dataList;
   }
   
+  
   ArrayList<PieDataPoint> getRowsPieChart() {
     
     ArrayList<PieDataPoint> dataList = new ArrayList<PieDataPoint>();
@@ -51,6 +53,35 @@ class QueriesSelect extends Queries {
     
     return dataList;
   }
+  
+  
+  ArrayList<DisplayDataPoint> getRowsDisplay(boolean depTrue, int lowerVal, int upperVal) {
+    
+    ArrayList<DisplayDataPoint> dataList = new ArrayList<>();
+    try {   
+      
+      Statement stmt = connection.createStatement();
+      String column = depTrue ? "DEP_TIME" : "ARR_TIME";
+      String betweenClause = lowerVal < upperVal ? "BETWEEN" : "NOT BETWEEN";
+      String query = "SELECT FL_DATE, MKT_CARRIER, ORIGIN, DEST, DEP_TIME, ARR_TIME, CANCELLED, DIVERTED FROM " + super.tableName + " WHERE " + column + " " + betweenClause + " " + lowerVal + " AND " + upperVal + ";";
+      println(query);
+      ResultSet resultSet = stmt.executeQuery(query);
+        
+      while (resultSet.next()) {
+        DisplayDataPoint data = new DisplayDataPoint(resultSet);
+        dataList.add(data);
+      }
+       
+      resultSet.close();
+      stmt.close();
+    } 
+    catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+    
+    return dataList;
+  }
+
 
   
 }
