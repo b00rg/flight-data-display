@@ -81,11 +81,11 @@ void draw(){
   // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
   // User tab selection only effects everything on the right
   screen.renderDIP();
+  screen.renderButtons();
   switch(currentlyActiveTab)
   {
     case 0: // user is looking at tab 1
     // We must only render elements relevant to tab 1
-    screen.renderTab1();
     case 1: // user is lookingat tab 2
   }
 }
@@ -103,23 +103,20 @@ void mouseClicked(){
     }
   }
   updateTabs();
-  if(currentlyActiveTab == 0) // what buttons and textboxes should the programme watch out for
+  if(isDropDownActive)
   {
-    if(isDropDownActive)
+    // todo
+  } else 
+  {
+    for(int i  = 0; i < textBoxList.size(); i++)
     {
-      // todo
-    } else 
+      textBoxList.get(i).isClicked();
+    }
+    for(int i = 0; i < buttonList.size(); i++)
     {
-      for(int i  = 0; i < textBoxList.size(); i++)
-      {
-        textBoxList.get(i).isClicked();
-      }
-      for(int i = 0; i < buttonList.size(); i++)
-      {
-        
-      }
       
     }
+    
   }
 }
 void keyPressed(){ // todo, lots of this code is redudant since the user always has access to the buttons
