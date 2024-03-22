@@ -69,7 +69,9 @@ Screen(){}
       buttonList.get(i).render();
     }
   }
-  
+  void renderTab1(){
+    // todo
+  }
   
   void printTable()
   {

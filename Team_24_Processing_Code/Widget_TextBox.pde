@@ -1,6 +1,7 @@
 class WidgetTextBox extends Widget{
   String textValue = "??:?? - ??:??";
   boolean active = false;
+  String[] uservalues = new String[2];
   //int xpos, ypos, wide, heigh;
   PFont font;
   WidgetTextBox(int x, int y, int w, int h, int R, PFont font){
