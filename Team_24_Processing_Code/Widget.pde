@@ -2,13 +2,14 @@ class Widget{
   boolean active = false; // Is this button active?)
   int xpos, ypos, wide, high; // position and size of the widget
   String label = "";
-  int roundness = WIDGET_ROUNDNESS;
+  int roundness;
   
-  Widget(int x, int y, int w, int h){
+  Widget(int x, int y, int w, int h, int R){
     xpos = x;
     ypos = y;
     wide = w;
     high = h;
+    roundness = R;
   }
   Widget(){} // empty widget constructor
   

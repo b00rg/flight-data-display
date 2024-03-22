@@ -60,9 +60,9 @@ void setup() {
   // please do not move this outside of setup void, for some reason processing does not likey likey that
   TextBoxFont = loadFont("default.vlw");
   
-  WidgetTextBox departureTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL, screen1.WIDTH_B, screen1.HEIGHT_B, TextBoxFont);
+  WidgetTextBox departureTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont);
   textBoxList.add(departureTimeSelections);
-  WidgetTextBox ArrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, TextBoxFont);
+  WidgetTextBox ArrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont);
   textBoxList.add(ArrivalTimeSelections);
   int totalTabWidth = screen.TAB_WIDTH + screen.TAB_BORDER_WIDTH;
   int tabRange = width - totalTabWidth;
@@ -70,7 +70,7 @@ void setup() {
   for(int i = 0; i < 3; i++) // We lerp through the upper tab, adding the tab buttons at intervals to make sure they are equally spaced
   {
     int x = (int)(lerp(totalTabWidth, width, (float)(((float)i / (float)3))));    // We use lerop to find the range of the buttons and add them;
-    TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), ON, OFF));
+    TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0, ON, OFF));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
 }
