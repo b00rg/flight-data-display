@@ -13,7 +13,9 @@ class Widget{
   Widget(){} // empty widget constructor
   
   boolean isMouseover(){  // checks if the user mouse is hovering over the button
-    return (xpos < mouseX && xpos > mouseX + wide) && (ypos < mouseY && ypos > mouseY + high);
+    {
+      return (xpos < mouseX && xpos + wide > mouseX) && (ypos < mouseY && ypos + high > mouseY);
+    }
   }
 
   boolean isInputValidtimeRange(String input){ // Checks if the inputed "XX:XX" string is a vald 24 hour clock representation
