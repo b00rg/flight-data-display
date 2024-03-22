@@ -16,7 +16,9 @@ class Queries {
   // MySQL database connection parameters
   String filename = sketchPath() + "/flights2k.csv";
   String url = "jdbc:mysql://localhost:3306/programming_project";
-  String username = "root";
+  
+  // CHECK IF EMPTY
+  String username = "";
   String password = "";
   
   Connection connection;
@@ -26,7 +28,9 @@ class Queries {
   
   Queries(){
     try {
-      BufferedReader credsFile = new BufferedReader(new FileReader(sketchPath() + "/creds.txt"));
+      
+      // CHECK IF CSV
+      BufferedReader credsFile = new BufferedReader(new FileReader(sketchPath() + "/creds.csv"));
       Scanner credsScanner = new Scanner(credsFile);
       credsScanner.useDelimiter(",");
       username = credsScanner.next();

@@ -37,6 +37,22 @@ void setup() {
   setupQuery.useDatabase();
   setupQuery.dropAndCreateTable();
   setupQuery.insertRows();
+  
+  QueriesSelect selectQuery = new QueriesSelect();
+  ArrayList<DisplayDataPoint> values = selectQuery.getRowsDisplay(true, 600, 200, "JFK", "LAX");
+  for (DisplayDataPoint data : values) {
+    println("Flight Date: " + data.FL_DATE);
+    println("Market Carrier: " + data.MKT_CARRIER);
+    println("Origin: " + data.ORIGIN);
+    println("Destination: " + data.DEST);
+    println("Departure Time: " + data.DEP_TIME);
+    println("Arrival Time: " + data.ARR_TIME);
+    println("Cancelled: " + data.CANCELLED);
+    println("Diverted: " + data.DIVERTED);
+    println("---------------------------------------");
+  }
+
+  
   //DO NOT DELETE  
 
   /*
@@ -96,7 +112,7 @@ void draw(){
   switch(currentlyActiveTab)
   {
     case 0: // user is looking at tab 1
-      screen.renderTab1();
+      //screen.renderTab1();
       break;
     case 1: // user is lookingat tab 2
   }
