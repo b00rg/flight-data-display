@@ -94,17 +94,26 @@ void draw(){
 }
 
 void mouseClicked(){
-  ReloadButton.isClicked();
+  if(ReloadButton.isClicked())
+  {
+    ReloadButton.active = true;
+    ReloadButton.render();
+    RealoadEvent();
+  }
   for(int i = 0; i < TabButtons.size(); i++) // we first investigate if the user is trying to change tabs
   {
-    if(TabButtons.get(i).active)
-    {
-      continue;
-    }
-    TabButtons.get(i).isClicked();
-    if(TabButtons.get(i).active){
-        
-    }
+     if(TabButtons.get(i).isMouseover())  // For every tab button
+     {
+       TabButtons.get(i).active = true;  // We find the active button
+       for(int j = 0; j < TabButtons.size(); j++)
+       {
+         if(TabButtons.get(i) != TabButtons.get(j)) // We disable all other buttons
+         {
+           TabButtons.get(j).active = false;
+         }
+       } // This means that that only tab button is on at any given moment, and if the user clicks the same one twice it makes no difference
+       break;
+     }
   }
   updateTabs();
   if(isDropDownActive)
@@ -127,31 +136,18 @@ void keyPressed(){ // todo, lots of this code is redudant since the user always 
     switch(currentlyActiveTab) 
     {
       case 0:   // User is on tab 1
-        if (isAnyTab1UIActive())  // check if there is any active button on screen
+
+        for(int i  = 0; i < textBoxList.size(); i++)
         {
-          for(int i  = 0; i < textBoxList.size(); i++)
+          if(textBoxList.get(i).active)
           {
-            if(textBoxList.get(i).active)
-          {
-            textBoxList.get(i).input(key);
-            delay(10); // We must delay to stop the user from accidentally holding a key causing many inputs at once
+          textBoxList.get(i).input(key);
+          delay(10); // We must delay to stop the user from accidentally holding a key causing many inputs at once
           }
-            }
         }
     }
 }
-
-boolean isAnyTab1UIActive()
-  {
-    for(int i  = 0; i < textBoxList.size(); i++)
-      {
-        if(textBoxList.get(i).active)
-        {
-          return true;
-        }
-      }
-      return false;
-  }
+void RealoadEvent(){}
 void updateTabs(){
   for(int i = 0; i < TabButtons.size(); i++)
   {
