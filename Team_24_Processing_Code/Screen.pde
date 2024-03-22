@@ -59,7 +59,7 @@ Screen(){}
     }
     strokeWeight(0);
   }
-  void renderTab1(){
+  void renderButtons(){
     for(int i = 0; i < textBoxList.size(); i++)
     {
       textBoxList.get(i).render();
@@ -69,7 +69,7 @@ Screen(){}
       buttonList.get(i).render();
     }
   }
-
+  
   
   void printTable()
   {

@@ -3,8 +3,8 @@ class WidgetTextBox extends Widget{
   boolean active = false;
   //int xpos, ypos, wide, heigh;
   PFont font;
-  WidgetTextBox(int x, int y, int w, int h, PFont font){
-    super(x,y,w,h);
+  WidgetTextBox(int x, int y, int w, int h, int R, PFont font){
+    super(x,y,w,h,R);
     this.font = font;
   }
   
@@ -14,7 +14,7 @@ class WidgetTextBox extends Widget{
     } else {
       fill(200); // Color when inactive
     }
-    rect(xpos, ypos, wide, high);
+    rect(xpos, ypos, wide, high, roundness);
     fill(0);
     textAlign(LEFT, CENTER);
     textFont(font);
