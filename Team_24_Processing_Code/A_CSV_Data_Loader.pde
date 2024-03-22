@@ -8,14 +8,23 @@ import java.util.ArrayList;
 import java.util.regex.*;
 
 static ArrayList<RawDataPoint> allDatapoints = new ArrayList<RawDataPoint>();
+// initiate Global button lists, these store the pointers to all buttons
 static ArrayList<WidgetTextBox> textBoxList = new ArrayList<WidgetTextBox>();
+static ArrayList<WidgetButton> buttonList = new ArrayList<WidgetButton>();
+static ArrayList<WidgetDropDown> dropDownList = new ArrayList<WidgetDropDown>();
+static ArrayList<WidgetButton> TabButtons = new ArrayList<WidgetButton>(); // Tab buttons are in a seperate list to control their render order
 Screen screen1 = new Screen();
 static boolean[] statsShown = new boolean[18];
-
+color ON = color(100,255,100);
+color OFF = color(255,100,100);
 PFont TextBoxFont;
-
+// Setup Display Objects
+Screen screen = new Screen();
+byte currentlyActiveTab = 0;
+boolean isDropDownActive = false;
+int WIDGET_ROUNDNESS = 10;
 void setup() {
-
+  fullScreen();
   //DO NOT DELETE
   QueriesInitial setupQuery = new QueriesInitial();
   
@@ -55,17 +64,28 @@ void setup() {
   textBoxList.add(departureTimeSelections);
   WidgetTextBox ArrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, TextBoxFont);
   textBoxList.add(ArrivalTimeSelections);
+  int totalTabWidth = screen.TAB_WIDTH + screen.TAB_BORDER_WIDTH;
+  int tabRange = width - totalTabWidth;
   
-  fullScreen();
+  for(int i = 0; i < 3; i++) // We lerp through the upper tab, adding the tab buttons at intervals to make sure they are equally spaced
+  {
+    int x = (int)(lerp(totalTabWidth, width, (float)(((float)i / (float)3))));    // We use lerop to find the range of the buttons and add them;
+    TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), ON, OFF));
+  }
 }
-
-// Setup Display Objects
-byte currentlyActiveTab = 0;
-boolean isDropDownActive = false;
 
 void draw(){
   background(255,255,255);
-  
+  // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
+  // User tab selection only effects everything on the right
+  screen.renderDIP();
+  switch(currentlyActiveTab)
+  {
+    case 0: // user is looking at tab 1
+    // We must only render elements relevant to tab 1
+    screen.renderTab1();
+    case 1: // user is lookingat tab 2
+  }
 }
 
 void mouseClicked(){
@@ -80,10 +100,18 @@ void mouseClicked(){
       {
         textBoxList.get(i).isClicked();
       }
+      for(int i = 0; i < buttonList.size(); i++)
+      {
+        
+      }
+      for(int i = 0; i < TabButtons.size(); i++)
+      {
+        TabButtons.get(i).isClicked();
+      }
     }
   }
 }
-void keyPressed(){
+void keyPressed(){ // todo, lots of this code is redudant since the user always has access to the buttons
     switch(currentlyActiveTab) 
     {
       case 0:   // User is on tab 1

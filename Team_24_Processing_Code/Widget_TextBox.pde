@@ -63,7 +63,7 @@ class WidgetTextBox extends Widget{
   }
   void isClicked()
   {
-    if((mouseX > xpos && mouseX < xpos + wide) && (mouseY > ypos && mouseY < high + ypos))
+    if(isMouseover())
     {
       active = true; 
       textValue = "";
@@ -85,68 +85,10 @@ class WidgetTextBox extends Widget{
       String[] uservalues = textValue.split("-");
       uservalues[0] = uservalues[0].trim();
       uservalues[1] = uservalues[1].trim();
-      print("value 1 is ");
       return(isInputValidtimeRange(uservalues[0]) && isInputValidtimeRange(uservalues[1]));
     } catch (Exception e)
     {
       return false;
     }
-    
-    // old method for checking if the string input is valid
-    /*
-    if(textValue.charAt(0) < '0' && textValue.charAt(0) > '9')
-    {
-       return false;
-    }
-    if(textValue.charAt(1) < '0' && textValue.charAt(1) > '9')
-    {
-       return false;
-    }
-    if(textValue.charAt(2) != ':')
-    {
-       return false;
-    }
-    if(textValue.charAt(3) < '0' && textValue.charAt(3) > '9')
-    {
-       return false;
-    }
-    if(textValue.charAt(4) < '0' && textValue.charAt(4) > '9')
-    {
-       return false;
-    }
-    if(textValue.charAt(5) != ' ')
-    {
-       return false;
-    }
-    if(textValue.charAt(6) != '-')
-    {
-       return false;
-    }
-    if(textValue.charAt(7) != ' ')
-    {
-       return false;
-    }
-    if(textValue.charAt(8) < '0' && textValue.charAt(8) > '9')
-    {
-       return false;
-    }
-    if(textValue.charAt(9) < '0' && textValue.charAt(9) > '9')
-    {
-       return false;
-    }
-    if(textValue.charAt(10) != ':')
-    {
-       return false;
-    }
-    if(textValue.charAt(11) < '0' && textValue.charAt(11) > '9')
-    {
-       return false;
-    }
-    if(textValue.charAt(12) < '0' && textValue.charAt(12) > '9')
-    {
-       return false;
-    }
-    return true;
-    */
   }
 }
