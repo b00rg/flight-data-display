@@ -31,6 +31,7 @@ Screen(){}
   // Database interaction panel (DIP)
   int TAB_WIDTH = 500;
   int TAB_BORDER_WIDTH = 20;
+  
   // Layout of buttons and drop down menus
   int VERTICAL_DISTANCE_FROM_WALL = 200;
   int VERTICAL_SPACING_OF_BOTTONS = 100;
@@ -40,18 +41,35 @@ Screen(){}
   
   // drop down buttons
   int NUMBER_OF_DROPDOWNS = 5;
-
-  void renderTab1(){
+  void renderDIP(){
+    renderUpperTab();
     fill(PRIMARY_COLOR);
     rect(0,0,TAB_WIDTH, displayHeight);
     fill(SECONDARY_COLOR);
-    rect(TAB_WIDTH + TAB_BORDER_WIDTH,0,TAB_BORDER_WIDTH, displayHeight);
+    rect(TAB_WIDTH,0,TAB_BORDER_WIDTH, displayHeight);
+  }
+  void renderUpperTab(){
+    fill(PRIMARY_COLOR);
+    rect(0,0,width, (int)(height/10));
+    stroke(SECONDARY_COLOR);
+    strokeWeight(5);
+    for(int i = 0; i < TabButtons.size(); i++)
+    {
+      TabButtons.get(i).render();
+    }
+    strokeWeight(0);
+  }
+  void renderButtons(){
     for(int i = 0; i < textBoxList.size(); i++)
     {
       textBoxList.get(i).render();
     }
+    for(int i = 0; i < buttonList.size(); i++)
+    {
+      buttonList.get(i).render();
+    }
   }
-
+  
   
   void printTable()
   {
