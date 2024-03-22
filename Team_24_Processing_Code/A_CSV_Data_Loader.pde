@@ -13,7 +13,11 @@ static ArrayList<WidgetTextBox> textBoxList = new ArrayList<WidgetTextBox>();
 static ArrayList<WidgetButton> buttonList = new ArrayList<WidgetButton>();
 static ArrayList<WidgetDropDown> dropDownList = new ArrayList<WidgetDropDown>();
 static ArrayList<WidgetButton> TabButtons = new ArrayList<WidgetButton>(); // Tab buttons are in a seperate list to control their render order
+
 static WidgetButton ReloadButton;
+static WidgetButton moveLeft;
+static WidgetButton moveRight;
+
 Screen screen1 = new Screen();
 static boolean[] statsShown = new boolean[18];
 color ON = color(100,255,100);
@@ -74,12 +78,17 @@ void setup() {
     TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0, ON, OFF));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
-  ReloadButton = new WidgetButton(50, 50, 100, 100, WIDGET_ROUNDNESS, ON, OFF);
+  ReloadButton = new WidgetButton(50, 50, 50, 50, 1, ON, OFF);
+  
+  moveLeft = new WidgetButton(1100, 1000, 50, 50, 5, ON, OFF);
+  moveRight = new WidgetButton(1300, 1000, 50, 50, 5, ON, OFF);
 }
 // currentlyActiveTab
 void draw(){
   
   background(255,255,255);
+  moveLeft.render();
+  moveRight.render();
   // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
   // User tab selection only effects everything on the right
   screen.renderDIP();
@@ -87,7 +96,8 @@ void draw(){
   switch(currentlyActiveTab)
   {
     case 0: // user is looking at tab 1
-    // We must only render elements relevant to tab 1
+      screen.renderTab1();
+      break;
     case 1: // user is lookingat tab 2
   }
   ReloadButton.render();
