@@ -13,6 +13,7 @@ static ArrayList<WidgetTextBox> textBoxList = new ArrayList<WidgetTextBox>();
 static ArrayList<WidgetButton> buttonList = new ArrayList<WidgetButton>();
 static ArrayList<WidgetDropDown> dropDownList = new ArrayList<WidgetDropDown>();
 static ArrayList<WidgetButton> TabButtons = new ArrayList<WidgetButton>(); // Tab buttons are in a seperate list to control their render order
+static WidgetButton ReloadButton;
 Screen screen1 = new Screen();
 static boolean[] statsShown = new boolean[18];
 color ON = color(100,255,100);
@@ -73,6 +74,7 @@ void setup() {
     TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0, ON, OFF));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
+  ReloadButton = new WidgetButton(50, 50, 100, 100, WIDGET_ROUNDNESS, ON, OFF);
 }
 // currentlyActiveTab
 void draw(){
@@ -88,9 +90,11 @@ void draw(){
     // We must only render elements relevant to tab 1
     case 1: // user is lookingat tab 2
   }
+  ReloadButton.render();
 }
 
 void mouseClicked(){
+  ReloadButton.isClicked();
   for(int i = 0; i < TabButtons.size(); i++) // we first investigate if the user is trying to change tabs
   {
     if(TabButtons.get(i).active)

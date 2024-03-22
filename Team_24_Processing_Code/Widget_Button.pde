@@ -5,15 +5,8 @@ class WidgetButton extends Widget{
     ON = on;
     OFF = off;
   }
-  void isClicked(){
-    if(isMouseover())  // if the mouse is clicked, and the mouse is over the button...
-    {
-      active = !active;
-      linkedListCheck(TabButtons);
-    } else 
-    {
-      
-    }
+  boolean isClicked(){
+    return(isMouseover());
   }
   void render(){
     if(active)
