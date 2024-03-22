@@ -22,19 +22,13 @@ class WidgetTextBox extends Widget{
   }
   
   void input(char key) {
-    //rintln("key pressed = " + (int)key);
     if (active) {
       if (key == 10)
       {
         active = false;
         if (isStringValind())
         {
-          println("this is a valid time range");
-          String[] uservalues = textValue.split("-");
-          uservalues[0] = uservalues[0].trim();// we trim the whitespaces from the values
-          uservalues[1] = uservalues[1].trim();
-          uservalues[0] = uservalues[0].replace(":","");// we remove the colon to have the user input in pure integer format
-          uservalues[1] = uservalues[1].replace(":","");
+          prepareUserInput();
         } else 
         {
           textValue = "??:?? - ??:??";
@@ -72,7 +66,7 @@ class WidgetTextBox extends Widget{
       active = false;
       if(isStringValind())
       {
-        // do nothing
+        prepareUserInput();
       } else 
       {
         textValue = "??:?? - ??:??";
@@ -89,6 +83,26 @@ class WidgetTextBox extends Widget{
     } catch (Exception e)
     {
       return false;
+    }
+  }
+  void prepareUserInput(){ // Bug: when the bottom text box contains a valid input and the first box is activated the second textBox resets itself.
+                           // but this does not happen vice versa 
+    String[] uservalues = textValue.split("-");
+    uservalues[0] = uservalues[0].trim();// we trim the whitespaces from the values
+    uservalues[1] = uservalues[1].trim();
+    uservalues[0] = uservalues[0].replace(":","");// we remove the colon to have the user input in pure integer format
+    uservalues[1] = uservalues[1].replace(":","");
+    boolean temp = false;
+    for(int i = 0; i < textBoxList.size(); i++)
+    {
+      if(textBoxList.get(i).textValue == "??:?? - ??:??")
+      {
+        temp = true;
+      }
+    }
+    if(!temp)
+    {
+      this.textValue = "??:?? - ??:??";
     }
   }
 }
