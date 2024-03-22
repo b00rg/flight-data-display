@@ -8,11 +8,10 @@ class WidgetButton extends Widget{
   void isClicked(){
     if(isMouseover())  // if the mouse is clicked, and the mouse is over the button...
     {
-      
       active = !active;
     } else 
     {
-      println("tab");
+      
     }
   }
   void render(){
@@ -25,5 +24,14 @@ class WidgetButton extends Widget{
     }
     rect(xpos, ypos, wide, high);
   }
-  
+  void linkedListCheck(ArrayList<WidgetButton> buttonGroup){ // This functions is used for lists of butons where only one button may be on at a time
+  // Afte a button is clicked, the button goes through a list that includes itself and it's fellow buttons in the group, and makes sure only it is active
+    for(int i = 0; i < buttonGroup.size(); i++)
+    {
+      if(buttonGroup.get(i) != this)
+      {
+        buttonGroup.get(i).active = false;
+      }
+    }
+  }
 }
