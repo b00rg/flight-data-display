@@ -9,6 +9,7 @@ class WidgetButton extends Widget{
     if(isMouseover())  // if the mouse is clicked, and the mouse is over the button...
     {
       active = !active;
+      linkedListCheck(TabButtons);
     } else 
     {
       

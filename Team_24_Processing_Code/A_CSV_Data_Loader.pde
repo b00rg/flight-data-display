@@ -20,7 +20,7 @@ color OFF = color(255,100,100);
 PFont TextBoxFont;
 // Setup Display Objects
 Screen screen = new Screen();
-byte currentlyActiveTab = 0;
+int currentlyActiveTab = 0;
 boolean isDropDownActive = false;
 int WIDGET_ROUNDNESS = 10;
 void setup() {
@@ -72,9 +72,11 @@ void setup() {
     int x = (int)(lerp(totalTabWidth, width, (float)(((float)i / (float)3))));    // We use lerop to find the range of the buttons and add them;
     TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), ON, OFF));
   }
+  TabButtons.get(0).active = true; // Tab 1 is on by default at the start
 }
-
+// currentlyActiveTab
 void draw(){
+  
   background(255,255,255);
   // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
   // User tab selection only effects everything on the right
@@ -89,6 +91,18 @@ void draw(){
 }
 
 void mouseClicked(){
+  for(int i = 0; i < TabButtons.size(); i++) // we first investigate if the user is trying to change tabs
+  {
+    if(TabButtons.get(i).active)
+    {
+      continue;
+    }
+    TabButtons.get(i).isClicked();
+    if(TabButtons.get(i).active){
+        
+    }
+  }
+  updateTabs();
   if(currentlyActiveTab == 0) // what buttons and textboxes should the programme watch out for
   {
     if(isDropDownActive)
@@ -104,10 +118,7 @@ void mouseClicked(){
       {
         
       }
-      for(int i = 0; i < TabButtons.size(); i++)
-      {
-        TabButtons.get(i).isClicked();
-      }
+      
     }
   }
 }
@@ -140,3 +151,12 @@ boolean isAnyTab1UIActive()
       }
       return false;
   }
+void updateTabs(){
+  for(int i = 0; i < TabButtons.size(); i++)
+  {
+    if(TabButtons.get(i).active)
+    {
+      currentlyActiveTab = i;
+    }
+  }
+}
