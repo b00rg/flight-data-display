@@ -7,6 +7,8 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.regex.*;
 
+static String[] airports = new String[] {"JFK", "DCA", "LAX", "FLL", "SEA", "ORD", "HNL"};
+
 static ArrayList<RawDataPoint> allDatapoints = new ArrayList<RawDataPoint>();
 // initiate Global button lists, these store the pointers to all buttons
 static ArrayList<WidgetTextBox> textBoxList = new ArrayList<WidgetTextBox>();
@@ -32,7 +34,7 @@ void setup() {
   fullScreen();
   //DO NOT DELETE
   QueriesInitial setupQuery = new QueriesInitial();
-  
+  /*
   setupQuery.createDatabase();
   setupQuery.useDatabase();
   setupQuery.dropAndCreateTable();
@@ -51,7 +53,7 @@ void setup() {
     println("Diverted: " + data.DIVERTED);
     println("---------------------------------------");
   }
-
+  */
   
   //DO NOT DELETE  
 
@@ -85,6 +87,12 @@ void setup() {
   textBoxList.add(departureTimeSelections);
   WidgetTextBox ArrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont);
   textBoxList.add(ArrivalTimeSelections);
+  
+  WidgetDropDown arrivals = new WidgetDropDown(300, 200, 200, 50, TextBoxFont, airports);
+  dropDownList.add(arrivals);
+  WidgetDropDown departures = new WidgetDropDown(300, 700, 200, 50, TextBoxFont, airports);
+  dropDownList.add(departures);
+  
   int totalTabWidth = screen.TAB_WIDTH + screen.TAB_BORDER_WIDTH;
   int tabRange = width - totalTabWidth;
   
@@ -98,6 +106,9 @@ void setup() {
   
   moveLeft = new WidgetButton(1100, 1000, 50, 50, 5, ON, OFF);
   moveRight = new WidgetButton(1300, 1000, 50, 50, 5, ON, OFF);
+  
+  
+  
 }
 // currentlyActiveTab
 void draw(){
@@ -155,7 +166,10 @@ void mouseClicked(){
     {
       
     }
-    
+    for(int i = 0; i < dropDownList.size(); i++)
+    {
+      dropDownList.get(i).isClicked();
+    }
   }
 }
 void keyPressed(){ // todo, lots of this code is redudant since the user always has access to the buttons
@@ -174,6 +188,12 @@ void keyPressed(){ // todo, lots of this code is redudant since the user always 
     }
 }
 void RealoadEvent(){}
+void mouseWheel(MouseEvent event){
+  for(int i = 0; i < dropDownList.size(); i++)
+  {
+    dropDownList.get(i).scroll((int)event.getCount());
+  }
+}
 void updateTabs(){
   for(int i = 0; i < TabButtons.size(); i++)
   {

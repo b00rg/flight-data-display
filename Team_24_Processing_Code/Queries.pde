@@ -30,11 +30,12 @@ class Queries {
     try {
       
       // CHECK IF CSV
-      BufferedReader credsFile = new BufferedReader(new FileReader(sketchPath() + "/creds.csv"));
+      BufferedReader credsFile = new BufferedReader(new FileReader(sketchPath() + "/creds.txt"));
       Scanner credsScanner = new Scanner(credsFile);
       credsScanner.useDelimiter(",");
       username = credsScanner.next();
       password = credsScanner.next();
+      println("Using username " + username + " using password " + password);
       credsScanner.close();
       credsFile.close();
     }
