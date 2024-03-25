@@ -155,7 +155,10 @@ void mouseClicked(){
   updateTabs();
   if(isDropDownActive)
   {
-    // todo
+    for(int i = 0; i < dropDownList.size(); i++)
+    {
+      dropDownList.get(i).isClicked();
+    }
   } else 
   {
     for(int i  = 0; i < textBoxList.size(); i++)
