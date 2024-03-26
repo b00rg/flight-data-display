@@ -1,13 +1,18 @@
 class WidgetTextBox extends Widget{
-  String textValue = "??:?? - ??:??";
+  String textValue;
+  String normal;
   boolean active = false;
   String num1;
   String num2;
+  WIDGET_TEXT_TYPE myType;
   //int xpos, ypos, wide, heigh;
   PFont font;
-  WidgetTextBox(int x, int y, int w, int h, int R, PFont font){
+  WidgetTextBox(int x, int y, int w, int h, int R, PFont font, String defaul, WIDGET_TEXT_TYPE type){
     super(x,y,w,h,R);
     this.font = font;
+    normal = defaul;
+    textValue = defaul;
+    myType = type;
   }
   
   void render() {
@@ -33,7 +38,7 @@ class WidgetTextBox extends Widget{
           prepareUserInput();
         } else 
         {
-          textValue = "??:?? - ??:??";
+          textValue = normal;
         }
         
       } else if (key == 65535)
@@ -71,42 +76,63 @@ class WidgetTextBox extends Widget{
         prepareUserInput();
       } else 
       {
-        textValue = "??:?? - ??:??";
+        textValue = normal;
       }
     }
   }
   boolean isStringValind() 
   {
-    try{
-      String[] uservalues = textValue.split("-");
-      uservalues[0] = uservalues[0].trim();
-      uservalues[1] = uservalues[1].trim();
-      return(isInputValidtimeRange(uservalues[0]) && isInputValidtimeRange(uservalues[1]));
-    } catch (Exception e)
+    if(myType == WIDGET_TEXT_TYPE.TIME)
     {
-      return false;
-    }
-  }
-  void prepareUserInput(){ // Bug: when the bottom text box contains a valid input and the first box is activated the second textBox resets itself.
-                           // but this does not happen vice versa 
-    String[] uservalues = textValue.split("-");
-    num1 = uservalues[0].trim();// we trim the whitespaces from the values
-    num2 = uservalues[1].trim();
-    num1 = uservalues[0].replace(":","");// we remove the colon to have the user input in pure integer format
-    num2 = uservalues[1].replace(":","");
-    boolean temp = false;
-    for(int i = 0; i < textBoxList.size(); i++)
-    {
-      if(textBoxList.get(i).textValue == "??:?? - ??:??")
+      try{
+        String[] uservalues = textValue.split("-");
+        uservalues[0] = uservalues[0].trim();
+        uservalues[1] = uservalues[1].trim();
+        return(isInputValidtimeRange(uservalues[0]) && isInputValidtimeRange(uservalues[1]));
+      } catch (Exception e)
       {
-        temp = true;
+        return false;
+      }
+    } else // myType == DATE
+    {
+      try{
+        String dateString = textValue;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        sdf.setLenient(false);
+        Date date = sdf.parse(dateString);
+        return true;
+      } catch (Exception e)
+      {
+        return false;
       }
     }
-    if(!temp)
+  }
+  void prepareUserInput(){ 
+    if(myType == WIDGET_TEXT_TYPE.TIME)
     {
-      this.textValue = "??:?? - ??:??";
-      this.num1 ="error, check line 109 at textbox";
-      this.num2 ="error, check line 109 at textbox";
+      String[] uservalues = textValue.split("-");
+      num1 = uservalues[0].trim();// we trim the whitespaces from the values
+      num2 = uservalues[1].trim();
+      num1 = uservalues[0].replace(":","");// we remove the colon to have the user input in pure integer format
+      num2 = uservalues[1].replace(":","");
+      boolean temp = false;
+      for(int i = 0; i < textBoxList.size(); i++)
+      {
+        if(textBoxList.get(i).textValue == normal)
+        {
+          temp = true;
+        }
+      }
+      if(!temp)
+      {
+        this.textValue = "??:?? - ??:??";
+        this.num1 ="error";
+        this.num2 ="error";
+      }
+    } else 
+    {
+      // User is already prepared in format dd/mm/yyyy
+      
     }
   }
 }
