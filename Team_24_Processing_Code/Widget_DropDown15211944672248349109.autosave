@@ -31,10 +31,12 @@ class WidgetDropDown extends Widget{
   }
   void render(){
     fill(255);
-    rect(xpos, ypos, wide, high);
+    strokeWeight(2);
+    rect(xpos, ypos, wide, high, 2);
     if(amIActive)
     {
       renderDrops();
+      strokeWeight(0);
     } else 
     {
       fill(0);
@@ -50,6 +52,7 @@ class WidgetDropDown extends Widget{
     textFont(font);
     for(int i = 0; i < numOfDropsToDisplay; i++)
     {
+      println("now redndering " + i + " and " + scrollIndex);
       fill(245 - i * 10);
       rect(xpos, ypos + high * (i + 1), wide, high);
       fill(0);

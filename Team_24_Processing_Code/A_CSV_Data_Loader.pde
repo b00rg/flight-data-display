@@ -26,6 +26,8 @@ color ON = color(100,255,100);
 color OFF = color(255,100,100);
 PFont TextBoxFont;
 // Setup Display Objects
+ArrayList<DisplayDataPoint> filteredData;
+
 Screen screen = new Screen();
 int currentlyActiveTab = 0;
 boolean isDropDownActive = false;
@@ -136,6 +138,9 @@ void mouseClicked(){
     ReloadButton.active = true;
     ReloadButton.render();
     RealoadEvent();
+    screen.renderTab1();
+    ReloadButton.active = false;
+    ReloadButton.render();
   }
   for(int i = 0; i < TabButtons.size(); i++) // we first investigate if the user is trying to change tabs
   {
@@ -190,7 +195,34 @@ void keyPressed(){ // todo, lots of this code is redudant since the user always 
         }
     }
 }
-void RealoadEvent(){}
+void RealoadEvent(){
+  boolean depTime;
+  int num1;
+  int num2;
+  
+  String selectedAriivalStation = "";
+  String selectedDepartureStation = "";
+  
+  if(textBoxList.get(0).textValue == "??:?? - ??:??"){
+    depTime = false;
+    println
+    num1 = Integer.parseInt(textBoxList.get(1).uservalues[0]);
+    num2 = Integer.parseInt(textBoxList.get(1).uservalues[1]);
+  } else {
+    depTime = true;
+    num1 = Integer.parseInt(textBoxList.get(0).uservalues[0]);
+    num2 = Integer.parseInt(textBoxList.get(0).uservalues[1]);
+  }
+  
+  selectedAriivalStation = dropDownList.get(0).elements[dropDownList.get(0).currentlySelectedElement];
+  selectedDepartureStation = dropDownList.get(1).elements[dropDownList.get(1).currentlySelectedElement];
+  
+  QueriesSelect selectQuery = new QueriesSelect();
+  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation);
+  
+  
+  
+}
 void mouseWheel(MouseEvent event){
   for(int i = 0; i < dropDownList.size(); i++)
   {
