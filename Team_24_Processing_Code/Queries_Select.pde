@@ -36,7 +36,6 @@ class QueriesSelect extends Queries {
     try {
       Statement stmt = connection.createStatement();
       String query = "SELECT MKT_CARRIER, SUM(CANCELLED=1) AS 'COUNT_CANCELLED' , SUM(DIVERTED=1) AS 'COUNT_DIVERTED' FROM " + super.tableName + " GROUP BY MKT_CARRIER;";
-      println(query);
       ResultSet resultSet = stmt.executeQuery(query);
       
       while (resultSet.next()) {

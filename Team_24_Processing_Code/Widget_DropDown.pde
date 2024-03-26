@@ -23,7 +23,6 @@ class WidgetDropDown extends Widget{
   void scroll(int i){
     scrollIndex += i;
     if(scrollIndex < 0) { scrollIndex = 0 ;}
-    println(elements.length);
     if(scrollIndex > - numOfDropsToDisplay + elements.length)
     {
       scrollIndex = elements.length - numOfDropsToDisplay;
