@@ -1,26 +1,31 @@
-class Widget_Button extends Widget{
-  
-  Widget_Button(int xpos,int ypos, int W, int H, int event){
-    super.xpos = xpos;
-    super.ypos = ypos;
-    super.wide = W;
-    super.high = H;
-    super.event = event;
-    
-    super.rounding = 10;
+class WidgetButton extends Widget{
+    color ON, OFF;
+    WidgetButton(int xpos,int ypos, int W, int H,int R, color on, color off){
+    super(xpos, ypos, W, H, R);
+    ON = on;
+    OFF = off;
   }
-  void renderButton(color myColor){
-    fill(myColor);
-    rect(super.xpos, super.ypos, super.wide, super.high);
+  boolean isClicked(){
+    return(isMouseover());
   }
-  void mousePressed(){
-    if((mouseX > super.xpos && mouseX < super.xpos + super.wide) && (mouseY > super.ypos && mouseY < super.high + super.ypos))
+  void render(){
+    if(active)
     {
-      print(2);
+      fill(ON);
+    } else         // We choose the color of the botton base on it's current status
+    {
+      fill(OFF);
     }
+    rect(xpos, ypos, wide, high, roundness);
   }
-  void draw()
-  {
-    super.draw();
+  void linkedListCheck(ArrayList<WidgetButton> buttonGroup){ // This functions is used for lists of butons where only one button may be on at a time
+  // Afte a button is clicked, the button goes through a list that includes itself and it's fellow buttons in the group, and makes sure only it is active
+    for(int i = 0; i < buttonGroup.size(); i++)
+    {
+      if(buttonGroup.get(i) != this)
+      {
+        buttonGroup.get(i).active = false;
+      }
+    }
   }
 }

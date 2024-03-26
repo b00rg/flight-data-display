@@ -1,22 +1,25 @@
 class Widget{
   boolean active = false; // Is this button active?)
-  int xpos, ypos, wide, heigh; // position and size of the widget
+  int xpos, ypos, wide, high; // position and size of the widget
   String label = "";
+  int roundness;
   
-  Widget(int x, int y, int w, int h){
+  Widget(int x, int y, int w, int h, int R){
     xpos = x;
     ypos = y;
     wide = w;
-    heigh = h;
+    high = h;
+    roundness = R;
   }
+  Widget(){} // empty widget constructor
   
-  boolean isMouseover(){
-    return (xpos < mouseX && xpos > mouseX + wide) && (ypos < mouseY && ypos > mouseY + heigh);
+  boolean isMouseover(){  // checks if the user mouse is hovering over the button
+    {
+      return (xpos < mouseX && xpos + wide > mouseX) && (ypos < mouseY && ypos + high > mouseY);
+    }
   }
-  void printLabel(){
-    
-  }
-  boolean isInputValidtimeRange(String input){
+
+  boolean isInputValidtimeRange(String input){ // Checks if the inputed "XX:XX" string is a vald 24 hour clock representation
     try{
       String regex = "^(?:[01]?[0-9]|2[0-3]):[0-5][0-9]$";
       Pattern pattern = Pattern.compile(regex);

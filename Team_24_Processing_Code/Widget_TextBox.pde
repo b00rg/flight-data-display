@@ -1,10 +1,11 @@
-class Widget_TextBox extends Widget{
+class WidgetTextBox extends Widget{
   String textValue = "??:?? - ??:??";
   boolean active = false;
+  String[] uservalues = new String[2];
   //int xpos, ypos, wide, heigh;
   PFont font;
-  TimeTextbox(int x, int y, int w, int h, PFont font){
-    super(x,y,w,h);
+  WidgetTextBox(int x, int y, int w, int h, int R, PFont font){
+    super(x,y,w,h,R);
     this.font = font;
   }
   
@@ -14,27 +15,21 @@ class Widget_TextBox extends Widget{
     } else {
       fill(200); // Color when inactive
     }
-    rect(xpos, ypos, wide, heigh);
+    rect(xpos, ypos, wide, high, roundness);
     fill(0);
     textAlign(LEFT, CENTER);
     textFont(font);
-    text(textValue, xpos + 5, ypos + heigh/3);
+    text(textValue, xpos + 5, ypos + high/3);
   }
   
   void input(char key) {
-    //rintln("key pressed = " + (int)key);
     if (active) {
       if (key == 10)
       {
         active = false;
         if (isStringValind())
         {
-          println("this is a valid time range");
-          String[] uservalues = textValue.split("-");
-          uservalues[0] = uservalues[0].trim();// we trim the whitespaces from the values
-          uservalues[1] = uservalues[1].trim();
-          uservalues[0] = uservalues[0].replace(":","");// we remove the colon to have the user input in pure integer format
-          uservalues[1] = uservalues[1].replace(":","");
+          prepareUserInput();
         } else 
         {
           textValue = "??:?? - ??:??";
@@ -63,7 +58,7 @@ class Widget_TextBox extends Widget{
   }
   void isClicked()
   {
-    if((mouseX > xpos && mouseX < xpos + wide) && (mouseY > ypos && mouseY < heigh + ypos))
+    if(isMouseover())
     {
       active = true; 
       textValue = "";
@@ -72,7 +67,7 @@ class Widget_TextBox extends Widget{
       active = false;
       if(isStringValind())
       {
-        // do nothing
+        prepareUserInput();
       } else 
       {
         textValue = "??:?? - ??:??";
@@ -85,68 +80,30 @@ class Widget_TextBox extends Widget{
       String[] uservalues = textValue.split("-");
       uservalues[0] = uservalues[0].trim();
       uservalues[1] = uservalues[1].trim();
-      print("value 1 is ");
       return(isInputValidtimeRange(uservalues[0]) && isInputValidtimeRange(uservalues[1]));
     } catch (Exception e)
     {
       return false;
     }
-    
-    // old method for checking if the string input is valid
-    /*
-    if(textValue.charAt(0) < '0' && textValue.charAt(0) > '9')
+  }
+  void prepareUserInput(){ // Bug: when the bottom text box contains a valid input and the first box is activated the second textBox resets itself.
+                           // but this does not happen vice versa 
+    String[] uservalues = textValue.split("-");
+    uservalues[0] = uservalues[0].trim();// we trim the whitespaces from the values
+    uservalues[1] = uservalues[1].trim();
+    uservalues[0] = uservalues[0].replace(":","");// we remove the colon to have the user input in pure integer format
+    uservalues[1] = uservalues[1].replace(":","");
+    boolean temp = false;
+    for(int i = 0; i < textBoxList.size(); i++)
     {
-       return false;
+      if(textBoxList.get(i).textValue == "??:?? - ??:??")
+      {
+        temp = true;
+      }
     }
-    if(textValue.charAt(1) < '0' && textValue.charAt(1) > '9')
+    if(!temp)
     {
-       return false;
+      this.textValue = "??:?? - ??:??";
     }
-    if(textValue.charAt(2) != ':')
-    {
-       return false;
-    }
-    if(textValue.charAt(3) < '0' && textValue.charAt(3) > '9')
-    {
-       return false;
-    }
-    if(textValue.charAt(4) < '0' && textValue.charAt(4) > '9')
-    {
-       return false;
-    }
-    if(textValue.charAt(5) != ' ')
-    {
-       return false;
-    }
-    if(textValue.charAt(6) != '-')
-    {
-       return false;
-    }
-    if(textValue.charAt(7) != ' ')
-    {
-       return false;
-    }
-    if(textValue.charAt(8) < '0' && textValue.charAt(8) > '9')
-    {
-       return false;
-    }
-    if(textValue.charAt(9) < '0' && textValue.charAt(9) > '9')
-    {
-       return false;
-    }
-    if(textValue.charAt(10) != ':')
-    {
-       return false;
-    }
-    if(textValue.charAt(11) < '0' && textValue.charAt(11) > '9')
-    {
-       return false;
-    }
-    if(textValue.charAt(12) < '0' && textValue.charAt(12) > '9')
-    {
-       return false;
-    }
-    return true;
-    */
   }
 }

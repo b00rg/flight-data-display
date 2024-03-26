@@ -16,9 +16,6 @@ Screen(){}
   int QUIT_B_SIZE = 50;
   int QUIT_B_ROUNDNESS = 10;
   
-  ArrayList<Widget_Button> buttonList = new ArrayList<Widget_Button>();
-  ArrayList<Widget_DropDown> dropDownList = new ArrayList<Widget_DropDown>();
-  ArrayList<Widget_TextBox> TextBoxList = new ArrayList<Widget_TextBox>();
   int buttonListSize = 0, dropDownListSize = 0, textBoxListSize = 0;
 
   
@@ -31,6 +28,7 @@ Screen(){}
   // Database interaction panel (DIP)
   int TAB_WIDTH = 500;
   int TAB_BORDER_WIDTH = 20;
+  
   // Layout of buttons and drop down menus
   int VERTICAL_DISTANCE_FROM_WALL = 200;
   int VERTICAL_SPACING_OF_BOTTONS = 100;
@@ -40,47 +38,40 @@ Screen(){}
   
   // drop down buttons
   int NUMBER_OF_DROPDOWNS = 5;
-
-  void renderTab1(){
+  void renderDIP(){
+    renderUpperTab();
     fill(PRIMARY_COLOR);
     rect(0,0,TAB_WIDTH, displayHeight);
     fill(SECONDARY_COLOR);
-    rect(TAB_WIDTH + TAB_BORDER_WIDTH,0,TAB_BORDER_WIDTH, displayHeight);
+    rect(TAB_WIDTH,0,TAB_BORDER_WIDTH, displayHeight);
+  }
+  void renderUpperTab(){
+    fill(PRIMARY_COLOR);
+    rect(0,0,width, (int)(height/10));
+    stroke(SECONDARY_COLOR);
+    strokeWeight(5);
+    for(int i = 0; i < TabButtons.size(); i++)
+    {
+      TabButtons.get(i).render();
+    }
+    strokeWeight(0);
+  }
+  void renderButtons(){
     for(int i = 0; i < textBoxList.size(); i++)
     {
       textBoxList.get(i).render();
     }
-  }
-  void draw()
-  {
-    for(int i = 0; i < buttonListSize; i++)
+    for(int i = 0; i < buttonList.size(); i++)
     {
-      buttonList.get(i).draw();
+      buttonList.get(i).render();
     }
- for(int i = 0; i < dropDownListSize; i++)
+    for(int i = 0; i < dropDownList.size(); i++)
     {
-      dropDownList.get(i).draw();
-    }
- for(int i = 0; i < textBoxListSize; i++)
-    {
-      textBoxList.get(i).draw();
+      dropDownList.get(i).render();
     }
   }
-
-  void addElement(Widget_Button widget)
-  {
-    buttonList.add(widget);
-    buttonListSize++;
-  }
-  void addElement(Widget_DropDown widget)
-  {
-    dropDownList.add(widget);
-    dropDownListSize++;
-  }
-  void addElement(Widget_TextBox widget)
-  {
-    textBoxList.add(widget);
-    textBoxListSize++;
+  void renderTab1(){
+    // todo
   }
   
   void printTable()
