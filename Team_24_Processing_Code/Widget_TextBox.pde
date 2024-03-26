@@ -48,9 +48,7 @@ class WidgetTextBox extends Widget{
       {
         try
         {
-          //println("textValue was " + textValue);
           textValue = textValue.substring(0,textValue.length() - 1); // remove the last character if the user presses backspace
-          //println("textValue now is " + textValue);
         } catch ( Exception e)
         {
           textValue = "";
