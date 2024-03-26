@@ -164,7 +164,7 @@ class QueriesSelect extends Queries {
     ArrayList<BusyRouteDataPoint> dataList = new ArrayList<BusyRouteDataPoint>();
     try {
       Statement stmt = connection.createStatement();
-      String query = "SELECT ORIGIN, DEST, COUNT(*) AS FLIGHT_COUNT FROM " + super.table_name + " GROUP BY ORIGIN, DEST ORDER BY FLIGHT_COUNT DESC LIMIT 5;";
+      String query = "SELECT ORIGIN, DEST, COUNT(*) AS FLIGHT_COUNT FROM " + super.tableName + " GROUP BY ORIGIN, DEST ORDER BY FLIGHT_COUNT DESC LIMIT 5;";
       println(query);
       ResultSet resultSet = stmt.executeQuery(query);
       
