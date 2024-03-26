@@ -221,14 +221,20 @@ void RealoadEvent(){
   String selectedDepartureStation = "";
   
   // insert user querry values to the right places
-  if(textBoxList.get(0).textValue == "??:?? - ??:??"){
+  if(textBoxList.get(1).textValue != "??:?? - ??:??"){
     depTime = false;
     num1 = Integer.parseInt(textBoxList.get(1).num1.trim());
     num2 = Integer.parseInt(textBoxList.get(1).num2.trim());
-  } else {
+  } else  if ((textBoxList.get(0).textValue != "??:?? - ??:??"))
+  {
     depTime = true;
     num1 = Integer.parseInt(textBoxList.get(0).num1.trim());
     num2 = Integer.parseInt(textBoxList.get(0).num2.trim());
+  } else 
+  {
+    depTime = true; // doesn't matter
+    num1 = 0000;
+    num2 = 0000;
   }
   if(dropDownList.get(0).currentlySelectedElement != -1)
   {
