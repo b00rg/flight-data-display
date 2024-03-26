@@ -16,6 +16,8 @@ class Queries {
   // MySQL database connection parameters
   String filename = sketchPath() + "/flights2k.csv";
   String url = "jdbc:mysql://localhost:3306/programming_project";
+  String databaseName = "programming_project";
+  String tableName = "flight_data";
   
   // CHECK IF EMPTY
   String username = "";
@@ -23,24 +25,22 @@ class Queries {
   
   Connection connection;
   
-  String databaseName = "programming_project";
-  String tableName = "flight_data";
-  
   Queries(){
     try {
+      BufferedReader reader = new BufferedReader(new FileReader(sketchPath() + "/credentials.txt"));
       
-      // CHECK IF CSV
-      BufferedReader credsFile = new BufferedReader(new FileReader(sketchPath() + "/creds.txt"));
-      Scanner credsScanner = new Scanner(credsFile);
-      credsScanner.useDelimiter(",");
-      username = credsScanner.next();
-      password = credsScanner.next();
-      println("Using username " + username + " using password " + password);
-      credsScanner.close();
-      credsFile.close();
-    }
-    catch (Exception e) {
-      println("Error cannot find file creds.csv");
+      username = reader.readLine();
+      password = reader.readLine();
+      
+      // If password is empty, set it to an empty string
+      if (password == null || password.isEmpty()) {
+        password = "";
+      }
+      
+      reader.close();
+    } 
+    catch (IOException e) {
+      println("Error cannot find file credentials.txt");
       exit();
     }
     

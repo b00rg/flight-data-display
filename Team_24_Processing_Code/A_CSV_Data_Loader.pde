@@ -32,9 +32,10 @@ boolean isDropDownActive = false;
 int WIDGET_ROUNDNESS = 10;
 void setup() {
   fullScreen();
+  
   //DO NOT DELETE
   QueriesInitial setupQuery = new QueriesInitial();
-  /*
+  
   setupQuery.createDatabase();
   setupQuery.useDatabase();
   setupQuery.dropAndCreateTable();
@@ -53,7 +54,6 @@ void setup() {
     println("Diverted: " + data.DIVERTED);
     println("---------------------------------------");
   }
-  */
   
   //DO NOT DELETE  
 
