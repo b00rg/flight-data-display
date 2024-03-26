@@ -26,6 +26,8 @@ color ON = color(100,255,100);
 color OFF = color(255,100,100);
 PFont TextBoxFont;
 // Setup Display Objects
+ArrayList<DisplayDataPoint> filteredData;
+
 Screen screen = new Screen();
 int currentlyActiveTab = 0;
 boolean isDropDownActive = false;
@@ -123,7 +125,7 @@ void draw(){
   switch(currentlyActiveTab)
   {
     case 0: // user is looking at tab 1
-      //screen.renderTab1();
+      screen.renderTab1();
       break;
     case 1: // user is lookingat tab 2
   }
@@ -136,6 +138,9 @@ void mouseClicked(){
     ReloadButton.active = true;
     ReloadButton.render();
     RealoadEvent();
+    screen.renderTab1();
+    ReloadButton.active = false;
+    ReloadButton.render();
   }
   for(int i = 0; i < TabButtons.size(); i++) // we first investigate if the user is trying to change tabs
   {
@@ -153,6 +158,7 @@ void mouseClicked(){
      }
   }
   updateTabs();
+  hasUserChangedPage();
   if(isDropDownActive)
   {
     for(int i = 0; i < dropDownList.size(); i++)
@@ -190,7 +196,38 @@ void keyPressed(){ // todo, lots of this code is redudant since the user always 
         }
     }
 }
-void RealoadEvent(){}
+void RealoadEvent(){
+  boolean depTime;
+  int num1;
+  int num2;
+  
+  String selectedAriivalStation = "";
+  String selectedDepartureStation = "";
+
+  if(textBoxList.get(0).textValue == "??:?? - ??:??"){
+    depTime = false;
+    num1 = Integer.parseInt(textBoxList.get(1).num1.trim());
+    num2 = Integer.parseInt(textBoxList.get(1).num2.trim());
+  } else {
+    depTime = true;
+    num1 = Integer.parseInt(textBoxList.get(0).num1.trim());
+    num2 = Integer.parseInt(textBoxList.get(0).num2.trim());
+  }
+  if(dropDownList.get(0).currentlySelectedElement != -1)
+  {
+    selectedAriivalStation = dropDownList.get(0).elements[dropDownList.get(0).currentlySelectedElement];
+  } else {selectedAriivalStation = null;}
+  if(dropDownList.get(1).currentlySelectedElement != -1)
+  {
+    selectedDepartureStation = dropDownList.get(1).elements[dropDownList.get(1).currentlySelectedElement];
+  } else {selectedDepartureStation = null;}
+  
+  QueriesSelect selectQuery = new QueriesSelect();
+  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation);
+  screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
+  screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
+  screen.selectedPage = 1;
+}
 void mouseWheel(MouseEvent event){
   for(int i = 0; i < dropDownList.size(); i++)
   {
@@ -203,6 +240,20 @@ void updateTabs(){
     if(TabButtons.get(i).active)
     {
       currentlyActiveTab = i;
+    }
+  }
+}
+void hasUserChangedPage(){
+  if(moveLeft.isClicked()){
+    screen.selectedPage--;
+    if(screen.selectedPage <= 0){
+      screen.selectedPage = 1;
+    }
+  }
+  if(moveRight.isClicked()){
+    screen.selectedPage++;
+    if(screen.selectedPage > screen.numberOfPages){
+      screen.selectedPage = screen.numberOfPages;
     }
   }
 }
