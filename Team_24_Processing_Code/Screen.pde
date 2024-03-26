@@ -87,9 +87,7 @@ Screen(){}
       text("Total flights: " + filteredData.size(), 50, 20);
       int temp = 0;
       for(int i = 0; i < 10; i++)
-      {
-        println(i);
-        
+      {        
         try{
           if(i < 5) 
           {
@@ -100,7 +98,6 @@ Screen(){}
           }
         } catch(Exception e)
         {
-          println("break");
           break; // This means we tried accessing elements outisde of the array, we run out of elements to display
         }
       }
