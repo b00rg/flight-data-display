@@ -1,19 +1,12 @@
 class WidgetButton extends Widget{
     color ON, OFF;
-    WidgetButton(int xpos,int ypos, int W, int H, color on, color off){
-    super(xpos, ypos, W, H);
+    WidgetButton(int xpos,int ypos, int W, int H,int R, color on, color off){
+    super(xpos, ypos, W, H, R);
     ON = on;
     OFF = off;
   }
-  void isClicked(){
-    if(isMouseover())  // if the mouse is clicked, and the mouse is over the button...
-    {
-      active = !active;
-      linkedListCheck(TabButtons);
-    } else 
-    {
-      
-    }
+  boolean isClicked(){
+    return(isMouseover());
   }
   void render(){
     if(active)
@@ -23,7 +16,7 @@ class WidgetButton extends Widget{
     {
       fill(OFF);
     }
-    rect(xpos, ypos, wide, high);
+    rect(xpos, ypos, wide, high, roundness);
   }
   void linkedListCheck(ArrayList<WidgetButton> buttonGroup){ // This functions is used for lists of butons where only one button may be on at a time
   // Afte a button is clicked, the button goes through a list that includes itself and it's fellow buttons in the group, and makes sure only it is active

@@ -52,7 +52,7 @@ class RawDataPoint {
       DISTANCE = columnExists(resultSet, "DISTANCE") ? resultSet.getInt("MKT_CARRIER_FL_NUM") : 0;
 
     } catch (SQLException e) {
-        println("SQLException: " + e.getMessage());
+        println("SQLException AA: " + e.getMessage());
     }
   }
 
