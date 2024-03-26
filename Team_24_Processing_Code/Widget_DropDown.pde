@@ -31,7 +31,7 @@ class WidgetDropDown extends Widget{
   }
   void render(){
     fill(255);
-    rect(xpos, ypos, wide, high);
+    rect(xpos, ypos, wide, high,10,10,0,0);
     if(amIActive)
     {
       renderDrops();
