@@ -16,13 +16,10 @@ static ArrayList<WidgetButton> buttonList = new ArrayList<WidgetButton>();
 static ArrayList<WidgetDropDown> dropDownList = new ArrayList<WidgetDropDown>();
 static ArrayList<WidgetButton> TabButtons = new ArrayList<WidgetButton>(); // Tab buttons are in a seperate list to control their render order
 
-<<<<<<< HEAD
-=======
 static WidgetButton ReloadButton;
 static WidgetButton moveLeft;
 static WidgetButton moveRight;
 
->>>>>>> c2f58eddd019b01dd58dc3767cc4fcb0669e1908
 Screen screen1 = new Screen();
 color ON = color(100,255,100);
 color OFF = color(255,100,100);
@@ -79,9 +76,7 @@ void setup() {
   // Display setup
   
   //Tab setup
-  
-<<<<<<< HEAD
-=======
+  TextBoxFont = loadFont("default.vlw");
   WidgetTextBox departureTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont);
   textBoxList.add(departureTimeSelections);
   WidgetTextBox ArrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont);
@@ -92,7 +87,6 @@ void setup() {
   WidgetDropDown departures = new WidgetDropDown(300, 700, 200, 50, TextBoxFont, airports);
   dropDownList.add(departures);
   
->>>>>>> c2f58eddd019b01dd58dc3767cc4fcb0669e1908
   int totalTabWidth = screen.TAB_WIDTH + screen.TAB_BORDER_WIDTH;
   int tabRange = width - totalTabWidth;
   
@@ -102,28 +96,18 @@ void setup() {
     TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0, ON, OFF));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
-<<<<<<< HEAD
-  
+ 
   // Tab 1 setup
   // please do not move this outside of setup void, for some reason processing does not likey likey that
-  TextBoxFont = loadFont("default.vlw");
-  
-  WidgetTextBox departureTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL, screen1.WIDTH_B, screen1.HEIGHT_B, TextBoxFont);
-  textBoxList.add(departureTimeSelections);
-  WidgetTextBox ArrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, TextBoxFont);
-  textBoxList.add(ArrivalTimeSelections);
   
   // Tab 2 setup
   GraphPie pie1 = new GraphPie();
-=======
   ReloadButton = new WidgetButton(50, 50, 50, 50, 1, ON, OFF);
   
   moveLeft = new WidgetButton(1100, 1000, 50, 50, 5, ON, OFF);
   moveRight = new WidgetButton(1300, 1000, 50, 50, 5, ON, OFF);
   
-  
-  
->>>>>>> c2f58eddd019b01dd58dc3767cc4fcb0669e1908
+
 }
 // currentlyActiveTab
 void draw(){
@@ -138,12 +122,8 @@ void draw(){
   switch(currentlyActiveTab)
   {
     case 0: // user is looking at tab 1
-<<<<<<< HEAD
     // We must only render elements relevant to tab 1
       screen.renderTab1();
-=======
-      //screen.renderTab1();
->>>>>>> c2f58eddd019b01dd58dc3767cc4fcb0669e1908
       break;
     case 1: // user is lookingat tab 2
       screen.renderTab2();
@@ -199,7 +179,7 @@ void mouseClicked(){
     }
   }
 }
-void keyPressed(){ // todo, lots of this code is redudant since the user always has access to the buttons
+/*void keyPressed(){ // todo, lots of this code is redudant since the user always has access to the buttons
     switch(currentlyActiveTab) 
     {
       case 0:   // User is on tab 1
@@ -213,7 +193,7 @@ void keyPressed(){ // todo, lots of this code is redudant since the user always 
           }
         }
     }
-}
+}*/
 void RealoadEvent(){}
 void mouseWheel(MouseEvent event){
   for(int i = 0; i < dropDownList.size(); i++)

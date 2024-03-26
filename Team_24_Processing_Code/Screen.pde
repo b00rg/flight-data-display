@@ -56,13 +56,9 @@ Screen(){}
     }
     strokeWeight(0);
   }
-<<<<<<< HEAD
-  void renderTab1(){
-    for(int i = 0, n = textBoxList.size(); i < n; i++)
-=======
+
   void renderButtons(){
     for(int i = 0; i < textBoxList.size(); i++)
->>>>>>> c2f58eddd019b01dd58dc3767cc4fcb0669e1908
     {
       textBoxList.get(i).render();
     }
@@ -78,7 +74,6 @@ Screen(){}
   void renderTab1(){
     // todo
   }
-<<<<<<< HEAD
   void renderTab2(){
     //A_CSV_Data_Loader.pie1.render();
     QueriesSelect queries = new QueriesSelect();
@@ -90,8 +85,6 @@ Screen(){}
     graph.drawBarChart(values);
   }
 
-=======
->>>>>>> c2f58eddd019b01dd58dc3767cc4fcb0669e1908
   
   void printTable()
   {
