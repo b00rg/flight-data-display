@@ -16,9 +16,6 @@ Screen(){}
   int QUIT_B_SIZE = 50;
   int QUIT_B_ROUNDNESS = 10;
   
-  ArrayList<WidgetButton> buttonList = new ArrayList<WidgetButton>();
-  ArrayList<WidgetDropDown> dropDownList = new ArrayList<WidgetDropDown>();
-  ArrayList<WidgetTextBox> TextBoxList = new ArrayList<WidgetTextBox>();
   int buttonListSize = 0, dropDownListSize = 0, textBoxListSize = 0;
 
   
@@ -59,7 +56,7 @@ Screen(){}
     }
     strokeWeight(0);
   }
-  void renderTab1(){
+  void renderButtons(){
     for(int i = 0; i < textBoxList.size(); i++)
     {
       textBoxList.get(i).render();
@@ -68,8 +65,14 @@ Screen(){}
     {
       buttonList.get(i).render();
     }
+    for(int i = 0; i < dropDownList.size(); i++)
+    {
+      dropDownList.get(i).render();
+    }
   }
-
+  void renderTab1(){
+    // todo
+  }
   
   void printTable()
   {
