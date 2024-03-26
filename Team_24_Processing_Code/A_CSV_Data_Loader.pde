@@ -6,6 +6,9 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.regex.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 static String[] airports = new String[] {"JFK", "DCA", "LAX", "FLL", "SEA", "ORD", "HNL"};
 
@@ -19,6 +22,14 @@ static ArrayList<WidgetButton> TabButtons = new ArrayList<WidgetButton>(); // Ta
 static WidgetButton ReloadButton;
 static WidgetButton moveLeft;
 static WidgetButton moveRight;
+
+static WidgetTextBox startDate;
+static WidgetTextBox endDate;
+
+enum WIDGET_TEXT_TYPE{
+  TIME,
+  DATE
+}
 
 Screen screen1 = new Screen();
 static boolean[] statsShown = new boolean[18];
@@ -85,12 +96,12 @@ void setup() {
   // please do not move this outside of setup void, for some reason processing does not likey likey that
   TextBoxFont = loadFont("default.vlw");
   
-  WidgetTextBox departureTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont);
+  WidgetTextBox departureTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL+10, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
   textBoxList.add(departureTimeSelections);
-  WidgetTextBox ArrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont);
+  WidgetTextBox ArrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
   textBoxList.add(ArrivalTimeSelections);
   
-  WidgetDropDown arrivals = new WidgetDropDown(300, 200, 200, 50, TextBoxFont, airports);
+  WidgetDropDown arrivals = new WidgetDropDown(300, 210, 200, 50, TextBoxFont, airports);
   dropDownList.add(arrivals);
   WidgetDropDown departures = new WidgetDropDown(300, 700, 200, 50, TextBoxFont, airports);
   dropDownList.add(departures);
@@ -109,7 +120,11 @@ void setup() {
   moveLeft = new WidgetButton(1100, 1000, 50, 50, 5, ON, OFF);
   moveRight = new WidgetButton(1300, 1000, 50, 50, 5, ON, OFF);
   
+  startDate = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL / 2, screen1.VERTICAL_DISTANCE_FROM_WALL - 70, (int)(screen1.WIDTH_B / 1.5), screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/mm/yyyy", WIDGET_TEXT_TYPE.DATE);
+  endDate = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL *2, screen1.VERTICAL_DISTANCE_FROM_WALL - 70, (int)(screen1.WIDTH_B / 1.5), screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/m/yyyy", WIDGET_TEXT_TYPE.DATE);
   
+  textBoxList.add(startDate);
+  textBoxList.add(endDate);
   
 }
 // currentlyActiveTab
@@ -197,13 +212,15 @@ void keyPressed(){ // todo, lots of this code is redudant since the user always 
     }
 }
 void RealoadEvent(){
+  // setup place holder values
   boolean depTime;
   int num1;
   int num2;
   
   String selectedAriivalStation = "";
   String selectedDepartureStation = "";
-
+  
+  // insert user querry values to the right places
   if(textBoxList.get(0).textValue == "??:?? - ??:??"){
     depTime = false;
     num1 = Integer.parseInt(textBoxList.get(1).num1.trim());
@@ -224,9 +241,11 @@ void RealoadEvent(){
   
   QueriesSelect selectQuery = new QueriesSelect();
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation);
+  // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
   screen.selectedPage = 1;
+  
 }
 void mouseWheel(MouseEvent event){
   for(int i = 0; i < dropDownList.size(); i++)

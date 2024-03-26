@@ -68,6 +68,8 @@ Screen(){}
     {
       dropDownList.get(i).render();
     }
+    startDate.render();
+    endDate.render();
   }
   // Renders all the 
   void renderTab1()
@@ -86,16 +88,19 @@ Screen(){}
       int temp = 0;
       for(int i = 0; i < 10; i++)
       {
+        println(i);
+        
         try{
           if(i < 5) 
           {
-            renderDataBock(TAB_WIDTH + TAB_BORDER_WIDTH + 20 + temp, dataBlockYpos + dataBlockYMove * i, dataBlockWidth, dataBlockHeigh, filteredData.get((selectedPage - 1) * 10));
+            renderDataBock(TAB_WIDTH + TAB_BORDER_WIDTH + 20 + temp, dataBlockYpos + dataBlockYMove * i, dataBlockWidth, dataBlockHeigh, filteredData.get(i+(selectedPage - 1) * 10));
           } else 
           {
-            renderDataBock(TAB_WIDTH + TAB_BORDER_WIDTH + 20 + 10 + dataBlockWidth, dataBlockYpos + dataBlockYMove * (i-5), dataBlockWidth, dataBlockHeigh, filteredData.get((selectedPage - 1) * 10));
+            renderDataBock(TAB_WIDTH + TAB_BORDER_WIDTH + 20 + 10 + dataBlockWidth, dataBlockYpos + dataBlockYMove * (i-5), dataBlockWidth, dataBlockHeigh, filteredData.get(i+(selectedPage - 1) * 10));
           }
         } catch(Exception e)
         {
+          println("break");
           break; // This means we tried accessing elements outisde of the array, we run out of elements to display
         }
       }
