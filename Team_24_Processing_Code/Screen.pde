@@ -81,7 +81,8 @@ Screen(){}
       int dataBlockHeigh =(int)((float)height / (float)6.5);
       int dataBlockYMove = dataBlockHeigh + 5;
       int dataBlockYpos = height / 10 + 10;
-      textSize(10);
+      textSize(20);
+      text("Total flights: " + filteredData.size(), 50, 20);
       int temp = 0;
       for(int i = 0; i < 10; i++)
       {
