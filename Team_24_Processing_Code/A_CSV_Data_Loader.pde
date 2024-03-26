@@ -213,9 +213,14 @@ void RealoadEvent(){
     num1 = Integer.parseInt(textBoxList.get(0).num1.trim());
     num2 = Integer.parseInt(textBoxList.get(0).num2.trim());
   }
-  println(num1 + "  " + num2);
-  selectedAriivalStation = dropDownList.get(0).elements[dropDownList.get(0).currentlySelectedElement];
-  selectedDepartureStation = dropDownList.get(1).elements[dropDownList.get(1).currentlySelectedElement];
+  if(dropDownList.get(0).currentlySelectedElement != -1)
+  {
+    selectedAriivalStation = dropDownList.get(0).elements[dropDownList.get(0).currentlySelectedElement];
+  } else {selectedAriivalStation = null;}
+  if(dropDownList.get(1).currentlySelectedElement != -1)
+  {
+    selectedDepartureStation = dropDownList.get(1).elements[dropDownList.get(1).currentlySelectedElement];
+  } else {selectedDepartureStation = null;}
   
   QueriesSelect selectQuery = new QueriesSelect();
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation);
