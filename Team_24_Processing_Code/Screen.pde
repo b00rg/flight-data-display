@@ -60,14 +60,24 @@ Screen(){}
     strokeWeight(0);
   }
   void renderTab1(){
-    for(int i = 0; i < textBoxList.size(); i++)
+    for(int i = 0, n = textBoxList.size(); i < n; i++)
     {
       textBoxList.get(i).render();
     }
-    for(int i = 0; i < buttonList.size(); i++)
+    for(int i = 0, n = buttonList.size(); i < n; i++)
     {
       buttonList.get(i).render();
     }
+  }
+  void renderTab2(){
+    //A_CSV_Data_Loader.pie1.render();
+    QueriesSelect queries = new QueriesSelect();
+    print(1);
+    ArrayList<BarDataPoint> values = queries.getRowsBarGraph();
+    print(2);
+    GraphBar graph = new GraphBar();
+    print(3);
+    graph.drawBarChart(values);
   }
 
   

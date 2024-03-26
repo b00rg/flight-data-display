@@ -13,11 +13,12 @@ static ArrayList<WidgetTextBox> textBoxList = new ArrayList<WidgetTextBox>();
 static ArrayList<WidgetButton> buttonList = new ArrayList<WidgetButton>();
 static ArrayList<WidgetDropDown> dropDownList = new ArrayList<WidgetDropDown>();
 static ArrayList<WidgetButton> TabButtons = new ArrayList<WidgetButton>(); // Tab buttons are in a seperate list to control their render order
+
 Screen screen1 = new Screen();
-static boolean[] statsShown = new boolean[18];
 color ON = color(100,255,100);
 color OFF = color(255,100,100);
 PFont TextBoxFont;
+
 // Setup Display Objects
 Screen screen = new Screen();
 int currentlyActiveTab = 0;
@@ -47,23 +48,13 @@ void setup() {
   // Display setup
   // Tab 1 setup
   // please do not move this outside of setup void, for some reason processing does not likey likey that
-
-  
   
   //Make Datapoints
   
-  //for;
-  
   // Display setup
   
-  // Tab 1 setup
-  // please do not move this outside of setup void, for some reason processing does not likey likey that
-  TextBoxFont = loadFont("default.vlw");
+  //Tab setup
   
-  WidgetTextBox departureTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL, screen1.WIDTH_B, screen1.HEIGHT_B, TextBoxFont);
-  textBoxList.add(departureTimeSelections);
-  WidgetTextBox ArrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, TextBoxFont);
-  textBoxList.add(ArrivalTimeSelections);
   int totalTabWidth = screen.TAB_WIDTH + screen.TAB_BORDER_WIDTH;
   int tabRange = width - totalTabWidth;
   
@@ -73,6 +64,18 @@ void setup() {
     TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), ON, OFF));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
+  
+  // Tab 1 setup
+  // please do not move this outside of setup void, for some reason processing does not likey likey that
+  TextBoxFont = loadFont("default.vlw");
+  
+  WidgetTextBox departureTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL, screen1.WIDTH_B, screen1.HEIGHT_B, TextBoxFont);
+  textBoxList.add(departureTimeSelections);
+  WidgetTextBox ArrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, TextBoxFont);
+  textBoxList.add(ArrivalTimeSelections);
+  
+  // Tab 2 setup
+  GraphPie pie1 = new GraphPie();
 }
 // currentlyActiveTab
 void draw(){
@@ -85,8 +88,13 @@ void draw(){
   {
     case 0: // user is looking at tab 1
     // We must only render elements relevant to tab 1
-    screen.renderTab1();
+      screen.renderTab1();
+      break;
     case 1: // user is lookingat tab 2
+      screen.renderTab2();
+      break;
+    default:
+      println("Tab not found");
   }
 }
 
