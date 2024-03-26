@@ -1,7 +1,8 @@
 class WidgetTextBox extends Widget{
   String textValue = "??:?? - ??:??";
   boolean active = false;
-  String[] uservalues = new String[2];
+  String num1;
+  String num2;
   //int xpos, ypos, wide, heigh;
   PFont font;
   WidgetTextBox(int x, int y, int w, int h, int R, PFont font){
@@ -89,10 +90,10 @@ class WidgetTextBox extends Widget{
   void prepareUserInput(){ // Bug: when the bottom text box contains a valid input and the first box is activated the second textBox resets itself.
                            // but this does not happen vice versa 
     String[] uservalues = textValue.split("-");
-    uservalues[0] = uservalues[0].trim();// we trim the whitespaces from the values
-    uservalues[1] = uservalues[1].trim();
-    uservalues[0] = uservalues[0].replace(":","");// we remove the colon to have the user input in pure integer format
-    uservalues[1] = uservalues[1].replace(":","");
+    num1 = uservalues[0].trim();// we trim the whitespaces from the values
+    num2 = uservalues[1].trim();
+    num1 = uservalues[0].replace(":","");// we remove the colon to have the user input in pure integer format
+    num2 = uservalues[1].replace(":","");
     boolean temp = false;
     for(int i = 0; i < textBoxList.size(); i++)
     {
@@ -104,6 +105,8 @@ class WidgetTextBox extends Widget{
     if(!temp)
     {
       this.textValue = "??:?? - ??:??";
+      this.num1 ="error, check line 109 at textbox";
+      this.num2 ="error, check line 109 at textbox";
     }
   }
 }
