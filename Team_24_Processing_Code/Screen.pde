@@ -146,6 +146,7 @@ Screen(){}
     } catch(Exception e)
     {
       println("How did an invalid date input "+dd_mm_yyyy+" make it to adjustDateInput?");
+      return null;
     }
   }
 }
