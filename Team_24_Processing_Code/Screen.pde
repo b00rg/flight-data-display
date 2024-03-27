@@ -5,10 +5,13 @@ Screen(){}
  
   // THEME-------------------
   
-  // todo.md
+  // DEFAULT COLOR PALLETE
+  
   color PRIMARY_COLOR = color(0,50,100);
   color SECONDARY_COLOR = color(200,200, 255);
   color TERTIARY_COLOR = color(100, 200, 200);
+  color BACKGROUND = color(255,255,255);
+  color TEXT_COLOR = color(0,0,0);
   
   int buttonListSize = 0, dropDownListSize = 0, textBoxListSize = 0;
 

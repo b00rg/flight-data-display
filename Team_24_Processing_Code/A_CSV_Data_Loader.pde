@@ -22,7 +22,6 @@ static WidgetButton moveRight;
 static WidgetTextBox startDate;
 static WidgetTextBox endDate;
 
-Screen screen1 = new Screen();
 static boolean[] statsShown = new boolean[18];
 color ON = color(100,255,100);
 color OFF = color(255,100,100);
@@ -55,15 +54,15 @@ void setup() {
   
   //TEXTBOX SETUP
   TextBoxFont = loadFont("default.vlw");
-  WidgetTextBox departureTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL+10, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
-  WidgetTextBox arrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
+  WidgetTextBox departureTimeSelections = new WidgetTextBox(screen.HORIZONTAL_DISTANCE_FROM_WALL, screen.VERTICAL_DISTANCE_FROM_WALL+10, screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
+  WidgetTextBox arrivalTimeSelections = new WidgetTextBox(screen.HORIZONTAL_DISTANCE_FROM_WALL, screen.VERTICAL_DISTANCE_FROM_WALL + 500, screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
   textBoxList.add(departureTimeSelections);
   textBoxList.add(arrivalTimeSelections);
   
   
   //DATE TEXT BOX SETUP
-  startDate = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL / 2, screen1.VERTICAL_DISTANCE_FROM_WALL - 70, (int)(screen1.WIDTH_B / 1.5), screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/mm/yyyy", WIDGET_TEXT_TYPE.DATE);
-  endDate = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL *2, screen1.VERTICAL_DISTANCE_FROM_WALL - 70, (int)(screen1.WIDTH_B / 1.5), screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/m/yyyy", WIDGET_TEXT_TYPE.DATE);
+  startDate = new WidgetTextBox(screen.HORIZONTAL_DISTANCE_FROM_WALL / 2, screen.VERTICAL_DISTANCE_FROM_WALL - 70, (int)(screen.WIDTH_B / 1.5), screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/mm/yyyy", WIDGET_TEXT_TYPE.DATE);
+  endDate = new WidgetTextBox(screen.HORIZONTAL_DISTANCE_FROM_WALL *2, screen.VERTICAL_DISTANCE_FROM_WALL - 70, (int)(screen.WIDTH_B / 1.5), screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/m/yyyy", WIDGET_TEXT_TYPE.DATE);
   textBoxList.add(startDate);
   textBoxList.add(endDate);
   
@@ -105,7 +104,7 @@ void setup() {
 
 void draw(){
   
-  background(255,255,255);
+  background(screen.BACKGROUND);
   moveLeft.render();
   moveRight.render();
   // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
