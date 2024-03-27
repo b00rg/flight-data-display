@@ -192,7 +192,7 @@ void changeTheme(THEMES selectedTheme)
   case NIGHT:
     System.out.println("Night theme selected");
     break;
-  case CUSTOMTHEME:
+  case CUSTOM_THEME:
     System.out.println("Custom theme selected");
     break;
   default:

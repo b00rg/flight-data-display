@@ -16,8 +16,10 @@ enum THEMES
     BOYBOSS,
     DAY,
     NIGHT,
-    CUSTOMTHEME
+    CUSTOM_THEME
   }
+String themeNames[] = new String[] {"DEFAULT", "GIRLBOSS", "BOYBOSS", "DAY", "NIGHT", "CUSTOM_THEME"};
+WidgetDropDown ThemeSelection;
 //STATIC SETUP VARIABLE
 static ArrayList<WidgetTextBox> textBoxList = new ArrayList<WidgetTextBox>();
 static ArrayList<WidgetButton> buttonList = new ArrayList<WidgetButton>();
@@ -103,8 +105,9 @@ void setup() {
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
   ReloadButton = new WidgetButton(50, 50, 50, 50, 1);
-  
-  
+  // THEME BUTTON SETUP
+  ThemeSelection = new WidgetDropDown(250, 20, 200, 50, TextBoxFont, themeNames);
+  ThemeSelection.currentlySelectedElement = 0;
   //SCROLL BUTTON SETUP
   moveLeft = new WidgetButton(1100, 1000, 50, 50, 5);
   moveRight = new WidgetButton(1300, 1000, 50, 50, 5);
@@ -115,12 +118,15 @@ void setup() {
 void draw(){
   
   background(screen.BACKGROUND);
+  
   moveLeft.render();
   moveRight.render();
   // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
   // User tab selection only effects everything on the right
   screen.renderDIP();
+  ThemeSelection.render();
   screen.renderButtons();
+  ThemeSelection.render();
   switch(currentlyActiveTab)
   {
     case 0: // user is looking at tab 1
@@ -160,6 +166,12 @@ void mouseClicked(){
   }
   updateTabs();
   screen.hasUserChangedPage();
+  ThemeSelection.isClicked();
+  if(ThemeSelection.currentlySelectedElement == -1)
+  {
+    ThemeSelection.currentlySelectedElement = 0;
+  }
+  screen.changeTheme(indexToTheme(ThemeSelection.currentlySelectedElement));
   if(isDropDownActive)
   {
     for(int i = 0; i < dropDownList.size(); i++)
@@ -184,7 +196,8 @@ void mouseClicked(){
 }
 
 
-//ADD COMMENT
+// checks which tab is currently active and applies a process depending on the scenario
+// At the moment this 
 void keyPressed(){ // todo, lots of this code is redudant since the user always has access to the buttons
     switch(currentlyActiveTab) 
     {
@@ -202,7 +215,8 @@ void keyPressed(){ // todo, lots of this code is redudant since the user always 
 }
 
 
-//ADD COMMENT
+// creates all querry related data pieces and collect the data from input buttons, some of the data is also processed
+// to be compatable with our querry system requerments, the filteredData is adjusted to contain the new data - Angelos
 void RealoadEvent(){
   // setup place holder values
   boolean depTime;
@@ -267,7 +281,7 @@ void RealoadEvent(){
 }
 
 
-//ADD COMMENT
+// check user scroll input, and apply the scroll to all active drop down buttons, inactive drop down buttons simply ignore this call - Angelos
 void mouseWheel(MouseEvent event){
   for(int i = 0; i < dropDownList.size(); i++)
   {
@@ -276,7 +290,7 @@ void mouseWheel(MouseEvent event){
 }
 
 
-//ADD COMMENT
+// Updates the user tabs at the top of the screen to reflect which tab is currently active and de activate all other tabs - Angelos
 void updateTabs(){
   for(int i = 0; i < TabButtons.size(); i++)
   {
@@ -284,5 +298,25 @@ void updateTabs(){
     {
       currentlyActiveTab = i;
     }
+  }
+}
+
+
+// In modern java an enum can be associated to a number, not in processing, this function converts the index of the theme that the user has selected
+// in the theme selection button to the curresponding theme in the enum, this is a product of using processing unfortunetly
+THEMES indexToTheme(int index)
+{
+  switch(index)
+  {
+    case 1:
+      return THEMES.GIRLBOSS;
+    case 2:
+      return THEMES.BOYBOSS;
+    case 3:
+      return THEMES.DAY;
+    case 4:
+      return THEMES.NIGHT;
+    default:
+      return THEMES.DEFAULT;
   }
 }
