@@ -8,7 +8,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
+// THEMSE
+enum THEMES
+  {
+    DEFAULT,
+    GIRLBOSS,
+    BOYBOSS,
+    DAY,
+    NIGHT,
+    CUSTOMTHEME
+  }
 //STATIC SETUP VARIABLE
 static ArrayList<WidgetTextBox> textBoxList = new ArrayList<WidgetTextBox>();
 static ArrayList<WidgetButton> buttonList = new ArrayList<WidgetButton>();
@@ -32,7 +41,7 @@ Screen screen = new Screen();
 int currentlyActiveTab = 0;
 boolean isDropDownActive = false;
 int WIDGET_ROUNDNESS = 10;
-
+  
 enum WIDGET_TEXT_TYPE{
   TIME,
   DATE
@@ -43,7 +52,8 @@ enum WIDGET_TEXT_TYPE{
 void setup() {
   fullScreen();
   
-  
+  // THEME SETUP
+  screen.changeTheme(THEMES.GIRLBOSS);
   //DATA SETUP
   QueriesInitial setupQuery = new QueriesInitial();
   setupQuery.createDatabase();

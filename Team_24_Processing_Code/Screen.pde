@@ -2,18 +2,19 @@ class Screen
 {
   
 Screen(){}
- 
+
   // THEME-------------------
   
   // DEFAULT COLOR PALLETE
   
-  color PRIMARY_COLOR = color(0,50,100);
-  color SECONDARY_COLOR = color(200,200, 255);
-  color TERTIARY_COLOR = color(100, 200, 200);
-  color BACKGROUND = color(230,230,230); 
-  color BUTTON_ON = color(100,250,100);
-  color BUTTON_OFF = color(250,100,100);
-  color TEXT_COLOR = color(0,0,0);
+  color PRIMARY_COLOR;
+  color SECONDARY_COLOR;
+  color TERTIARY_COLOR;
+  color BACKGROUND; 
+  color BUTTON_ON;
+  color BUTTON_OFF;
+  color TEXT_COLOR;
+  color INACTIVE_TEXT_BOX;
   
   int buttonListSize = 0, dropDownListSize = 0, textBoxListSize = 0;
   
@@ -106,7 +107,7 @@ Screen(){}
   }
   void renderDataBock(int xpos, int ypos, int w, int h, DisplayDataPoint D){
     textSize(30);
-    fill(SECONDARY_COLOR);
+    fill(TERTIARY_COLOR);
     rect(xpos, ypos, w, h, 10);
     fill(TEXT_COLOR);
     text("Arrivals: " + D.ORIGIN,xpos + 2, ypos + h / 10);
@@ -146,8 +147,52 @@ Screen(){}
       return reversedDate;
     } catch(Exception e)
     {
-      println("How did an invalid date input "+dd_mm_yyyy+" make it to adjustDateInput?");
+      println("How did an invalid date input " + dd_mm_yyyy + " make it to adjustDateInput?");
       return null;
     }
   }
+  
+void changeTheme(THEMES selectedTheme) 
+{
+  switch (selectedTheme) 
+  {
+  case DEFAULT:
+    System.out.println("Default theme selected");
+    PRIMARY_COLOR = color(0,50,100);
+    SECONDARY_COLOR = color(200,200, 255);
+    TERTIARY_COLOR = color(100, 200, 200);
+    BACKGROUND = color(230,230,230); 
+    BUTTON_ON = color(100,250,100);
+    BUTTON_OFF = color(250,100,100);
+    TEXT_COLOR = color(0,0,0);
+    INACTIVE_TEXT_BOX = color(255);
+    break;
+  case GIRLBOSS:
+    System.out.println("Girl boss theme selected");
+    PRIMARY_COLOR = color(255,150,150);
+    SECONDARY_COLOR = color(100,0, 0);
+    TERTIARY_COLOR = color(200, 200, 250);
+    BACKGROUND = color(255,230,230); 
+    BUTTON_ON = color(100,100,250);
+    BUTTON_OFF = color(250,150,100);
+    TEXT_COLOR = color(0,0,0);
+    INACTIVE_TEXT_BOX = color(255,100,100);
+    break;
+  case BOYBOSS:
+    System.out.println("Boy boss theme selected");
+    break;
+  case DAY:
+    System.out.println("Day theme selected");
+    break;
+  case NIGHT:
+    System.out.println("Night theme selected");
+    break;
+  case CUSTOMTHEME:
+    System.out.println("Custom theme selected");
+    break;
+  default:
+    System.out.println("Unknown theme selected, error");
+    break;
+  }
+}
 }

@@ -19,7 +19,7 @@ class WidgetTextBox extends Widget{
     if (active) {
       fill(255); // Color when active
     } else {
-      fill(200); // Color when inactive
+      fill(screen.INACTIVE_TEXT_BOX); // Color when inactive
     }
     rect(xpos, ypos, wide, high, roundness);
     fill(screen.TEXT_COLOR);
