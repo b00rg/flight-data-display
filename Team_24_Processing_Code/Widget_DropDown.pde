@@ -23,7 +23,6 @@ class WidgetDropDown extends Widget{
   void scroll(int i){
     scrollIndex += i;
     if(scrollIndex < 0) { scrollIndex = 0 ;}
-    println(elements.length);
     if(scrollIndex > - numOfDropsToDisplay + elements.length)
     {
       scrollIndex = elements.length - numOfDropsToDisplay;
@@ -31,7 +30,7 @@ class WidgetDropDown extends Widget{
   }
   void render(){
     fill(255);
-    rect(xpos, ypos, wide, high);
+    rect(xpos, ypos, wide, high,10,10,0,0);
     if(amIActive)
     {
       renderDrops();
@@ -50,7 +49,6 @@ class WidgetDropDown extends Widget{
     textFont(font);
     for(int i = 0; i < numOfDropsToDisplay; i++)
     {
-      println("now redndering " + i + " and " + scrollIndex);
       fill(245 - i * 10);
       rect(xpos, ypos + high * (i + 1), wide, high);
       fill(0);
