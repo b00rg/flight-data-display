@@ -167,12 +167,12 @@ void changeTheme(THEMES selectedTheme)
   case GIRLBOSS:
     System.out.println("Girl boss theme selected");
     PRIMARY_COLOR = color(255,150,150);
-    SECONDARY_COLOR = color(100,0, 0);
+    SECONDARY_COLOR = color(200,200, 250);
     TERTIARY_COLOR = color(250, 200, 250);
     BACKGROUND = color(255,210,210); 
     BUTTON_ON = color(100,100,250);
     BUTTON_OFF = color(250,150,100);
-    TEXT_COLOR = color(25,25,0);
+    TEXT_COLOR = color(25,0,100);
     INACTIVE_TEXT_BOX = color(255,100,100);
     break;
   case BOYBOSS:
