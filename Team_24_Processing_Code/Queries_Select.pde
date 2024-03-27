@@ -107,5 +107,81 @@ class QueriesSelect extends Queries {
     
     return dataList;
   }
+  
+  
+  String[] getDepartureAirports(){
+    
+    ArrayList<String> dataList = new ArrayList<String>();
+    try {
+        Statement stmt = connection.createStatement();
+        String query = "SELECT DISTINCT ORIGIN FROM " + super.tableName + " ORDER BY ORIGIN;";
+        ResultSet resultSet = stmt.executeQuery(query);
+        
+        while (resultSet.next()) {
+            String airport = resultSet.getString("ORIGIN");
+            dataList.add(airport);
+        }
+        
+        resultSet.close();
+        stmt.close();
+    } 
+    catch (SQLException e) {
+        println("SQLException: " + e.getMessage());
+    }
+    
+    String[] departureAirports = dataList.toArray(new String[dataList.size()]);
+    return departureAirports;
+  }
+  
+  
+  String[] getArrivalAirports(){
+    
+    ArrayList<String> dataList = new ArrayList<String>();
+    try {
+        Statement stmt = connection.createStatement();
+        String query = "SELECT DISTINCT DEST FROM " + super.tableName + " ORDER BY DEST;";
+        ResultSet resultSet = stmt.executeQuery(query);
+        
+        while (resultSet.next()) {
+            String airport = resultSet.getString("DEST");
+            dataList.add(airport);
+        }
+        
+        resultSet.close();
+        stmt.close();
+    } 
+    catch (SQLException e) {
+        println("SQLException: " + e.getMessage());
+    }
+    
+    String[] arrivalAirports = dataList.toArray(new String[dataList.size()]);
+    return arrivalAirports;
+  }
+  
+  
+  ArrayList<BusyRouteDataPoint> getBusyRoutes(){
+    
+    ArrayList<BusyRouteDataPoint> dataList = new ArrayList<BusyRouteDataPoint>();
+    try {
+      Statement stmt = connection.createStatement();
+      String query = "SELECT ORIGIN, DEST, COUNT(*) AS FLIGHT_COUNT FROM " + super.tableName + " GROUP BY ORIGIN, DEST ORDER BY FLIGHT_COUNT DESC LIMIT 5;";
+      println(query);
+      ResultSet resultSet = stmt.executeQuery(query);
+      
+      while (resultSet.next()) {
+        BusyRouteDataPoint data = new BusyRouteDataPoint(resultSet);
+        dataList.add(data);
+      }
+      
+      resultSet.close();
+      stmt.close();
+    } 
+    catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+    
+    return dataList;
+    
+  }
 
 }
