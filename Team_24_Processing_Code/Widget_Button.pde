@@ -1,5 +1,4 @@
 class WidgetButton extends Widget{
-    color ON, OFF;
     WidgetButton(int xpos,int ypos, int W, int H,int R){
     super(xpos, ypos, W, H, R);
   }

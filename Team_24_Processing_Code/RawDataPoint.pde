@@ -163,3 +163,19 @@ class RouteDataPoint extends RawDataPoint {
     }
   }
 }
+
+
+// This datapoint marks a single instance of one unit of the graph in tab 3 - Angelos
+/*
+class airPortDataPoint extends RawDataPoint {
+  
+  airPortDataPoint(ResultSet resultSet) {
+    super(resultSet);
+    try {
+  
+    } catch (SQLException e) {
+    println("SQLException: " + e.getMessage());
+    }
+  }
+}
+*/
