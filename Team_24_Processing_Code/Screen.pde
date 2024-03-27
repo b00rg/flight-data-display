@@ -129,11 +129,23 @@ Screen(){}
       screen.selectedPage = 1;
     }
   }
-  if(moveRight.isClicked()){
-    screen.selectedPage++;
-    if(screen.selectedPage > screen.numberOfPages){
-      screen.selectedPage = screen.numberOfPages;
+    if(moveRight.isClicked()){
+      screen.selectedPage++;
+      if(screen.selectedPage > screen.numberOfPages){
+        screen.selectedPage = screen.numberOfPages;
+      }
     }
   }
-}
+  String adjustDateInput(String dd_mm_yyyy)
+  {
+    try
+    {
+      String[] parts = dd_mm_yyyy.split("/");
+      String reversedDate = parts[2] + "-" + parts[1] + "-" + parts[0];
+      return reversedDate;
+    } catch(Exception e)
+    {
+      println("How did an invalid date input "+dd_mm_yyyy+" make it to adjustDateInput?");
+    }
+  }
 }
