@@ -76,7 +76,12 @@ void setup() {
   dropDownList.add(arrivals);
   WidgetDropDown departures = new WidgetDropDown(300, 700, 200, 50, TextBoxFont, arrivalAirports);
   dropDownList.add(departures);
-  
+  ArrayList<RouteDataPoint> routes = selectQuery.getBusyRoutes();
+  for (int i = 0; i < routes.size(); i++){
+    RouteDataPoint route = routes.get(i);
+    println(route.ORIGIN + " " + route.DEST + " " + route.FLIGHT_COUNT);
+  }
+    
   
   //TAB BUTTON SETUP
   int totalTabWidth = screen.TAB_WIDTH + screen.TAB_BORDER_WIDTH;

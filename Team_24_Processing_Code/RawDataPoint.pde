@@ -146,13 +146,13 @@ class DisplayDataPoint extends RawDataPoint {
 }
 
 
-class BusyRouteDataPoint extends RawDataPoint {
+class RouteDataPoint extends RawDataPoint {
   
   String ORIGIN = null;
   String DEST = null;
   int FLIGHT_COUNT = 0;
 
-  BusyRouteDataPoint(ResultSet resultSet) {
+  RouteDataPoint(ResultSet resultSet) {
     super(resultSet);
     try {
       ORIGIN = columnExists(resultSet, "ORIGIN") ? resultSet.getString("ORIGIN") : null;
