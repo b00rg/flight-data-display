@@ -8,18 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-// THEMSE
-enum THEMES
-  {
-    DEFAULT,
-    GIRLBOSS,
-    BOYBOSS,
-    DAY,
-    NIGHT,
-    CUSTOM_THEME
-  }
-String themeNames[] = new String[] {"DEFAULT", "GIRLBOSS", "BOYBOSS", "DAY", "NIGHT", "CUSTOM_THEME"};
-WidgetDropDown ThemeSelection;
+
 //STATIC SETUP VARIABLE
 static ArrayList<WidgetTextBox> textBoxList = new ArrayList<WidgetTextBox>();
 static ArrayList<WidgetButton> buttonList = new ArrayList<WidgetButton>();
@@ -33,6 +22,7 @@ static WidgetButton moveRight;
 static WidgetTextBox startDate;
 static WidgetTextBox endDate;
 
+Screen screen1 = new Screen();
 static boolean[] statsShown = new boolean[18];
 color ON = color(100,255,100);
 color OFF = color(255,100,100);
@@ -43,7 +33,7 @@ Screen screen = new Screen();
 int currentlyActiveTab = 0;
 boolean isDropDownActive = false;
 int WIDGET_ROUNDNESS = 10;
-  
+
 enum WIDGET_TEXT_TYPE{
   TIME,
   DATE
@@ -54,8 +44,7 @@ enum WIDGET_TEXT_TYPE{
 void setup() {
   fullScreen();
   
-  // THEME SETUP
-  screen.changeTheme(THEMES.DEFAULT);
+  
   //DATA SETUP
   QueriesInitial setupQuery = new QueriesInitial();
   setupQuery.createDatabase();
@@ -66,15 +55,15 @@ void setup() {
   
   //TEXTBOX SETUP
   TextBoxFont = loadFont("default.vlw");
-  WidgetTextBox departureTimeSelections = new WidgetTextBox(250, 500, screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
-  WidgetTextBox arrivalTimeSelections = new WidgetTextBox(50, 500, screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
+  WidgetTextBox departureTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL+10, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
+  WidgetTextBox arrivalTimeSelections = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL, screen1.VERTICAL_DISTANCE_FROM_WALL + 500, screen1.WIDTH_B, screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
   textBoxList.add(departureTimeSelections);
   textBoxList.add(arrivalTimeSelections);
   
   
   //DATE TEXT BOX SETUP
-  startDate = new WidgetTextBox(50, 800, (int)(screen.WIDTH_B / 1.5), screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/mm/yyyy", WIDGET_TEXT_TYPE.DATE);
-  endDate = new WidgetTextBox(150, 800, (int)(screen.WIDTH_B / 1.5), screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/m/yyyy", WIDGET_TEXT_TYPE.DATE);
+  startDate = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL / 2, screen1.VERTICAL_DISTANCE_FROM_WALL - 70, (int)(screen1.WIDTH_B / 1.5), screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/mm/yyyy", WIDGET_TEXT_TYPE.DATE);
+  endDate = new WidgetTextBox(screen1.HORIZONTAL_DISTANCE_FROM_WALL *2, screen1.VERTICAL_DISTANCE_FROM_WALL - 70, (int)(screen1.WIDTH_B / 1.5), screen1.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/m/yyyy", WIDGET_TEXT_TYPE.DATE);
   textBoxList.add(startDate);
   textBoxList.add(endDate);
   
@@ -83,16 +72,11 @@ void setup() {
   QueriesSelect selectQuery = new QueriesSelect();
   String[] departureAirports = selectQuery.getDepartureAirports();
   String[] arrivalAirports = selectQuery.getArrivalAirports();  
-  WidgetDropDown arrivals = new WidgetDropDown(50, 150, 200, 50, TextBoxFont, departureAirports);
+  WidgetDropDown arrivals = new WidgetDropDown(300, 210, 200, 50, TextBoxFont, departureAirports);
   dropDownList.add(arrivals);
-  WidgetDropDown departures = new WidgetDropDown(250, 150, 200, 50, TextBoxFont, arrivalAirports);
+  WidgetDropDown departures = new WidgetDropDown(300, 700, 200, 50, TextBoxFont, arrivalAirports);
   dropDownList.add(departures);
-  ArrayList<RouteDataPoint> routes = selectQuery.getBusyRoutes();
-  for (int i = 0; i < routes.size(); i++){
-    RouteDataPoint route = routes.get(i);
-    println(route.ORIGIN + " " + route.DEST + " " + route.FLIGHT_COUNT);
-  }
-    
+  
   
   //TAB BUTTON SETUP
   int totalTabWidth = screen.TAB_WIDTH + screen.TAB_BORDER_WIDTH;
@@ -101,32 +85,28 @@ void setup() {
   for(int i = 0; i < 3; i++) // We lerp through the upper tab, adding the tab buttons at intervals to make sure they are equally spaced
   {
     int x = (int)(lerp(totalTabWidth, width, (float)(((float)i / (float)3))));    // We use lerop to find the range of the buttons and add them;
-    TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0));
+    TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0, ON, OFF));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
-  ReloadButton = new WidgetButton(50, 50, 50, 50, 1);
-  // THEME BUTTON SETUP
-  ThemeSelection = new WidgetDropDown(250, 20, 200, 50, TextBoxFont, themeNames);
-  ThemeSelection.currentlySelectedElement = 0;
+  ReloadButton = new WidgetButton(50, 50, 50, 50, 1, ON, OFF);
+  
+  
   //SCROLL BUTTON SETUP
-  moveLeft = new WidgetButton(1100, 1000, 50, 50, 5);
-  moveRight = new WidgetButton(1300, 1000, 50, 50, 5);
+  moveLeft = new WidgetButton(1100, 1000, 50, 50, 5, ON, OFF);
+  moveRight = new WidgetButton(1300, 1000, 50, 50, 5, ON, OFF);
   
 }
 
 
 void draw(){
   
-  background(screen.BACKGROUND);
-  
+  background(255,255,255);
   moveLeft.render();
   moveRight.render();
   // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
   // User tab selection only effects everything on the right
   screen.renderDIP();
-  ThemeSelection.render();
   screen.renderButtons();
-  ThemeSelection.render();
   switch(currentlyActiveTab)
   {
     case 0: // user is looking at tab 1
@@ -166,12 +146,6 @@ void mouseClicked(){
   }
   updateTabs();
   screen.hasUserChangedPage();
-  ThemeSelection.isClicked();
-  if(ThemeSelection.currentlySelectedElement == -1)
-  {
-    ThemeSelection.currentlySelectedElement = 0;
-  }
-  screen.changeTheme(indexToTheme(ThemeSelection.currentlySelectedElement));
   if(isDropDownActive)
   {
     for(int i = 0; i < dropDownList.size(); i++)
@@ -196,8 +170,7 @@ void mouseClicked(){
 }
 
 
-// checks which tab is currently active and applies a process depending on the scenario
-// At the moment this 
+//ADD COMMENT
 void keyPressed(){ // todo, lots of this code is redudant since the user always has access to the buttons
     switch(currentlyActiveTab) 
     {
@@ -215,10 +188,10 @@ void keyPressed(){ // todo, lots of this code is redudant since the user always 
 }
 
 
-// creates all querry related data pieces and collect the data from input buttons, some of the data is also processed
-// to be compatable with our querry system requerments, the filteredData is adjusted to contain the new data - Angelos
+//ADD COMMENT
 void RealoadEvent(){
   // setup place holder values
+  int startTimeForReaload = millis();
   boolean depTime;
   int num1;
   int num2;
@@ -272,16 +245,24 @@ void RealoadEvent(){
 
   
   QueriesSelect selectQuery = new QueriesSelect();
+  int startTime = millis();
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation);
+  int endTime = millis();
+  int elapsed = endTime - startTime;
+  println("It took " + elapsed + " milliseconds to generate the new filtered data array");
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
   screen.selectedPage = 1;
   
+  int endTimeForReload = millis();
+  int elapsedTimeForReload = endTimeForReload - startTimeForReaload;
+  println("It took " + elapsedTimeForReload + " milliseconds to complete ReloadEvent");
+  
 }
 
 
-// check user scroll input, and apply the scroll to all active drop down buttons, inactive drop down buttons simply ignore this call - Angelos
+//ADD COMMENT
 void mouseWheel(MouseEvent event){
   for(int i = 0; i < dropDownList.size(); i++)
   {
@@ -290,7 +271,7 @@ void mouseWheel(MouseEvent event){
 }
 
 
-// Updates the user tabs at the top of the screen to reflect which tab is currently active and de activate all other tabs - Angelos
+//ADD COMMENT
 void updateTabs(){
   for(int i = 0; i < TabButtons.size(); i++)
   {
@@ -298,25 +279,5 @@ void updateTabs(){
     {
       currentlyActiveTab = i;
     }
-  }
-}
-
-
-// In modern java an enum can be associated to a number, not in processing, this function converts the index of the theme that the user has selected
-// in the theme selection button to the curresponding theme in the enum, this is a product of using processing unfortunetly
-THEMES indexToTheme(int index)
-{
-  switch(index)
-  {
-    case 1:
-      return THEMES.GIRLBOSS;
-    case 2:
-      return THEMES.BOYBOSS;
-    case 3:
-      return THEMES.DAY;
-    case 4:
-      return THEMES.NIGHT;
-    default:
-      return THEMES.DEFAULT;
   }
 }
