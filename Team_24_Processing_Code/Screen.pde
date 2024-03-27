@@ -121,4 +121,19 @@ Screen(){}
       
     }
   }
+  
+  void hasUserChangedPage(){ // The user clicked a button to chnange pages for the data display in tab 1
+  if(moveLeft.isClicked()){
+    screen.selectedPage--;
+    if(screen.selectedPage <= 0){
+      screen.selectedPage = 1;
+    }
+  }
+  if(moveRight.isClicked()){
+    screen.selectedPage++;
+    if(screen.selectedPage > screen.numberOfPages){
+      screen.selectedPage = screen.numberOfPages;
+    }
+  }
+}
 }

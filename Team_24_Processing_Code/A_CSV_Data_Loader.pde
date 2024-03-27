@@ -145,7 +145,7 @@ void mouseClicked(){
      }
   }
   updateTabs();
-  hasUserChangedPage();
+  screen.hasUserChangedPage();
   if(isDropDownActive)
   {
     for(int i = 0; i < dropDownList.size(); i++)
@@ -191,6 +191,7 @@ void keyPressed(){ // todo, lots of this code is redudant since the user always 
 //ADD COMMENT
 void RealoadEvent(){
   // setup place holder values
+  int startTimeForReaload = millis();
   boolean depTime;
   int num1;
   int num2;
@@ -234,11 +235,19 @@ void RealoadEvent(){
   }
   
   QueriesSelect selectQuery = new QueriesSelect();
+  int startTime = millis();
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation);
+  int endTime = millis();
+  int elapsed = endTime - startTime;
+  println("It took " + elapsed + " milliseconds to generate the new filtered data array");
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
   screen.selectedPage = 1;
+  
+  int endTimeForReload = millis();
+  int elapsedTimeForReload = endTimeForReload - startTimeForReaload;
+  println("It took " + elapsedTimeForReload + " milliseconds to complete ReloadEvent");
   
 }
 
@@ -263,22 +272,3 @@ void updateTabs(){
   }
 }
 
-
-// ADD COMMENT
-void hasUserChangedPage(){
-  
-  if(moveLeft.isClicked()){
-    screen.selectedPage--;
-    if(screen.selectedPage <= 0){
-      screen.selectedPage = 1;
-    }
-  }
-  
-  if(moveRight.isClicked()){
-    screen.selectedPage++;
-    if(screen.selectedPage > screen.numberOfPages){
-      screen.selectedPage = screen.numberOfPages;
-    }
-  }
-  
-}
