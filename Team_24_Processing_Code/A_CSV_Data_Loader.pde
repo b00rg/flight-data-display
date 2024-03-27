@@ -87,12 +87,7 @@ void setup() {
   dropDownList.add(arrivals);
   WidgetDropDown departures = new WidgetDropDown(250, 150, 200, 50, TextBoxFont, arrivalAirports);
   dropDownList.add(departures);
-  ArrayList<RouteDataPoint> routes = selectQuery.getBusyRoutes();
-  for (int i = 0; i < routes.size(); i++){
-    RouteDataPoint route = routes.get(i);
-    println(route.ORIGIN + " " + route.DEST + " " + route.FLIGHT_COUNT);
-  }
-    
+  
   
   //TAB BUTTON SETUP
   int totalTabWidth = screen.TAB_WIDTH + screen.TAB_BORDER_WIDTH;
@@ -225,6 +220,9 @@ void RealoadEvent(){
   
   String selectedAriivalStation = "";
   String selectedDepartureStation = "";
+  String date1 = "";
+  String date2 = "";
+  
   
   // insert user querry values to the right places
   if(textBoxList.get(1).textValue != "??:?? - ??:??"){
@@ -262,17 +260,14 @@ void RealoadEvent(){
   }
 
   // Process user date range input
-  String DateRange = null;
   if((startDate.textValue != null || startDate.textValue != startDate.normal) && (endDate.textValue != null || endDate.textValue != endDate.normal))
   {
-    String date1 = screen.adjustDateInput(startDate.textValue);
-    String date2 = screen.adjustDateInput(endDate.textValue);
-    DateRange = date1 +" - "+ date2;
+    date1 = screen.adjustDateInput(startDate.textValue);
+    date2 = screen.adjustDateInput(endDate.textValue);
   }
-
   
   QueriesSelect selectQuery = new QueriesSelect();
-  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation);
+  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation, date1, date2);
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
@@ -303,7 +298,7 @@ void updateTabs(){
 
 
 // In modern java an enum can be associated to a number, not in processing, this function converts the index of the theme that the user has selected
-// in the theme selection button to the curresponding theme in the enum, this is a product of using processing unfortunetly
+// in the theme selection button to the curresponding theme in the enum, this is a product of using processing unfortunetly (i'm assuming this was angelos)
 THEMES indexToTheme(int index)
 {
   switch(index)

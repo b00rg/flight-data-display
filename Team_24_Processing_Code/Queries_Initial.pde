@@ -62,7 +62,7 @@ class QueriesInitial extends Queries {
 
         // Create the table
         String createQuery = "CREATE TABLE " +  super.tableName + " ("
-                + "FL_DATE VARCHAR(50), "
+                + "FL_DATE DATE, "
                 + "MKT_CARRIER VARCHAR(50), "
                 + "MKT_CARRIER_FL_NUM INT, "
                 + "ORIGIN VARCHAR(50), "
@@ -114,9 +114,25 @@ class QueriesInitial extends Queries {
                     queryBuilder.append("NULL");
                 } 
                 else {
-                    if (i == 2 || i == 6 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17) { // Integer fields
+                    if (i == 0){
+                      String originalString = data[i];
+                      int indexOfSpace = originalString.indexOf(' ');
+                      String modifiedString = indexOfSpace != -1 ? originalString.substring(0, indexOfSpace) : originalString;
+                      String[] parts = modifiedString.split("/");
+                      String rearrangedString = "";
+                      for (int j = parts.length - 1; j >= 0; j--) {
+                        rearrangedString += parts[j];
+                        if (j != 0) {
+                          rearrangedString += "-"; // Add '-' between parts, except for the last part
+                        }
+                      }
+                      queryBuilder.append("'").append(rearrangedString).append("'");
+
+
+                    }
+                    else if (i == 2 || i == 6 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17) { // Integer fields
                         queryBuilder.append(Integer.parseInt(data[i]));
-                    } 
+                    }
                     else {
                         queryBuilder.append("'").append(data[i]).append("'");
                     }

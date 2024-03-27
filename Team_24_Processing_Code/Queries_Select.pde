@@ -54,7 +54,7 @@ class QueriesSelect extends Queries {
   }
   
   
-  ArrayList<DisplayDataPoint> getRowsDisplay(boolean depTrue, int lowerVal, int upperVal, String depAirport, String arrAirport) {
+  ArrayList<DisplayDataPoint> getRowsDisplay(boolean depTrue, int lowerVal, int upperVal, String depAirport, String arrAirport, String startDateRange, String endDateRange) {
     
     ArrayList<DisplayDataPoint> dataList = new ArrayList<>();
     try {   
@@ -62,9 +62,9 @@ class QueriesSelect extends Queries {
         
         // Construct the WHERE clause dynamically
         StringBuilder whereClauseBuilder = new StringBuilder();
-        String column = depTrue ? "DEP_TIME" : "ARR_TIME";
         
         // Time range filter
+        String column = depTrue ? "DEP_TIME" : "ARR_TIME";
         if (lowerVal < upperVal) {
             whereClauseBuilder.append(column).append(" BETWEEN ").append(lowerVal).append(" AND ").append(upperVal);
         } else {
@@ -85,6 +85,19 @@ class QueriesSelect extends Queries {
                 whereClauseBuilder.append(" AND ");
             }
             whereClauseBuilder.append("DEST = '").append(arrAirport).append("'");
+        }
+        
+        // Date range filter
+        if (startDateRange != null && endDateRange != null && !startDateRange.isEmpty() && !endDateRange.isEmpty()) {
+            if (whereClauseBuilder.length() > 0) {
+                whereClauseBuilder.append(" AND ");
+            }
+            if (lowerVal < upperVal) {
+              whereClauseBuilder.append("FL_DATE BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
+            } 
+            else {
+              whereClauseBuilder.append("FL_DATE NOT BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
+            }
         }
         
         // Construct the full SQL query
