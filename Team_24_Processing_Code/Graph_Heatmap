@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-
 class DensityGraph extends Graph {
 
     void draw(ArrayList<RouteDataPoint> values) {
@@ -63,12 +60,13 @@ class DensityGraph extends Graph {
         }
 
         // Draw labels
-        textAlign(LEFT, CENTER);
+        textAlign(CENTER, TOP); // Adjusted textAlign for x-labels
         for (int i = 0; i < airports.size(); i++) {
             float x = leftMargin + i * cellSize + cellSize / 2;
-            text(airports.get(i), x, height - 10);
+            float y = topMargin - 10; // Adjusted y-coordinate for x-labels
+            text(airports.get(i), x, y);
         }
-        textAlign(CENTER, BOTTOM);
+        textAlign(LEFT, CENTER);
         for (int j = 0; j < airports.size(); j++) {
             float y = topMargin + j * cellSize + cellSize / 2;
             text(airports.get(j), 30, y);
