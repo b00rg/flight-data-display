@@ -1,34 +1,59 @@
-class Heatmap extends Graph {
-    ArrayList<RouteDataPoint> dataPoints;
+import java.util.ArrayList;
 
-    void drawHeatMap(ArrayList<RouteDataPoint> values) {
-        int gridSize = 20; // Size of grid cells
-        int maxCount = 0; // Maximum flight count
+class SimpleGraph extends Graph {
 
-        // Find maximum flight count
+    void draw(ArrayList<RouteDataPoint> values) {
+        // Set up variables for drawing
+        float topMargin = 50;
+        float leftMargin = 50;
+        float pointSpacing = (width - leftMargin) / values.size();
+        
+        // Find the maximum flight count to scale the graph
+        int maxFlightCount = 0;
         for (RouteDataPoint data : values) {
-            maxCount = Math.max(maxCount, data.FLIGHT_COUNT);
+            maxFlightCount = Math.max(maxFlightCount, data.FLIGHT_COUNT);
         }
-
-        // Draw grid and color each cell based on flight count
-        for (RouteDataPoint dp : dataPoints) {
-            // Calculate cell position based on origin and destination airports
-            int i = hashAirport(dp.ORIGIN); // Assuming hashAirport() converts airport code to grid index
-            int j = hashAirport(dp.DEST);
-
-            // Calculate total flight count within current grid cell
-            int totalFlightCount = dp.FLIGHT_COUNT;
-
-            // Map flight count to color
-            float hue = map(totalFlightCount, 0, maxCount, 0, 255);
-            fill(hue, 255, 255); // Assuming fill method is available
-            rect(i * gridSize, j * gridSize, gridSize, gridSize); // Assuming rect method is available
+        
+        // Draw the density graph
+        beginShape();
+        noFill();
+        stroke(50, 100, 200); // Example color, change as needed
+        strokeWeight(2);
+        for (int i = 0; i < values.size(); i++) {
+            RouteDataPoint data = values.get(i);
+            
+            // Calculate the height of each point relative to the canvas height
+            float pointHeight = map(data.FLIGHT_COUNT, 0, maxFlightCount, height - topMargin, topMargin);
+            
+            // Calculate the x-coordinate of each point
+            float x = leftMargin + i * pointSpacing;
+            
+            // Draw the point
+            vertex(x, pointHeight);
+            
+            // Draw the label at the bottom
+            textAlign(CENTER, TOP);
+            text(data.ORIGIN + " to " + data.DEST, x, height - 10);
         }
+        endShape();
+        
+        // Draw the scale
+        drawScale(maxFlightCount, topMargin);
     }
 
-    // Method to hash airport code to grid index (for simplicity, you can modify this according to your needs)
-    int hashAirport(String airportCode) {
-        // Example hash function: just return the ASCII value of the first character
-        return (int) airportCode.charAt(0);
+    void drawScale(int maxValue, float topMargin) {
+        float step = maxValue / 5; // Determine the step size for the scale
+
+        // Draw tick marks and labels
+        for (int i = 0; i <= 5; i++) {
+            float yPos = map(i * step, 0, maxValue, height - topMargin, 0);
+
+            // Draw tick mark
+            line(10, yPos, 0, yPos);
+
+            // Draw label
+            textAlign(LEFT, CENTER);
+            text(nf(i * step, 0, 1), 10, yPos);
+        }
     }
 }
