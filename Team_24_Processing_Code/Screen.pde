@@ -28,9 +28,6 @@ Screen(){}
   int selectedPage = 1;
   int dataBlockYMargin = 5;
   // Layout of buttons and drop down menus
-  int VERTICAL_DISTANCE_FROM_WALL = 200;
-  int VERTICAL_SPACING_OF_BOTTONS = 100;
-  int HORIZONTAL_DISTANCE_FROM_WALL = 100;
   int HEIGHT_B = 70;
   int WIDTH_B = 200;
   
@@ -171,11 +168,11 @@ void changeTheme(THEMES selectedTheme)
     System.out.println("Girl boss theme selected");
     PRIMARY_COLOR = color(255,150,150);
     SECONDARY_COLOR = color(100,0, 0);
-    TERTIARY_COLOR = color(200, 200, 250);
-    BACKGROUND = color(255,230,230); 
+    TERTIARY_COLOR = color(250, 200, 250);
+    BACKGROUND = color(255,210,210); 
     BUTTON_ON = color(100,100,250);
     BUTTON_OFF = color(250,150,100);
-    TEXT_COLOR = color(0,0,0);
+    TEXT_COLOR = color(25,25,0);
     INACTIVE_TEXT_BOX = color(255,100,100);
     break;
   case BOYBOSS:
@@ -183,6 +180,14 @@ void changeTheme(THEMES selectedTheme)
     break;
   case DAY:
     System.out.println("Day theme selected");
+    PRIMARY_COLOR = color(255,150,150);
+    SECONDARY_COLOR = color(100,100, 0);
+    TERTIARY_COLOR = color(250, 250, 200);
+    BACKGROUND = color(255,255,255); 
+    BUTTON_ON = color(100,100,250);
+    BUTTON_OFF = color(250,250,100);
+    TEXT_COLOR = color(0,25,25);
+    INACTIVE_TEXT_BOX = color(100,250,100);
     break;
   case NIGHT:
     System.out.println("Night theme selected");

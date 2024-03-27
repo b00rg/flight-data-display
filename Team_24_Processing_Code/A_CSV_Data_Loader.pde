@@ -53,7 +53,7 @@ void setup() {
   fullScreen();
   
   // THEME SETUP
-  screen.changeTheme(THEMES.GIRLBOSS);
+  screen.changeTheme(THEMES.DEFAULT);
   //DATA SETUP
   QueriesInitial setupQuery = new QueriesInitial();
   setupQuery.createDatabase();
@@ -64,15 +64,15 @@ void setup() {
   
   //TEXTBOX SETUP
   TextBoxFont = loadFont("default.vlw");
-  WidgetTextBox departureTimeSelections = new WidgetTextBox(screen.HORIZONTAL_DISTANCE_FROM_WALL, screen.VERTICAL_DISTANCE_FROM_WALL+10, screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
-  WidgetTextBox arrivalTimeSelections = new WidgetTextBox(screen.HORIZONTAL_DISTANCE_FROM_WALL, screen.VERTICAL_DISTANCE_FROM_WALL + 500, screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
+  WidgetTextBox departureTimeSelections = new WidgetTextBox(250, 500, screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
+  WidgetTextBox arrivalTimeSelections = new WidgetTextBox(50, 500, screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
   textBoxList.add(departureTimeSelections);
   textBoxList.add(arrivalTimeSelections);
   
   
   //DATE TEXT BOX SETUP
-  startDate = new WidgetTextBox(screen.HORIZONTAL_DISTANCE_FROM_WALL / 2, screen.VERTICAL_DISTANCE_FROM_WALL - 70, (int)(screen.WIDTH_B / 1.5), screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/mm/yyyy", WIDGET_TEXT_TYPE.DATE);
-  endDate = new WidgetTextBox(screen.HORIZONTAL_DISTANCE_FROM_WALL *2, screen.VERTICAL_DISTANCE_FROM_WALL - 70, (int)(screen.WIDTH_B / 1.5), screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/m/yyyy", WIDGET_TEXT_TYPE.DATE);
+  startDate = new WidgetTextBox(50, 800, (int)(screen.WIDTH_B / 1.5), screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/mm/yyyy", WIDGET_TEXT_TYPE.DATE);
+  endDate = new WidgetTextBox(150, 800, (int)(screen.WIDTH_B / 1.5), screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/m/yyyy", WIDGET_TEXT_TYPE.DATE);
   textBoxList.add(startDate);
   textBoxList.add(endDate);
   
@@ -81,9 +81,9 @@ void setup() {
   QueriesSelect selectQuery = new QueriesSelect();
   String[] departureAirports = selectQuery.getDepartureAirports();
   String[] arrivalAirports = selectQuery.getArrivalAirports();  
-  WidgetDropDown arrivals = new WidgetDropDown(300, 210, 200, 50, TextBoxFont, departureAirports);
+  WidgetDropDown arrivals = new WidgetDropDown(50, 150, 200, 50, TextBoxFont, departureAirports);
   dropDownList.add(arrivals);
-  WidgetDropDown departures = new WidgetDropDown(300, 700, 200, 50, TextBoxFont, arrivalAirports);
+  WidgetDropDown departures = new WidgetDropDown(250, 150, 200, 50, TextBoxFont, arrivalAirports);
   dropDownList.add(departures);
   ArrayList<RouteDataPoint> routes = selectQuery.getBusyRoutes();
   for (int i = 0; i < routes.size(); i++){
