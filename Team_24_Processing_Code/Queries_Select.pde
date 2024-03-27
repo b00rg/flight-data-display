@@ -159,17 +159,16 @@ class QueriesSelect extends Queries {
   }
   
   
-  ArrayList<BusyRouteDataPoint> getBusyRoutes(){
+  ArrayList<RouteDataPoint> getBusyRoutes(){
     
-    ArrayList<BusyRouteDataPoint> dataList = new ArrayList<BusyRouteDataPoint>();
+    ArrayList<RouteDataPoint> dataList = new ArrayList<RouteDataPoint>();
     try {
       Statement stmt = connection.createStatement();
       String query = "SELECT ORIGIN, DEST, COUNT(*) AS FLIGHT_COUNT FROM " + super.tableName + " GROUP BY ORIGIN, DEST ORDER BY FLIGHT_COUNT DESC LIMIT 5;";
-      println(query);
       ResultSet resultSet = stmt.executeQuery(query);
       
       while (resultSet.next()) {
-        BusyRouteDataPoint data = new BusyRouteDataPoint(resultSet);
+        RouteDataPoint data = new RouteDataPoint(resultSet);
         dataList.add(data);
       }
       
@@ -179,9 +178,31 @@ class QueriesSelect extends Queries {
     catch (SQLException e) {
       println("SQLException: " + e.getMessage());
     }
+    return dataList; 
+  }
+  
+  
+  
+  ArrayList<RouteDataPoint> getAllRoutes(){
     
-    return dataList;
-    
+    ArrayList<RouteDataPoint> dataList = new ArrayList<RouteDataPoint>();
+    try {
+      Statement stmt = connection.createStatement();
+      String query = "SELECT ORIGIN, DEST, COUNT(*) AS FLIGHT_COUNT FROM " + super.tableName + " GROUP BY ORIGIN, DEST ORDER BY FLIGHT_COUNT DESC;";
+      ResultSet resultSet = stmt.executeQuery(query);
+      
+      while (resultSet.next()) {
+        RouteDataPoint data = new RouteDataPoint(resultSet);
+        dataList.add(data);
+      }
+      
+      resultSet.close();
+      stmt.close();
+    } 
+    catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+    return dataList; 
   }
 
 }
