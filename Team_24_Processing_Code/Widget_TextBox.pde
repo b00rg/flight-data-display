@@ -22,7 +22,7 @@ class WidgetTextBox extends Widget{
       fill(200); // Color when inactive
     }
     rect(xpos, ypos, wide, high, roundness);
-    fill(0);
+    fill(screen.TEXT_COLOR);
     textAlign(LEFT, CENTER);
     textFont(font);
     text(textValue, xpos + 5, ypos + high/3);

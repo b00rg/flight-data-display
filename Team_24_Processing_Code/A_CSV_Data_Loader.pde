@@ -89,15 +89,15 @@ void setup() {
   for(int i = 0; i < 3; i++) // We lerp through the upper tab, adding the tab buttons at intervals to make sure they are equally spaced
   {
     int x = (int)(lerp(totalTabWidth, width, (float)(((float)i / (float)3))));    // We use lerop to find the range of the buttons and add them;
-    TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0, ON, OFF));
+    TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
-  ReloadButton = new WidgetButton(50, 50, 50, 50, 1, ON, OFF);
+  ReloadButton = new WidgetButton(50, 50, 50, 50, 1);
   
   
   //SCROLL BUTTON SETUP
-  moveLeft = new WidgetButton(1100, 1000, 50, 50, 5, ON, OFF);
-  moveRight = new WidgetButton(1300, 1000, 50, 50, 5, ON, OFF);
+  moveLeft = new WidgetButton(1100, 1000, 50, 50, 5);
+  moveRight = new WidgetButton(1300, 1000, 50, 50, 5);
   
 }
 
