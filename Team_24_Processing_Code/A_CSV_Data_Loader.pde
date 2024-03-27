@@ -233,6 +233,7 @@ void RealoadEvent(){
   else {
     selectedDepartureStation = null;
   }
+
   // Process user date range input
   String DateRange = null;
   if((startDate.textValue != null || startDate.textValue != startDate.normal) && (endDate.textValue != null || endDate.textValue != endDate.normal))
@@ -241,6 +242,7 @@ void RealoadEvent(){
     String date2 = screen.adjustDateInput(endDate.textValue);
     DateRange = date1 +" - "+ date2;
   }
+
   
   QueriesSelect selectQuery = new QueriesSelect();
   int startTime = millis();
