@@ -35,7 +35,7 @@ class QueriesSelect extends Queries {
     ArrayList<PieDataPoint> dataList = new ArrayList<PieDataPoint>();
     try {
       Statement stmt = connection.createStatement();
-      String query = "SELECT MKT_CARRIER, SUM(CANCELLED=1) AS 'COUNT_CANCELLED' , SUM(DIVERTED=1) AS 'COUNT_DIVERTED' FROM " + super.tableName + " GROUP BY MKT_CARRIER;";
+      String query = "SELECT  MKT_CARRIER, SUM(CASE WHEN CANCELLED = 1 THEN 1 ELSE 0 END) AS 'COUNT_CANCELLED', SUM(CASE WHEN DIVERTED = 1 THEN 1 ELSE 0 END) AS 'COUNT_DIVERTED', COUNT(*) - SUM(CANCELLED + DIVERTED) AS 'COUNT_EXPECTED' FROM flight_Data GROUP BY MKT_CARRIER;"
       ResultSet resultSet = stmt.executeQuery(query);
       
       while (resultSet.next()) {
@@ -54,8 +54,10 @@ class QueriesSelect extends Queries {
   }
   
   
+
   ArrayList<DisplayDataPoint> getRowsDisplay(boolean depTrue, int lowerVal, int upperVal, String depAirport, String arrAirport) {
     String word = "";
+
     ArrayList<DisplayDataPoint> dataList = new ArrayList<>();
     try {   
         Statement stmt = connection.createStatement();
@@ -63,10 +65,12 @@ class QueriesSelect extends Queries {
         // Construct the WHERE clause dynamically
         StringBuilder whereClauseBuilder = new StringBuilder();
         String column = depTrue ? "DEP_TIME" : "ARR_TIME";
-        
+
         // Time range filter
+
         if (lowerVal != 0 && upperVal != 0){
           if (lowerVal < upperVal) {
+
             whereClauseBuilder.append(column).append(" BETWEEN ").append(lowerVal).append(" AND ").append(upperVal);
           } else {
             whereClauseBuilder.append(column).append(" NOT BETWEEN ").append(upperVal).append(" AND ").append(lowerVal);
@@ -88,6 +92,19 @@ class QueriesSelect extends Queries {
                 whereClauseBuilder.append(" AND ");
             }
             whereClauseBuilder.append("DEST = '").append(arrAirport).append("'");
+        }
+        
+        // Date range filter
+        if (startDateRange != null && endDateRange != null && !startDateRange.isEmpty() && !endDateRange.isEmpty()) {
+            if (whereClauseBuilder.length() > 0) {
+                whereClauseBuilder.append(" AND ");
+            }
+            if (lowerVal < upperVal) {
+              whereClauseBuilder.append("FL_DATE BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
+            } 
+            else {
+              whereClauseBuilder.append("FL_DATE NOT BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
+            }
         }
         
         // Construct the full SQL query
