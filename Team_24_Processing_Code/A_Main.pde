@@ -31,6 +31,8 @@ static WidgetButton moveLeft;
 static WidgetButton moveRight;
 
 static WidgetButton cancelledFlights;
+static WidgetButton delayedFlights;
+static WidgetButton undisturbedFlights;
 
 static WidgetTextBox startDate;
 static WidgetTextBox endDate;
@@ -102,14 +104,18 @@ void setup() {
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
   ReloadButton = new WidgetButton(50, 50, 50, 50, 1);
+  
   // THEME BUTTON SETUP
   ThemeSelection = new WidgetDropDown(250, 20, 200, 50, TextBoxFont, themeNames);
   ThemeSelection.currentlySelectedElement = 0;
+  
   //SCROLL BUTTON SETUP
   moveLeft = new WidgetButton(1100, 1000, 50, 50, 5);
   moveRight = new WidgetButton(1300, 1000, 50, 50, 5);
   
   cancelledFlights = new WidgetButton(50, 1000,50, 50, 20);
+  delayedFlights = new WidgetButton(150, 1000, 50, 50, 20);
+  undisturbedFlights = new WidgetButton(250, 1000, 50, 50, 20);
 }
 
 
@@ -134,6 +140,8 @@ void draw(){
   }
   ReloadButton.render();
   cancelledFlights.render();
+  delayedFlights.render();
+  undisturbedFlights.render();
 }
 
 
@@ -192,10 +200,7 @@ void mouseClicked(){
       dropDownList.get(i).isClicked();
     }
   }
-  if(cancelledFlights.isClicked())
-  {
-    cancelledFlights.active = !cancelledFlights.active;
-  }
+  radioButtonsFlightStatus();
 }
 
 
@@ -281,20 +286,6 @@ void RealoadEvent(){
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
   screen.selectedPage = 1;
-  /*
-  DisplayDataPoint array[] = filteredData.toArray(new DisplayDataPoint[filteredData.size()]);
-  for(int i = 0; i < array.length; i++)
-  {
-    if(array[i].CANCELLED == 0)
-    {
-      array.remove(i);
-    }
-  }
-  for(int i = 0; i < filteredData.size(); i++)
-  {
-    print(filteredData.get(i).CANCELLED);
-  }
-  */
 }
 
 
@@ -337,3 +328,52 @@ THEMES indexToTheme(int index)
       return THEMES.DEFAULT;
   }
 }
+
+
+// This function simply ensures that only one of the 3 radio buttons at the bottom of the buttons display is active
+// And that if the user clicks on an active one they are all disabled - Angelos
+void radioButtonsFlightStatus()
+  {
+      if(cancelledFlights.isClicked())
+    {
+      if(!cancelledFlights.active)
+      {
+        cancelledFlights.active = true;
+        delayedFlights.active = false;
+        undisturbedFlights.active = false;
+      } else 
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = false;
+        undisturbedFlights.active = false;
+      }
+    }
+    if(delayedFlights.isClicked())
+    {
+      if(!delayedFlights.active)
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = true;
+        undisturbedFlights.active = false;
+      } else 
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = false;
+        undisturbedFlights.active = false;
+      }
+    }
+    if(undisturbedFlights.isClicked())
+    {
+      if(!undisturbedFlights.active)
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = false;
+        undisturbedFlights.active = true;
+      } else 
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = false;
+        undisturbedFlights.active = false;
+      }
+    }
+  }

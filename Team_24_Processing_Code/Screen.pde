@@ -107,19 +107,27 @@ Screen(){}
     fill(TERTIARY_COLOR);
     rect(xpos, ypos, w, h, 10);
     fill(TEXT_COLOR);
-    text("Arrivals: " + D.ORIGIN,xpos + 2, ypos + h / 10);
-    text("Destination: " + D.DEST,xpos + 2, ypos + h/2);
+    text("Arrivals: " + D.ORIGIN,xpos, ypos + h / 10);
+    text("Destination: " + D.DEST,xpos, ypos + h/2);
     
-    if(D.CANCELLED != 1)
+    if(D.CANCELLED == 0 && D.DIVERTED == 0)
     {
-      text("Time: " + D.ARR_TIME, xpos + 2, ypos + h / 10 * 3);
-      text("Time: " + D.DEP_TIME, xpos + 2,ypos + h/2 + h/4);
+      text("Time: " + D.ARR_TIME, xpos, ypos + h / 10 * 3);
+      text("Time: " + D.DEP_TIME, xpos,ypos + h/2 + h/4);
+    } else if(D.DIVERTED == 1 && D.CANCELLED == 0) 
+    {
+      text("Time: " + D.ARR_TIME, xpos, ypos + h / 10 * 3);
+      text("Time: " + D.DEP_TIME, xpos,ypos + h/2 + h/4);
+      fill(BUTTON_OFF);
+      text("Diverted",xpos+ w/2, ypos + h / 2);      
     } else 
     {
       fill(BUTTON_OFF);
-      text("CANCELLED", xpos, ypos + h / 3);
+      text("CANCELLED", xpos+ w/2, ypos + h / 2);
     }
-    
+    fill(TEXT_COLOR);
+    text("Carrier: " + D.MKT_CARRIER, xpos + w/2, ypos + h / 10);
+    text("Date: " + D.FL_DATE, xpos + w/2,ypos + h / 10 *3);
     
   }
   void printTable()
@@ -163,7 +171,6 @@ void changeTheme(THEMES selectedTheme)
   switch (selectedTheme) 
   {
   case DEFAULT:
-    System.out.println("Default theme selected");
     PRIMARY_COLOR = color(0,50,100);
     SECONDARY_COLOR = color(200,200, 255);
     TERTIARY_COLOR = color(100, 200, 200);
@@ -174,7 +181,6 @@ void changeTheme(THEMES selectedTheme)
     INACTIVE_TEXT_BOX = color(255);
     break;
   case GIRLBOSS:
-    System.out.println("Girl boss theme selected");
     PRIMARY_COLOR = color(255,150,150);
     SECONDARY_COLOR = color(200,200, 250);
     TERTIARY_COLOR = color(250, 200, 250);
@@ -185,10 +191,8 @@ void changeTheme(THEMES selectedTheme)
     INACTIVE_TEXT_BOX = color(255,100,100);
     break;
   case BOYBOSS:
-    System.out.println("Boy boss theme selected");
     break;
   case DAY:
-    System.out.println("Day theme selected");
     PRIMARY_COLOR = color(255,150,150);
     SECONDARY_COLOR = color(100,100, 0);
     TERTIARY_COLOR = color(250, 250, 200);
@@ -199,10 +203,8 @@ void changeTheme(THEMES selectedTheme)
     INACTIVE_TEXT_BOX = color(100,250,100);
     break;
   case NIGHT:
-    System.out.println("Night theme selected");
     break;
   case CUSTOM_THEME:
-    System.out.println("Custom theme selected");
     break;
   default:
     System.out.println("Unknown theme selected, error");
