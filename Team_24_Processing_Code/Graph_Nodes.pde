@@ -1,10 +1,14 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.sql.*;
+
 AirportGraph graph;
 AirportNode hoveredNode = null;
 boolean isDragging = false;
 float offsetX, offsetY;
 PFont labelFont;
 String selectedAirportName = null;
-int selectedAirportFlights = 0;
+int[] selectedAirportData = new int[3]; // Array to hold total, arrivals, and departures
 
 void setup() {
   fullScreen();
@@ -53,11 +57,13 @@ void draw() {
   // Display selected airport name and flights in a window
   if (selectedAirportName != null) {
     fill(255);
-    rect(width/2 - 100, height/2 - 50, 200, 100);
+    rect(width/2 - 150, height/2 - 70, 300, 140);
     fill(0);
     textAlign(CENTER, CENTER);
-    text(selectedAirportName, width/2, height/2 - 10);
-    text(selectedAirportFlights + " flights", width/2, height/2 + 10);
+    text(selectedAirportName, width/2, height/2 - 30);
+    text("Total: " + selectedAirportData[0], width/2, height/2);
+    text("Arrivals: " + selectedAirportData[1], width/2, height/2 + 30);
+    text("Departures: " + selectedAirportData[2], width/2, height/2 + 60);
   }
 }
 
@@ -68,10 +74,15 @@ void mouseMoved() {
 void mousePressed() {
   if (hoveredNode != null) {
     selectedAirportName = hoveredNode.name;
-    selectedAirportFlights = hoveredNode.flightCount;
+    QueriesSelect queries = new QueriesSelect();
+    selectedAirportData[1] = queries.getArrivals(selectedAirportName);
+    selectedAirportData[2] = queries.getDepartures(selectedAirportName);
+    selectedAirportData[0] = queries.getArrivals(selectedAirportName) + queries.getDepartures(selectedAirportName);
   } else {
     selectedAirportName = null;
-    selectedAirportFlights = 0;
+    for (int i = 0; i < selectedAirportData.length; i++) {
+      selectedAirportData[i] = 0;
+    }
   }
 }
 
