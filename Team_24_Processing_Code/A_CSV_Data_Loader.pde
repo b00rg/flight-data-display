@@ -33,8 +33,6 @@ int currentlyActiveTab = 0;
 boolean isDropDownActive = false;
 int WIDGET_ROUNDNESS = 10;
 
-  //BAR CHART SETUP
-
 enum WIDGET_TEXT_TYPE{
   TIME,
   DATE
@@ -86,7 +84,26 @@ void setup() {
   //TAB BUTTON SETUP
   int totalTabWidth = screen.TAB_WIDTH + screen.TAB_BORDER_WIDTH;
   int tabRange = width - totalTabWidth;
+
+  for(int i = 0; i < 3; i++) // We lerp through the upper tab, adding the tab buttons at intervals to make sure they are equally spaced
+  {
+    int x = (int)(lerp(totalTabWidth, width, (float)(((float)i / (float)3))));    // We use lerop to find the range of the buttons and add them;
+    TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0, ON, OFF));
+  }
+  TabButtons.get(0).active = true; // Tab 1 is on by default at the start
   
+  //SCROLL BUTTON SETUP
+  moveLeft = new WidgetButton(1100, 1000, 50, 50, 5, ON, OFF);
+  moveRight = new WidgetButton(1300, 1000, 50, 50, 5, ON, OFF);
+  
+  //RELOAD BUTTON SETUP
+  ReloadButton = new WidgetButton(50, 50, 50, 50, 1, ON, OFF);
+ 
+  // Tab 1 setup
+  // please do not move this outside of setup void, for some reason processing does not likey likey that
+  
+  // Tab 2 setup
+    
   //GRAPH SETUP
   QueriesSelect queries = new QueriesSelect();
   valuesB = queries.getRowsBarGraph();
@@ -95,25 +112,6 @@ void setup() {
   graphP = new GraphPie(1300, 560, 800, 800);
   
   Graph[] graphs = {graphB, graphP};
-
-  for(int i = 0; i < 3; i++) // We lerp through the upper tab, adding the tab buttons at intervals to make sure they are equally spaced
-  {
-    int x = (int)(lerp(totalTabWidth, width, (float)(((float)i / (float)3))));    // We use lerop to find the range of the buttons and add them;
-    TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0, ON, OFF));
-  }
-  TabButtons.get(0).active = true; // Tab 1 is on by default at the start
- 
-  // Tab 1 setup
-  // please do not move this outside of setup void, for some reason processing does not likey likey that
-  
-  // Tab 2 setup
-  //GraphPie pie1 = new GraphPie();
-  ReloadButton = new WidgetButton(50, 50, 50, 50, 1, ON, OFF);
-  
-  
-  //SCROLL BUTTON SETUP
-  moveLeft = new WidgetButton(1100, 1000, 50, 50, 5, ON, OFF);
-  moveRight = new WidgetButton(1300, 1000, 50, 50, 5, ON, OFF);
 }
 
 
