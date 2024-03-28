@@ -110,10 +110,9 @@ Screen(){}
     
   }
   
-  void renderTab2(){
-    //A_CSV_Data_Loader.pie1.render();
-   
-    switch(graphDisplayed)
+  void renderTab2()
+  {
+    switch(displayedGraph)
     {
       case 0:
         graphB.drawBarChart(valuesB);
@@ -124,14 +123,6 @@ Screen(){}
       default:
         println("No graph found");
         break;
-    }
-  }
-
-  void printTable()
-  {
-    for(int i = 0, n = 20 /*temp length*/; i <n; i++)
-    {
-      
     }
   }
 }

@@ -1,6 +1,8 @@
-class GraphBar extends Graph {
-    GraphBar(){
-        super();
+class GraphBar extends Graph 
+{
+    GraphBar(int x, int y, int wide, int high)
+    {
+        super(x, y, wide, high);
     }
   
     void drawBarChart(ArrayList<BarDataPoint> values){
@@ -23,33 +25,32 @@ class GraphBar extends Graph {
             float barHeight = map(data.getTOTAL_DIST(), 0, maxVal, 0, height - topMargin);
           
             // Calculate the position of each bar
-            float x = leftMargin + i * (barWidth + barSpacing);
-            float y = height - barHeight;
+            float x = xpos + leftMargin + i * (barWidth + barSpacing);
+            float y = ypos + height - barHeight;
           
             // Draw the bar
             fill(barColour);
             rect(x, y, barWidth, barHeight);
           
             // Draw the label
-            textAlign(CENTER, CENTER);
+            textAlign(CENTER, CENTER - 20);
             text(data.getMKT_CARRIER(), x + barWidth/2, y - 10);
         }
         drawScale(maxVal, topMargin);
     }
-  
     void drawScale(float maxValue, float topMargin){
         float step = maxValue / 5; // Determine the step size for the scale
     
         // Draw tick marks and labels
         for (int i = 0; i <= 5; i++) {
-            float yPos = map(i * step, 0, maxValue, height - topMargin, 0);
+            float yPos = map(ypos + (i * step), 0, maxValue, height - 20, 0);
         
             // Draw tick mark
-            line(10, yPos, 0, yPos);
+            line(xpos + 10, yPos, xpos, yPos);
         
             // Draw label
             textAlign(LEFT, CENTER);
-            text(nf(i * step, 0, 1), 10, yPos);
+            text(nf(i * step, 0, 1), xpos, yPos + ypos);
         }
     }
 }

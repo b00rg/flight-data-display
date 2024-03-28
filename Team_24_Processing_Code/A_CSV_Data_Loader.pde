@@ -45,6 +45,7 @@ GraphBar graphB;
 
 ArrayList<PieDataPoint> valuesP;
 GraphPie graphP;
+  int displayedGraph = 0;
 //SETUP FUNCTION
 void setup() {
   fullScreen();
@@ -93,10 +94,7 @@ void setup() {
   valuesP = queries.getRowsPieChart();
   graphP = new GraphPie(1300, 560, 800, 800);
   
-  int displayedGraph = 0;
-  Graph[] graphs = new Graph[2];
-  graphs[0] = graphB;
-  graphs[1] = graphP;
+  Graph[] graphs = {graphB, graphP};
 
   for(int i = 0; i < 3; i++) // We lerp through the upper tab, adding the tab buttons at intervals to make sure they are equally spaced
   {
@@ -146,7 +144,8 @@ void draw(){
 
 
 //ADD COMMENT
-void mouseClicked(){
+void mouseClicked()
+{
   if(ReloadButton.isClicked())
   {
     ReloadButton.active = true;
@@ -292,7 +291,7 @@ void hasUserChangedPage(){
   
   if(moveLeft.isClicked())
   {
-    switch(currentlySelectedTab)
+    switch(currentlyActiveTab)
     {
       case 0:
         screen.selectedPage--;
@@ -300,9 +299,9 @@ void hasUserChangedPage(){
           screen.selectedPage = 1;
         break;
       case 1:
-        screen.displayedGraph--;
-        if(screen.displayedGraph <= 0)
-          screen.displayedGraph = 1;
+        displayedGraph--;
+        if(displayedGraph < 0)
+          displayedGraph = 1;
         break;
       default:
         println("No function");
@@ -310,8 +309,9 @@ void hasUserChangedPage(){
     }
   }
   
-  if(moveRight.isClicked()){
-    switch(currentlySelectedTab)
+  if(moveRight.isClicked())
+  {
+    switch(currentlyActiveTab)
     {
       case 0:
         screen.selectedPage++;
@@ -319,12 +319,13 @@ void hasUserChangedPage(){
           screen.selectedPage = screen.numberOfPages;
         break;
       case 1:
-        screen.displayedGraph++;
-        if(screen.displayedGraph <= 1)
-          screen.displayedGraph = 0;
+        displayedGraph++;
+        if(displayedGraph > 1)
+          displayedGraph = 0;
         break;
       default:
         println("No function");
         break;
     }
+  }
 }
