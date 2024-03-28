@@ -2,9 +2,11 @@ AirportGraph graph;
 AirportNode hoveredNode = null;
 boolean isDragging = false;
 float offsetX, offsetY;
+PFont labelFont;
 
 void setup() {
   fullScreen();
+  labelFont = createFont("Arial", 14);
   graph = new AirportGraph();
   QueriesSelect queriesSelect = new QueriesSelect();
 
@@ -35,7 +37,16 @@ void setup() {
 
 void draw() {
   background(0); // Set background color to black (obsidian-like)
+  graph.update(); // Update node positions and check for collisions
   graph.draw();
+  
+  // Display labels when mouse hovers over a node
+  if (hoveredNode != null) {
+    fill(255);
+    textFont(labelFont);
+    textAlign(CENTER, CENTER);
+    text(hoveredNode.name, mouseX, mouseY - 20);
+  }
 }
 
 void mouseMoved() {
@@ -130,6 +141,35 @@ class AirportGraph {
       }
     }
   }
+
+  void update() {
+    for (AirportNode node : nodes) {
+      // Update position based on velocity
+      node.x += node.velocityX;
+      node.y += node.velocityY;
+
+      // Bouncing off the walls
+      if (node.x < node.radius || node.x > width - node.radius) {
+        node.velocityX *= -1;
+      }
+      if (node.y < node.radius || node.y > height - node.radius) {
+        node.velocityY *= -1;
+      }
+
+      // Check for collision with other nodes
+      for (AirportNode other : nodes) {
+        if (node != other && node.intersects(other)) {
+          // Swap velocities to simulate bouncing off
+          float tempVX = node.velocityX;
+          float tempVY = node.velocityY;
+          node.velocityX = other.velocityX;
+          node.velocityY = other.velocityY;
+          other.velocityX = tempVX;
+          other.velocityY = tempVY;
+        }
+      }
+    }
+  }
 }
 
 class AirportNode {
@@ -137,6 +177,7 @@ class AirportNode {
   float x, y; // Position of the airport node
   float radius; // Radius of the node based on number of flights
   HashMap<AirportNode, Float> neighbors; // Neighboring airports and corresponding line thickness
+  float velocityX, velocityY; // Velocity of the node
 
   AirportNode(String name, int flightCount, float nodeSize) {
     this.name = name;
@@ -145,6 +186,8 @@ class AirportNode {
     // Randomly position the airport node within the sketch window
     x = random(width);
     y = random(height);
+    this.velocityX = random(-2, 2); // Random initial velocity
+    this.velocityY = random(-2, 2);
   }
 
   void addNeighbor(AirportNode neighbor, float thickness) {
@@ -161,5 +204,12 @@ class AirportNode {
     if (neighbors.containsKey(movedNode)) {
       neighbors.put(movedNode, thickness);
     }
+  }
+
+  boolean intersects(AirportNode other) {
+    float dx = this.x - other.x;
+    float dy = this.y - other.y;
+    float distance = sqrt(dx * dx + dy * dy);
+    return distance < this.radius + other.radius;
   }
 }
