@@ -4,6 +4,7 @@ boolean isDragging = false;
 float offsetX, offsetY;
 PFont labelFont;
 String selectedAirportName = null;
+int selectedAirportFlights = 0;
 
 void setup() {
   fullScreen();
@@ -49,13 +50,14 @@ void draw() {
     text(hoveredNode.name, mouseX, mouseY - 20);
   }
   
-  // Display selected airport name in a window
+  // Display selected airport name and flights in a window
   if (selectedAirportName != null) {
     fill(255);
     rect(width/2 - 100, height/2 - 50, 200, 100);
     fill(0);
     textAlign(CENTER, CENTER);
-    text(selectedAirportName, width/2, height/2);
+    text(selectedAirportName, width/2, height/2 - 10);
+    text(selectedAirportFlights + " flights", width/2, height/2 + 10);
   }
 }
 
@@ -66,8 +68,10 @@ void mouseMoved() {
 void mousePressed() {
   if (hoveredNode != null) {
     selectedAirportName = hoveredNode.name;
+    selectedAirportFlights = hoveredNode.flightCount;
   } else {
     selectedAirportName = null;
+    selectedAirportFlights = 0;
   }
 }
 
@@ -195,6 +199,7 @@ class AirportGraph {
 
 class AirportNode {
   String name;
+  int flightCount; // Number of flights
   float x, y; // Position of the airport node
   float radius; // Radius of the node based on number of flights
   HashMap<AirportNode, Float> neighbors; // Neighboring airports and corresponding line thickness
@@ -202,6 +207,7 @@ class AirportNode {
 
   AirportNode(String name, int flightCount, float nodeSize) {
     this.name = name;
+    this.flightCount = flightCount;
     this.radius = nodeSize;
     this.neighbors = new HashMap<AirportNode, Float>();
     // Randomly position the airport node within the sketch window
