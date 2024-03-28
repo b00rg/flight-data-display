@@ -114,17 +114,19 @@ class AirportGraph {
     destNode.addNeighbor(originNode, thickness); // Assuming it's a bi-directional connection
   }
 
-  void draw() {
-    stroke(150); // Set line color to dark grey
-    for (AirportNode node : nodes) {
-      node.draw();
-      for (AirportNode neighbor : node.neighbors.keySet()) {
-        float thickness = node.neighbors.get(neighbor);
-        strokeWeight(thickness); // Set line thickness based on route popularity
-        line(node.x, node.y, neighbor.x, neighbor.y);
-      }
+void draw() {
+  stroke(150, 1000); // Set line color to dark grey with lower transparency
+  for (AirportNode node : nodes) {
+    node.draw();
+    for (AirportNode neighbor : node.neighbors.keySet()) {
+      float thickness = node.neighbors.get(neighbor);
+      stroke(150, 100); // Set line color to dark grey with lower transparency
+      strokeWeight(thickness); // Set line thickness based on route popularity
+      line(node.x, node.y, neighbor.x, neighbor.y);
     }
   }
+}
+
 
   AirportNode getNodeUnderMouse() {
     for (AirportNode node : nodes) {
