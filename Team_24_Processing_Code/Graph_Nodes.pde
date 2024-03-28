@@ -149,65 +149,52 @@ void update() {
       node.y += node.velocityY;
 
       // Bouncing off the walls
-      if (node.x < node.radius || node.x > width - node.radius) {
-        node.velocityX *= -1;
+      if (node.x < node.radius) {
+        node.x = node.radius; // Limit left bound
+        node.velocityX *= -1; // Reverse x-velocity
       }
-      if (node.y < node.radius || node.y > height - node.radius) {
-        node.velocityY *= -1;
+      if (node.x > width - node.radius) {
+        node.x = width - node.radius; // Limit right bound
+        node.velocityX *= -1; // Reverse x-velocity
+      }
+      if (node.y < node.radius) {
+        node.y = node.radius; // Limit top bound
+        node.velocityY *= -1; // Reverse y-velocity
+      }
+      if (node.y > height - node.radius) {
+        node.y = height - node.radius; // Limit bottom bound
+        node.velocityY *= -1; // Reverse y-velocity
       }
     }
 
     // Check for collision with other nodes
     for (AirportNode other : nodes) {
       if (node != other && node.intersects(other)) {
-        if (isDragging && (node == hoveredNode || other == hoveredNode)) {
-          // If either node is being dragged, adjust collision response
-          float dx = other.x - node.x;
-          float dy = other.y - node.y;
-          float distance = sqrt(dx * dx + dy * dy);
-          float overlap = node.radius + other.radius - distance;
-          float angle = atan2(dy, dx);
-          float targetX = node.x + cos(angle) * overlap / 2;
-          float targetY = node.y + sin(angle) * overlap / 2;
-          node.x -= cos(angle) * overlap / 2;
-          node.y -= sin(angle) * overlap / 2;
-          other.x += cos(angle) * overlap / 2;
-          other.y += sin(angle) * overlap / 2;
-
-          // Calculate the direction of collision
-          float collisionAngle = atan2(other.y - node.y, other.x - node.x);
-
-          // Calculate the velocity component parallel to the collision angle
-          float nodeVelocityParallel = cos(collisionAngle) * node.velocityX + sin(collisionAngle) * node.velocityY;
-          float otherVelocityParallel = cos(collisionAngle) * other.velocityX + sin(collisionAngle) * other.velocityY;
-
-          // Calculate the velocity component perpendicular to the collision angle
-          float nodeVelocityPerpendicular = -sin(collisionAngle) * node.velocityX + cos(collisionAngle) * node.velocityY;
-          float otherVelocityPerpendicular = -sin(collisionAngle) * other.velocityX + cos(collisionAngle) * other.velocityY;
-
-          // Swap the parallel velocity components
-          float temp = nodeVelocityParallel;
-          nodeVelocityParallel = otherVelocityParallel;
-          otherVelocityParallel = temp;
-
-          // Update velocities after collision
-          node.velocityX = cos(collisionAngle) * nodeVelocityParallel - sin(collisionAngle) * nodeVelocityPerpendicular;
-          node.velocityY = sin(collisionAngle) * nodeVelocityParallel + cos(collisionAngle) * nodeVelocityPerpendicular;
-          other.velocityX = cos(collisionAngle) * otherVelocityParallel - sin(collisionAngle) * otherVelocityPerpendicular;
-          other.velocityY = sin(collisionAngle) * otherVelocityParallel + cos(collisionAngle) * otherVelocityPerpendicular;
-        } else {
-          // If neither node is being dragged, swap velocities
-          float tempVX = node.velocityX;
-          float tempVY = node.velocityY;
-          node.velocityX = other.velocityX;
-          node.velocityY = other.velocityY;
-          other.velocityX = tempVX;
-          other.velocityY = tempVY;
-        }
+        // If nodes intersect, adjust positions
+        float dx = other.x - node.x;
+        float dy = other.y - node.y;
+        float distance = sqrt(dx * dx + dy * dy);
+        float overlap = node.radius + other.radius - distance;
+        float angle = atan2(dy, dx);
+        float targetX = node.x + cos(angle) * overlap / 2;
+        float targetY = node.y + sin(angle) * overlap / 2;
+        node.x -= cos(angle) * overlap / 2;
+        node.y -= sin(angle) * overlap / 2;
+        other.x += cos(angle) * overlap / 2;
+        other.y += sin(angle) * overlap / 2;
+        
+        // Update velocities after collision
+        float tempVX = node.velocityX;
+        float tempVY = node.velocityY;
+        node.velocityX = other.velocityX;
+        node.velocityY = other.velocityY;
+        other.velocityX = tempVX;
+        other.velocityY = tempVY;
       }
     }
   }
 }
+
 
 
 
