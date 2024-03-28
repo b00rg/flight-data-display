@@ -54,8 +54,7 @@ class QueriesSelect extends Queries {
   }
   
   
-
-  ArrayList<DisplayDataPoint> getRowsDisplay(boolean depTrue, int lowerVal, int upperVal, String depAirport, String arrAirport) {
+  ArrayList<DisplayDataPoint> getRowsDisplay(boolean depTrue, int lowerVal, int upperVal, String depAirport, String arrAirport, String startDateRange, String endDateRange) {
     String word = "";
 
     ArrayList<DisplayDataPoint> dataList = new ArrayList<>();
@@ -70,7 +69,6 @@ class QueriesSelect extends Queries {
 
         if (lowerVal != 0 && upperVal != 0){
           if (lowerVal < upperVal) {
-
             whereClauseBuilder.append(column).append(" BETWEEN ").append(lowerVal).append(" AND ").append(upperVal);
           } else {
             whereClauseBuilder.append(column).append(" NOT BETWEEN ").append(upperVal).append(" AND ").append(lowerVal);
