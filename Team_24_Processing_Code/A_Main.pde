@@ -30,6 +30,8 @@ static WidgetButton ReloadButton;
 static WidgetButton moveLeft;
 static WidgetButton moveRight;
 
+static WidgetButton cancelledFlights;
+
 static WidgetTextBox startDate;
 static WidgetTextBox endDate;
 
@@ -107,6 +109,7 @@ void setup() {
   moveLeft = new WidgetButton(1100, 1000, 50, 50, 5);
   moveRight = new WidgetButton(1300, 1000, 50, 50, 5);
   
+  cancelledFlights = new WidgetButton(50, 1000,50, 50, 20);
 }
 
 
@@ -130,6 +133,7 @@ void draw(){
     case 1: // user is lookingat tab 2
   }
   ReloadButton.render();
+  cancelledFlights.render();
 }
 
 
@@ -187,6 +191,10 @@ void mouseClicked(){
     {
       dropDownList.get(i).isClicked();
     }
+  }
+  if(cancelledFlights.isClicked())
+  {
+    cancelledFlights.active = !cancelledFlights.active;
   }
 }
 
@@ -265,14 +273,28 @@ void RealoadEvent(){
     date1 = screen.adjustDateInput(startDate.textValue);
     date2 = screen.adjustDateInput(endDate.textValue);
   }
-  
+  // Flight status
+  boolean wantsCancelled = cancelledFlights.active;
   QueriesSelect selectQuery = new QueriesSelect();
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation, date1, date2);
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
   screen.selectedPage = 1;
-  
+  /*
+  DisplayDataPoint array[] = filteredData.toArray(new DisplayDataPoint[filteredData.size()]);
+  for(int i = 0; i < array.length; i++)
+  {
+    if(array[i].CANCELLED == 0)
+    {
+      array.remove(i);
+    }
+  }
+  for(int i = 0; i < filteredData.size(); i++)
+  {
+    print(filteredData.get(i).CANCELLED);
+  }
+  */
 }
 
 
