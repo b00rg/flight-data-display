@@ -139,6 +139,10 @@ class DisplayDataPoint extends RawDataPoint {
       ARR_TIME = columnExists(resultSet, "ARR_TIME") ? resultSet.getInt("ARR_TIME") : 0;
       CANCELLED = columnExists(resultSet, "CANCELLED") ? resultSet.getInt("CANCELLED") : 0;
       DIVERTED = columnExists(resultSet, "DIVERTED") ? resultSet.getInt("DIVERTED") : 0;
+      if(CANCELLED == 1)
+      {
+        
+      }
     } catch (SQLException e) {
       println("SQLException: " + e.getMessage());
     }

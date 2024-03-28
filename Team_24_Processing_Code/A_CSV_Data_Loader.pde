@@ -33,6 +33,10 @@ static WidgetButton moveRight;
 static WidgetTextBox startDate;
 static WidgetTextBox endDate;
 
+static WidgetButton cancelledFlights;
+static WidgetButton divertedFlights;
+static WidgetButton undisterbedFlights;
+
 static boolean[] statsShown = new boolean[18];
 color ON = color(100,255,100);
 color OFF = color(255,100,100);
@@ -79,6 +83,11 @@ void setup() {
   textBoxList.add(endDate);
   
   
+  // FLIGHT STATUS BUTTONS SETUP
+  cancelledFlights = new WidgetButton(50, 1000, 50, 50, 20);
+  divertedFlights = new WidgetButton(150, 1000, 50, 50, 20);
+  undisterbedFlights = new WidgetButton(250, 1000, 50, 50, 20);
+
   //AIRPORT DROP DOWN SETUP
   QueriesSelect selectQuery = new QueriesSelect();
   String[] departureAirports = selectQuery.getDepartureAirports();
@@ -135,6 +144,9 @@ void draw(){
     case 1: // user is lookingat tab 2
   }
   ReloadButton.render();
+  cancelledFlights.render();
+  divertedFlights.render();
+  undisterbedFlights.render();
 }
 
 
@@ -192,6 +204,18 @@ void mouseClicked(){
     {
       dropDownList.get(i).isClicked();
     }
+  }
+  if(cancelledFlights.isClicked())
+  {
+    cancelledFlights.active = !cancelledFlights.active;
+  }
+  if(divertedFlights.isClicked())
+  {
+    divertedFlights.active = !divertedFlights.active;
+  }
+  if(undisterbedFlights.isClicked())
+  {
+    undisterbedFlights.active = !undisterbedFlights.active;
   }
 }
 
@@ -252,7 +276,6 @@ void RealoadEvent(){
     selectedAriivalStation = null;
   }
   
-  
   if(dropDownList.get(1).currentlySelectedElement != -1)
   {
     selectedDepartureStation = dropDownList.get(1).elements[dropDownList.get(1).currentlySelectedElement];
@@ -260,7 +283,10 @@ void RealoadEvent(){
   else {
     selectedDepartureStation = null;
   }
-
+  // buttons
+  boolean wantsCancelled = cancelledFlights.active;
+  boolean wantsDiverted = divertedFlights.active;
+  boolean wantsUndisturbed = undisterbedFlights.active;
   // Process user date range input
   String DateRange = null;
   if((startDate.textValue != null || startDate.textValue != startDate.normal) && (endDate.textValue != null || endDate.textValue != endDate.normal))
@@ -273,6 +299,14 @@ void RealoadEvent(){
   
   QueriesSelect selectQuery = new QueriesSelect();
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation);
+  for(int i = 0; i < filteredData.size(); i++)
+  {
+    if(filteredData.get(i).CANCELLED == 1)
+    {
+      println("X");
+    }
+  }
+  println("Length of list is " + filteredData.size());
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
