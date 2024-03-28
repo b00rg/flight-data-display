@@ -146,13 +146,13 @@ class DisplayDataPoint extends RawDataPoint {
 }
 
 
-class BusyRouteDataPoint extends RawDataPoint {
+class RouteDataPoint extends RawDataPoint {
   
   String ORIGIN = null;
   String DEST = null;
   int FLIGHT_COUNT = 0;
 
-  BusyRouteDataPoint(ResultSet resultSet) {
+  RouteDataPoint(ResultSet resultSet) {
     super(resultSet);
     try {
       ORIGIN = columnExists(resultSet, "ORIGIN") ? resultSet.getString("ORIGIN") : null;
@@ -163,3 +163,19 @@ class BusyRouteDataPoint extends RawDataPoint {
     }
   }
 }
+
+
+// This datapoint marks a single instance of one unit of the graph in tab 3 - Angelos
+/*
+class airPortDataPoint extends RawDataPoint {
+  
+  airPortDataPoint(ResultSet resultSet) {
+    super(resultSet);
+    try {
+  
+    } catch (SQLException e) {
+    println("SQLException: " + e.getMessage());
+    }
+  }
+}
+*/

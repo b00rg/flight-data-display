@@ -54,7 +54,7 @@ class QueriesSelect extends Queries {
   }
   
   
-  ArrayList<DisplayDataPoint> getRowsDisplay(boolean depTrue, int lowerVal, int upperVal, String depAirport, String arrAirport) {
+  ArrayList<DisplayDataPoint> getRowsDisplay(boolean depTrue, int lowerVal, int upperVal, String depAirport, String arrAirport, String startDateRange, String endDateRange) {
     
     ArrayList<DisplayDataPoint> dataList = new ArrayList<>();
     try {   
@@ -62,9 +62,9 @@ class QueriesSelect extends Queries {
         
         // Construct the WHERE clause dynamically
         StringBuilder whereClauseBuilder = new StringBuilder();
-        String column = depTrue ? "DEP_TIME" : "ARR_TIME";
         
         // Time range filter
+        String column = depTrue ? "DEP_TIME" : "ARR_TIME";
         if (lowerVal < upperVal) {
             whereClauseBuilder.append(column).append(" BETWEEN ").append(lowerVal).append(" AND ").append(upperVal);
         } else {
@@ -85,6 +85,19 @@ class QueriesSelect extends Queries {
                 whereClauseBuilder.append(" AND ");
             }
             whereClauseBuilder.append("DEST = '").append(arrAirport).append("'");
+        }
+        
+        // Date range filter
+        if (startDateRange != null && endDateRange != null && !startDateRange.isEmpty() && !endDateRange.isEmpty()) {
+            if (whereClauseBuilder.length() > 0) {
+                whereClauseBuilder.append(" AND ");
+            }
+            if (lowerVal < upperVal) {
+              whereClauseBuilder.append("FL_DATE BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
+            } 
+            else {
+              whereClauseBuilder.append("FL_DATE NOT BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
+            }
         }
         
         // Construct the full SQL query
@@ -159,17 +172,16 @@ class QueriesSelect extends Queries {
   }
   
   
-  ArrayList<BusyRouteDataPoint> getBusyRoutes(){
+  ArrayList<RouteDataPoint> getBusyRoutes(){
     
-    ArrayList<BusyRouteDataPoint> dataList = new ArrayList<BusyRouteDataPoint>();
+    ArrayList<RouteDataPoint> dataList = new ArrayList<RouteDataPoint>();
     try {
       Statement stmt = connection.createStatement();
       String query = "SELECT ORIGIN, DEST, COUNT(*) AS FLIGHT_COUNT FROM " + super.tableName + " GROUP BY ORIGIN, DEST ORDER BY FLIGHT_COUNT DESC LIMIT 5;";
-      println(query);
       ResultSet resultSet = stmt.executeQuery(query);
       
       while (resultSet.next()) {
-        BusyRouteDataPoint data = new BusyRouteDataPoint(resultSet);
+        RouteDataPoint data = new RouteDataPoint(resultSet);
         dataList.add(data);
       }
       
@@ -179,9 +191,31 @@ class QueriesSelect extends Queries {
     catch (SQLException e) {
       println("SQLException: " + e.getMessage());
     }
+    return dataList; 
+  }
+  
+  
+  
+  ArrayList<RouteDataPoint> getAllRoutes(){
     
-    return dataList;
-    
+    ArrayList<RouteDataPoint> dataList = new ArrayList<RouteDataPoint>();
+    try {
+      Statement stmt = connection.createStatement();
+      String query = "SELECT ORIGIN, DEST, COUNT(*) AS FLIGHT_COUNT FROM " + super.tableName + " GROUP BY ORIGIN, DEST ORDER BY FLIGHT_COUNT DESC;";
+      ResultSet resultSet = stmt.executeQuery(query);
+      
+      while (resultSet.next()) {
+        RouteDataPoint data = new RouteDataPoint(resultSet);
+        dataList.add(data);
+      }
+      
+      resultSet.close();
+      stmt.close();
+    } 
+    catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+    return dataList; 
   }
 
 }
