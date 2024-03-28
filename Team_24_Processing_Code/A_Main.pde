@@ -8,7 +8,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 // THEMSE
 enum THEMES
   {
@@ -49,7 +48,6 @@ enum WIDGET_TEXT_TYPE{
   TIME,
   DATE
 }
-
 
 ArrayList<BarDataPoint> valuesB;
 GraphBar graphB;
@@ -106,7 +104,11 @@ void setup() {
     TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
-  
+
+  ReloadButton = new WidgetButton(50, 50, 50, 50, 1);
+  // THEME BUTTON SETUP
+  ThemeSelection = new WidgetDropDown(250, 20, 200, 50, TextBoxFont, themeNames);
+  ThemeSelection.currentlySelectedElement = 0;
   //SCROLL BUTTON SETUP
   moveLeft = new WidgetButton(1100, 1000, 50, 50, 5);
   moveRight = new WidgetButton(1300, 1000, 50, 50, 5);
@@ -139,10 +141,11 @@ void draw(){
   // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
   // User tab selection only effects everything on the right
   screen.renderDIP();
-
+  
   //ThemeSelection.render();
   screen.renderButtons();
   //ThemeSelection.render();
+
   switch(currentlyActiveTab)
   {
     case 0: // user is looking at tab 1
@@ -187,14 +190,20 @@ void mouseClicked()
        break;
      }
   }
-  
+
   updateTabs();
   hasUserChangedPage();
   /*ThemeSelection.isClicked();
+=======
+  updateTabs();
+  screen.hasUserChangedPage();
+  ThemeSelection.isClicked();
+>>>>>>> d41bd2aa2b6659da3ee33ed79aeb0121c813b11b
   if(ThemeSelection.currentlySelectedElement == -1)
   {
     ThemeSelection.currentlySelectedElement = 0;
   }
+<<<<<<< HEAD
   screen.changeTheme(indexToTheme(ThemeSelection.currentlySelectedElement));*/
   if(isDropDownActive)
   {
@@ -221,11 +230,16 @@ void mouseClicked()
 //<<<<<<< HEAD
 /*void keyPressed(){ // todo, lots of this code is redudant since the user always has access to the buttons
 =======
+=======
+>>>>>>> d41bd2aa2b6659da3ee33ed79aeb0121c813b11b
 
 
 // checks which tab is currently active and applies a process depending on the scenario
 // At the moment this 
 void keyPressed(){ // todo, lots of this code is redudant since the user always has access to the buttons
+<<<<<<< HEAD
+>>>>>>> d41bd2aa2b6659da3ee33ed79aeb0121c813b11b
+=======
 >>>>>>> d41bd2aa2b6659da3ee33ed79aeb0121c813b11b
     switch(currentlyActiveTab) 
     {
@@ -301,10 +315,23 @@ void RealoadEvent(){
   
   QueriesSelect selectQuery = new QueriesSelect();
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation, date1, date2);
+  String DateRange = null;
+  if((startDate.textValue != null || startDate.textValue != startDate.normal) && (endDate.textValue != null || endDate.textValue != endDate.normal))
+  {
+    date1 = screen.adjustDateInput(startDate.textValue);
+    date2 = screen.adjustDateInput(endDate.textValue);
+    DateRange = date1 +" - "+ date2;
+  }
+
+  int startTime = millis();
+  int endTime = millis();
+  int elapsed = endTime - startTime;
+  println("It took " + elapsed + " milliseconds to generate the new filtered data array");
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
   screen.selectedPage = 1;
+  
 }
 
 

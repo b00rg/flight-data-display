@@ -29,14 +29,14 @@ class WidgetDropDown extends Widget{
     }
   }
   void render(){
-    fill(255);
+    fill(screen.SECONDARY_COLOR);
     rect(xpos, ypos, wide, high,10,10,0,0);
     if(amIActive)
     {
       renderDrops();
     } else 
     {
-      fill(0);
+      fill(screen.TEXT_COLOR);
       textAlign(LEFT, CENTER);
       if(currentlySelectedElement != -1)
       {
@@ -49,9 +49,9 @@ class WidgetDropDown extends Widget{
     textFont(font);
     for(int i = 0; i < numOfDropsToDisplay; i++)
     {
-      fill(245 - i * 10);
+      fill(screen.TERTIARY_COLOR);
       rect(xpos, ypos + high * (i + 1), wide, high);
-      fill(0);
+      fill(screen.TEXT_COLOR);
       textAlign(LEFT, CENTER);
       text(elements[i + scrollIndex], xpos + 5, ypos + high/3 + high * (i + 1));
     }

@@ -95,6 +95,7 @@ class PieDataPoint extends RawDataPoint {
   String MKT_CARRIER = null;
   int COUNT_CANCELLED = 0;
   int COUNT_DIVERTED = 0;
+  int COUNT_EXPECTED = 0;
 
   PieDataPoint(ResultSet resultSet) {
     super(resultSet); // Call superclass constructor
@@ -102,6 +103,7 @@ class PieDataPoint extends RawDataPoint {
       MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
       COUNT_CANCELLED = columnExists(resultSet, "COUNT_CANCELLED") ? resultSet.getInt("COUNT_CANCELLED") : 0;
       COUNT_DIVERTED = columnExists(resultSet, "COUNT_DIVERTED") ? resultSet.getInt("COUNT_DIVERTED") : 0;
+      COUNT_EXPECTED = columnExists(resultSet, "COUNT_EXPECTED") ? resultSet.getInt("COUNT_EXPECTED") : 0;
     } catch (SQLException e) {
       println("SQLException: " + e.getMessage());
     }
@@ -111,6 +113,9 @@ class PieDataPoint extends RawDataPoint {
   }
   public int getCOUNT_DIVERTED() {
     return COUNT_DIVERTED;
+  }
+  public int getCOUNT_EXPECTED() {
+    return COUNT_EXPECTED;
   }
   public String getMTK_CARRIER() {
     return MKT_CARRIER;
@@ -146,13 +151,13 @@ class DisplayDataPoint extends RawDataPoint {
 }
 
 
-class BusyRouteDataPoint extends RawDataPoint {
+class RouteDataPoint extends RawDataPoint {
   
   String ORIGIN = null;
   String DEST = null;
   int FLIGHT_COUNT = 0;
 
-  BusyRouteDataPoint(ResultSet resultSet) {
+  RouteDataPoint(ResultSet resultSet) {
     super(resultSet);
     try {
       ORIGIN = columnExists(resultSet, "ORIGIN") ? resultSet.getString("ORIGIN") : null;
@@ -163,3 +168,19 @@ class BusyRouteDataPoint extends RawDataPoint {
     }
   }
 }
+
+
+// This datapoint marks a single instance of one unit of the graph in tab 3 - Angelos
+/*
+class airPortDataPoint extends RawDataPoint {
+  
+  airPortDataPoint(ResultSet resultSet) {
+    super(resultSet);
+    try {
+  
+    } catch (SQLException e) {
+    println("SQLException: " + e.getMessage());
+    }
+  }
+}
+*/

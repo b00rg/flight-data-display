@@ -6,8 +6,6 @@ class SimpleGraph extends Graph
   {
     super(1, 1, 1, 1);
   }
-  
-
     void draw(ArrayList<RouteDataPoint> values) {
         // Set up variables for drawing
         float topMargin = 50;

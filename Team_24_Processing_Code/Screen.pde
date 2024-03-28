@@ -141,6 +141,7 @@ Screen(){}
         screen.selectedPage = screen.numberOfPages;
       }
     }
+<<<<<<< HEAD
   }*/
   String adjustDateInput(String dd_mm_yyyy)
   {
