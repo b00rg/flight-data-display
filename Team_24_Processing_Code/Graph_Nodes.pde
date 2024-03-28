@@ -3,6 +3,7 @@ AirportNode hoveredNode = null;
 boolean isDragging = false;
 float offsetX, offsetY;
 PFont labelFont;
+String selectedAirportName = null;
 
 void setup() {
   fullScreen();
@@ -36,7 +37,7 @@ void setup() {
 }
 
 void draw() {
-  background(0); // Set background color to black (obsidian-like)
+  background(40); // Set background color to dark grey (similar to Obsidian)
   graph.update(); // Update node positions and check for collisions
   graph.draw();
   
@@ -47,6 +48,15 @@ void draw() {
     textAlign(CENTER, CENTER);
     text(hoveredNode.name, mouseX, mouseY - 20);
   }
+  
+  // Display selected airport name in a window
+  if (selectedAirportName != null) {
+    fill(255);
+    rect(width/2 - 100, height/2 - 50, 200, 100);
+    fill(0);
+    textAlign(CENTER, CENTER);
+    text(selectedAirportName, width/2, height/2);
+  }
 }
 
 void mouseMoved() {
@@ -55,23 +65,9 @@ void mouseMoved() {
 
 void mousePressed() {
   if (hoveredNode != null) {
-    isDragging = true;
-    offsetX = hoveredNode.x - mouseX;
-    offsetY = hoveredNode.y - mouseY;
-  }
-}
-
-void mouseReleased() {
-  isDragging = false;
-}
-
-void mouseDragged() {
-  if (isDragging && hoveredNode != null) {
-    hoveredNode.x = mouseX + offsetX;
-    hoveredNode.y = mouseY + offsetY;
-
-    // Update the positions of connected nodes
-    graph.updateConnectedNodes(hoveredNode);
+    selectedAirportName = hoveredNode.name;
+  } else {
+    selectedAirportName = null;
   }
 }
 
@@ -141,66 +137,60 @@ class AirportGraph {
       }
     }
   }
-void update() {
-  for (AirportNode node : nodes) {
-    // Update position based on velocity
-    if (!isDragging || (isDragging && node != hoveredNode)) {
-      node.x += node.velocityX;
-      node.y += node.velocityY;
 
-      // Bouncing off the walls
-      if (node.x < node.radius) {
-        node.x = node.radius; // Limit left bound
-        node.velocityX *= -1; // Reverse x-velocity
-      }
-      if (node.x > width - node.radius) {
-        node.x = width - node.radius; // Limit right bound
-        node.velocityX *= -1; // Reverse x-velocity
-      }
-      if (node.y < node.radius) {
-        node.y = node.radius; // Limit top bound
-        node.velocityY *= -1; // Reverse y-velocity
-      }
-      if (node.y > height - node.radius) {
-        node.y = height - node.radius; // Limit bottom bound
-        node.velocityY *= -1; // Reverse y-velocity
-      }
-    }
+  void update() {
+    for (AirportNode node : nodes) {
+      // Update position based on velocity
+      if (!isDragging || (isDragging && node != hoveredNode)) {
+        node.x += node.velocityX;
+        node.y += node.velocityY;
 
-    // Check for collision with other nodes
-    for (AirportNode other : nodes) {
-      if (node != other && node.intersects(other)) {
-        // If nodes intersect, adjust positions
-        float dx = other.x - node.x;
-        float dy = other.y - node.y;
-        float distance = sqrt(dx * dx + dy * dy);
-        float overlap = node.radius + other.radius - distance;
-        float angle = atan2(dy, dx);
-        float targetX = node.x + cos(angle) * overlap / 2;
-        float targetY = node.y + sin(angle) * overlap / 2;
-        node.x -= cos(angle) * overlap / 2;
-        node.y -= sin(angle) * overlap / 2;
-        other.x += cos(angle) * overlap / 2;
-        other.y += sin(angle) * overlap / 2;
-        
-        // Update velocities after collision
-        float tempVX = node.velocityX;
-        float tempVY = node.velocityY;
-        node.velocityX = other.velocityX;
-        node.velocityY = other.velocityY;
-        other.velocityX = tempVX;
-        other.velocityY = tempVY;
+        // Bouncing off the walls
+        if (node.x < node.radius) {
+          node.x = node.radius; // Limit left bound
+          node.velocityX *= -1; // Reverse x-velocity
+        }
+        if (node.x > width - node.radius) {
+          node.x = width - node.radius; // Limit right bound
+          node.velocityX *= -1; // Reverse x-velocity
+        }
+        if (node.y < node.radius) {
+          node.y = node.radius; // Limit top bound
+          node.velocityY *= -1; // Reverse y-velocity
+        }
+        if (node.y > height - node.radius) {
+          node.y = height - node.radius; // Limit bottom bound
+          node.velocityY *= -1; // Reverse y-velocity
+        }
+      }
+
+      // Check for collision with other nodes
+      for (AirportNode other : nodes) {
+        if (node != other && node.intersects(other)) {
+          // If nodes intersect, adjust positions
+          float dx = other.x - node.x;
+          float dy = other.y - node.y;
+          float distance = sqrt(dx * dx + dy * dy);
+          float overlap = node.radius + other.radius - distance;
+          float angle = atan2(dy, dx);
+          float targetX = node.x + cos(angle) * overlap / 2;
+          float targetY = node.y + sin(angle) * overlap / 2;
+          node.x -= cos(angle) * overlap / 2;
+          node.y -= sin(angle) * overlap / 2;
+          other.x += cos(angle) * overlap / 2;
+          other.y += sin(angle) * overlap / 2;
+          
+          // Update velocities after collision
+          float tempVX = node.velocityX;
+          float tempVY = node.velocityY;
+          node.velocityX = other.velocityX;
+          node.velocityY = other.velocityY;
+          other.velocityX = tempVX;
+          other.velocityY = tempVY;
+        }
       }
     }
   }
-}
-
-
-
-
-
-
-
 }
 
 class AirportNode {
@@ -227,7 +217,9 @@ class AirportNode {
 
   void draw() {
     // Draw airport node as a smaller light grey circle
-    fill(200);
+    fill(120); // Adjusted to a lighter grey
+    stroke(200); // Adjusted to a lighter grey
+    strokeWeight(1); // Adjusted to a thinner line
     ellipse(x, y, radius * 2, radius * 2);
   }
 
