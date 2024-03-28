@@ -141,10 +141,10 @@ class AirportGraph {
       }
     }
   }
-
-  void update() {
-    for (AirportNode node : nodes) {
-      // Update position based on velocity
+void update() {
+  for (AirportNode node : nodes) {
+    // Update position based on velocity
+    if (!isDragging || (isDragging && node != hoveredNode)) {
       node.x += node.velocityX;
       node.y += node.velocityY;
 
@@ -155,11 +155,48 @@ class AirportGraph {
       if (node.y < node.radius || node.y > height - node.radius) {
         node.velocityY *= -1;
       }
+    }
 
-      // Check for collision with other nodes
-      for (AirportNode other : nodes) {
-        if (node != other && node.intersects(other)) {
-          // Swap velocities to simulate bouncing off
+    // Check for collision with other nodes
+    for (AirportNode other : nodes) {
+      if (node != other && node.intersects(other)) {
+        if (isDragging && (node == hoveredNode || other == hoveredNode)) {
+          // If either node is being dragged, adjust collision response
+          float dx = other.x - node.x;
+          float dy = other.y - node.y;
+          float distance = sqrt(dx * dx + dy * dy);
+          float overlap = node.radius + other.radius - distance;
+          float angle = atan2(dy, dx);
+          float targetX = node.x + cos(angle) * overlap / 2;
+          float targetY = node.y + sin(angle) * overlap / 2;
+          node.x -= cos(angle) * overlap / 2;
+          node.y -= sin(angle) * overlap / 2;
+          other.x += cos(angle) * overlap / 2;
+          other.y += sin(angle) * overlap / 2;
+
+          // Calculate the direction of collision
+          float collisionAngle = atan2(other.y - node.y, other.x - node.x);
+
+          // Calculate the velocity component parallel to the collision angle
+          float nodeVelocityParallel = cos(collisionAngle) * node.velocityX + sin(collisionAngle) * node.velocityY;
+          float otherVelocityParallel = cos(collisionAngle) * other.velocityX + sin(collisionAngle) * other.velocityY;
+
+          // Calculate the velocity component perpendicular to the collision angle
+          float nodeVelocityPerpendicular = -sin(collisionAngle) * node.velocityX + cos(collisionAngle) * node.velocityY;
+          float otherVelocityPerpendicular = -sin(collisionAngle) * other.velocityX + cos(collisionAngle) * other.velocityY;
+
+          // Swap the parallel velocity components
+          float temp = nodeVelocityParallel;
+          nodeVelocityParallel = otherVelocityParallel;
+          otherVelocityParallel = temp;
+
+          // Update velocities after collision
+          node.velocityX = cos(collisionAngle) * nodeVelocityParallel - sin(collisionAngle) * nodeVelocityPerpendicular;
+          node.velocityY = sin(collisionAngle) * nodeVelocityParallel + cos(collisionAngle) * nodeVelocityPerpendicular;
+          other.velocityX = cos(collisionAngle) * otherVelocityParallel - sin(collisionAngle) * otherVelocityPerpendicular;
+          other.velocityY = sin(collisionAngle) * otherVelocityParallel + cos(collisionAngle) * otherVelocityPerpendicular;
+        } else {
+          // If neither node is being dragged, swap velocities
           float tempVX = node.velocityX;
           float tempVY = node.velocityY;
           node.velocityX = other.velocityX;
@@ -170,6 +207,13 @@ class AirportGraph {
       }
     }
   }
+}
+
+
+
+
+
+
 }
 
 class AirportNode {
