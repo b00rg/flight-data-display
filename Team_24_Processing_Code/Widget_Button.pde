@@ -1,9 +1,6 @@
 class WidgetButton extends Widget{
-    color ON, OFF;
-    WidgetButton(int xpos,int ypos, int W, int H,int R, color on, color off){
+    WidgetButton(int xpos,int ypos, int W, int H,int R){
     super(xpos, ypos, W, H, R);
-    ON = on;
-    OFF = off;
   }
   boolean isClicked(){
     return(isMouseover());
@@ -11,10 +8,10 @@ class WidgetButton extends Widget{
   void render(){
     if(active)
     {
-      fill(ON);
+      fill(screen.BUTTON_ON);
     } else         // We choose the color of the botton base on it's current status
     {
-      fill(OFF);
+      fill(screen.BUTTON_OFF);
     }
     rect(xpos, ypos, wide, high, roundness);
   }

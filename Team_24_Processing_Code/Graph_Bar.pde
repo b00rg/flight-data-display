@@ -40,17 +40,17 @@ class GraphBar extends Graph
     }
     void drawScale(float maxValue, float topMargin){
         float step = maxValue / 5; // Determine the step size for the scale
-    
+            
         // Draw tick marks and labels
         for (int i = 0; i <= 5; i++) {
-            float yPos = map(ypos + (i * step), 0, maxValue, height - 20, 0);
+            float yPos = map(ypos + (i * step), 0, maxValue, height, 0);
         
             // Draw tick mark
             line(xpos + 10, yPos, xpos, yPos);
         
             // Draw label
             textAlign(LEFT, CENTER);
-            text(nf(i * step, 0, 1), xpos, yPos + ypos);
+            text(nf(i * (step / 1000), 0, 1) + "k", xpos - 20, yPos + ypos);
         }
     }
 }
