@@ -95,6 +95,7 @@ class PieDataPoint extends RawDataPoint {
   String MKT_CARRIER = null;
   int COUNT_CANCELLED = 0;
   int COUNT_DIVERTED = 0;
+  int COUNT_EXPECTED = 0;
 
   PieDataPoint(ResultSet resultSet) {
     super(resultSet); // Call superclass constructor
@@ -102,6 +103,7 @@ class PieDataPoint extends RawDataPoint {
       MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
       COUNT_CANCELLED = columnExists(resultSet, "COUNT_CANCELLED") ? resultSet.getInt("COUNT_CANCELLED") : 0;
       COUNT_DIVERTED = columnExists(resultSet, "COUNT_DIVERTED") ? resultSet.getInt("COUNT_DIVERTED") : 0;
+      COUNT_EXPECTED = columnExists(resultSet, "COUNT_EXPECTED") ? resultSet.getInt("COUNT_EXPECTED") : 0;
     } catch (SQLException e) {
       println("SQLException: " + e.getMessage());
     }
@@ -111,6 +113,9 @@ class PieDataPoint extends RawDataPoint {
   }
   public int getCOUNT_DIVERTED() {
     return COUNT_DIVERTED;
+  }
+  public int getCOUNT_EXPECTED() {
+    return COUNT_EXPECTED;
   }
   public String getMTK_CARRIER() {
     return MKT_CARRIER;
@@ -139,6 +144,10 @@ class DisplayDataPoint extends RawDataPoint {
       ARR_TIME = columnExists(resultSet, "ARR_TIME") ? resultSet.getInt("ARR_TIME") : 0;
       CANCELLED = columnExists(resultSet, "CANCELLED") ? resultSet.getInt("CANCELLED") : 0;
       DIVERTED = columnExists(resultSet, "DIVERTED") ? resultSet.getInt("DIVERTED") : 0;
+      if(CANCELLED == 1)
+      {
+        
+      }
     } catch (SQLException e) {
       println("SQLException: " + e.getMessage());
     }
