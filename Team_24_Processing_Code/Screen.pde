@@ -108,9 +108,18 @@ Screen(){}
     rect(xpos, ypos, w, h, 10);
     fill(TEXT_COLOR);
     text("Arrivals: " + D.ORIGIN,xpos + 2, ypos + h / 10);
-    text("Time: " + D.ARR_TIME, xpos + 2, ypos + h / 10 * 3);
     text("Destination: " + D.DEST,xpos + 2, ypos + h/2);
-    text("Time: " + D.DEP_TIME, xpos + 2,ypos + h/2 + h/4);
+    
+    if(D.CANCELLED != 1)
+    {
+      text("Time: " + D.ARR_TIME, xpos + 2, ypos + h / 10 * 3);
+      text("Time: " + D.DEP_TIME, xpos + 2,ypos + h/2 + h/4);
+    } else 
+    {
+      fill(BUTTON_OFF);
+      text("CANCELLED", xpos, ypos + h / 3);
+    }
+    
     
   }
   void printTable()
