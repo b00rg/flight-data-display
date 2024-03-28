@@ -56,11 +56,12 @@ void draw() {
   
   // Display selected airport name and flights in a window
   if (selectedAirportName != null) {
-    fill(255);
-    rect(width/2 - 150, height/2 - 70, 300, 140);
-    fill(0);
+    fill(0, 0, 0, 100); // Transparent black with alpha at 100 (adjust for desired level)
+    stroke(0, 0, 0, 150); // Dark grey border with some transparency (adjust alpha)
+    rect(width/2 - 150, height/2 - 70, 300, 170);
+    fill(255); // White text for clear visibility
     textAlign(CENTER, CENTER);
-    text(selectedAirportName, width/2, height/2 - 30);
+    text(selectedAirportName, width/2, height/2 - 30); 
     text("Total: " + selectedAirportData[0], width/2, height/2);
     text("Arrivals: " + selectedAirportData[1], width/2, height/2 + 30);
     text("Departures: " + selectedAirportData[2], width/2, height/2 + 60);
