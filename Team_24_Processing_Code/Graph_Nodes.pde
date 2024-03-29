@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.sql.*;
 
 AirportGraph graph;
 AirportNode hoveredNode = null;
@@ -9,36 +8,22 @@ float offsetX, offsetY;
 PFont labelFont;
 String selectedAirportName = null;
 int[] selectedAirportData = new int[3]; // Array to hold total, arrivals, and departures
+float prevSelectedNodeX;
+float prevSelectedNodeY;
 
 void setup() {
-  fullScreen();
-  labelFont = createFont("Arial", 14);
-  graph = new AirportGraph();
-  QueriesSelect queriesSelect = new QueriesSelect();
+    fullScreen();
+    labelFont = createFont("Arial", 14);
+    graph = new AirportGraph();
+    QueriesSelect queriesSelect = new QueriesSelect(); // Instantiate QueriesSelect object
 
-  // Fetching airport data
-  ArrayList<RouteDataPoint> airports = queriesSelect.getAllRoutes();
-
+    // Fetching airport data
+    ArrayList<RouteDataPoint> airports = queriesSelect.getAllRoutes();
   // Finding the maximum flight count
-  int maxFlightCount = 0;
-  for (RouteDataPoint airport : airports) {
-    maxFlightCount = max(maxFlightCount, airport.FLIGHT_COUNT);
-  }
+  int maxFlightCount = getMaxFlightCount(airports);
 
   // Adding nodes (airports) to the graph
-  for (RouteDataPoint airport : airports) {
-    float nodeSize = map(airport.FLIGHT_COUNT, 0, maxFlightCount, 5, 25); // Adjust node size based on flight count
-    if (!graph.containsNode(airport.ORIGIN)) {
-      AirportNode node = new AirportNode(airport.ORIGIN, airport.FLIGHT_COUNT, nodeSize);
-      graph.addNode(node);
-    }
-    if (!graph.containsNode(airport.DEST)) {
-      AirportNode destNode = new AirportNode(airport.DEST, airport.FLIGHT_COUNT, nodeSize);
-      graph.addNode(destNode);
-    }
-    float thickness = map(airport.FLIGHT_COUNT, 0, maxFlightCount, 0.5, 2); // Adjust line thickness based on flight count
-    graph.connectAirports(airport.ORIGIN, airport.DEST, thickness);
-  }
+  addNodesToGraph(airports, maxFlightCount);
 }
 
 void draw() {
@@ -47,25 +32,10 @@ void draw() {
   graph.draw();
   
   // Display labels when mouse hovers over a node
-  if (hoveredNode != null) {
-    fill(255);
-    textFont(labelFont);
-    textAlign(CENTER, CENTER);
-    text(hoveredNode.name, mouseX, mouseY - 20);
-  }
-  
+  displayHoveredNodeLabel();
+
   // Display selected airport name and flights in a window
-  if (selectedAirportName != null) {
-    fill(0, 0, 0, 100); // Transparent black with alpha at 100 (adjust for desired level)
-    stroke(0, 0, 0, 150); // Dark grey border with some transparency (adjust alpha)
-    rect(width/2 - 150, height/2 - 70, 300, 170);
-    fill(255); // White text for clear visibility
-    textAlign(CENTER, CENTER);
-    text(selectedAirportName, width/2, height/2 - 30); 
-    text("Total: " + selectedAirportData[0], width/2, height/2);
-    text("Arrivals: " + selectedAirportData[1], width/2, height/2 + 30);
-    text("Departures: " + selectedAirportData[2], width/2, height/2 + 60);
-  }
+  displaySelectedAirportData();
 }
 
 void mouseMoved() {
@@ -74,22 +44,15 @@ void mouseMoved() {
 
 void mousePressed() {
   if (hoveredNode != null) {
-    selectedAirportName = hoveredNode.name;
-    QueriesSelect queries = new QueriesSelect();
-    selectedAirportData[1] = queries.getArrivals(selectedAirportName);
-    selectedAirportData[2] = queries.getDepartures(selectedAirportName);
-    selectedAirportData[0] = queries.getArrivals(selectedAirportName) + queries.getDepartures(selectedAirportName);
-        isDragging = true;
+    selectAirport();
+    isDragging = true;
     offsetX = mouseX - hoveredNode.x;
     offsetY = mouseY - hoveredNode.y;
   } else {
-    selectedAirportName = null;
-        isDragging = false;
-    for (int i = 0; i < selectedAirportData.length; i++) {
-      selectedAirportData[i] = 0;
-    }
+    deselectAirport();
   }
 }
+
 void mouseDragged() {
   if (isDragging && hoveredNode != null) {
     // Update node position while dragging
@@ -97,10 +60,116 @@ void mouseDragged() {
     hoveredNode.y = mouseY - offsetY;
   }
 }
+
 void mouseReleased() {
   // Stop dragging when the mouse is released
   isDragging = false;
 }
+
+void addNodesToGraph(ArrayList<RouteDataPoint> airports, int maxFlightCount) {
+  for (RouteDataPoint airport : airports) {
+    float nodeSize = map(airport.FLIGHT_COUNT, 0, maxFlightCount, 5, 25); // Adjust node size based on flight count
+    addNodeToGraph(airport.ORIGIN, airport.FLIGHT_COUNT, nodeSize);
+    addNodeToGraph(airport.DEST, airport.FLIGHT_COUNT, nodeSize);
+    float thickness = map(airport.FLIGHT_COUNT, 0, maxFlightCount, 0.5, 2); // Adjust line thickness based on flight count
+    graph.connectAirports(airport.ORIGIN, airport.DEST, thickness);
+  }
+}
+
+void addNodeToGraph(String name, int flightCount, float nodeSize) {
+  if (!graph.containsNode(name)) {
+    AirportNode node = new AirportNode(name, flightCount, nodeSize);
+    graph.addNode(node);
+  }
+}
+
+int getMaxFlightCount(ArrayList<RouteDataPoint> airports) {
+  int maxFlightCount = 0;
+  for (RouteDataPoint airport : airports) {
+    maxFlightCount = max(maxFlightCount, airport.FLIGHT_COUNT);
+  }
+  return maxFlightCount;
+}
+
+void displayHoveredNodeLabel() {
+  if (hoveredNode != null) {
+    fill(255);
+    textFont(labelFont);
+    textAlign(CENTER, CENTER);
+    text(hoveredNode.name, mouseX, mouseY - 20);
+  }
+}
+
+void selectAirport() {
+  selectedAirportName = hoveredNode.name;
+  QueriesSelect queries = new QueriesSelect();
+  selectedAirportData[1] = queries.getArrivals(selectedAirportName);
+  selectedAirportData[2] = queries.getDepartures(selectedAirportName);
+  selectedAirportData[0] = selectedAirportData[1] + selectedAirportData[2];
+}
+
+void deselectAirport() {
+  selectedAirportName = null;
+  isDragging = false;
+  for (int i = 0; i < selectedAirportData.length; i++) {
+    selectedAirportData[i] = 0;
+  }
+}
+
+void displaySelectedAirportData() {
+  if (selectedAirportName != null) {
+    AirportNode selectedNode = null;
+    for (AirportNode node : graph.nodes) {
+      if (node.name.equals(selectedAirportName)) {
+        selectedNode = node;
+        break;
+      }
+    }
+    if (selectedNode != null) {
+      float textBoxWidth = 200; // Adjust as needed
+      float textBoxHeight = 100; // Adjust as needed
+      
+      // Calculate the ideal position of the bounding box relative to the node
+      float idealTextBoxX = selectedNode.x - textBoxWidth / 2;
+      float idealTextBoxY = selectedNode.y - selectedNode.radius - textBoxHeight - 20; // Position the bounding box above the node
+      
+      // Adjust position if the bounding box would appear off-screen while maintaining the same distance from the node
+      float textBoxX = idealTextBoxX;
+      float textBoxY = idealTextBoxY;
+      
+      // If the node collides with the left or right edge of the screen, move the bounding box left or right
+      if (selectedNode.x - textBoxWidth / 2 < 0) {
+        textBoxX = 0;
+      } else if (selectedNode.x + textBoxWidth / 2 > width) {
+        textBoxX = width - textBoxWidth;
+      }
+      
+      // If the node collides with the top or bottom edge of the screen, move the bounding box up or down
+      if (selectedNode.y - selectedNode.radius - textBoxHeight - 20 < 0) {
+        textBoxY = 0;
+      } else if (selectedNode.y - selectedNode.radius - textBoxHeight - 20 > height) {
+        textBoxY = height - textBoxHeight;
+      }
+
+      fill(0, 0, 0, 100); // Transparent black with alpha at 100 (adjust for desired level)
+      stroke(0, 0, 0, 150); // Dark grey border with some transparency (adjust alpha)
+      rect(textBoxX, textBoxY, textBoxWidth, textBoxHeight);
+
+      fill(255); // White text for clear visibility
+      textAlign(CENTER, CENTER);
+      text(selectedAirportName, textBoxX + textBoxWidth / 2, textBoxY + 20); // Center the text horizontally
+      text("Total: " + selectedAirportData[0], textBoxX + textBoxWidth / 2, textBoxY + 40);
+      text("Arrivals: " + selectedAirportData[1], textBoxX + textBoxWidth / 2, textBoxY + 60);
+      text("Departures: " + selectedAirportData[2], textBoxX + textBoxWidth / 2, textBoxY + 80);
+    }
+  }
+}
+
+
+
+
+
+
 
 class AirportGraph {
   ArrayList<AirportNode> nodes;
@@ -129,19 +198,18 @@ class AirportGraph {
     destNode.addNeighbor(originNode, thickness); // Assuming it's a bi-directional connection
   }
 
-void draw() {
-  stroke(150, 1000); // Set line color to dark grey with lower transparency
-  for (AirportNode node : nodes) {
-    node.draw();
-    for (AirportNode neighbor : node.neighbors.keySet()) {
-      float thickness = node.neighbors.get(neighbor);
-      stroke(150, 100); // Set line color to dark grey with lower transparency
-      strokeWeight(thickness); // Set line thickness based on route popularity
-      line(node.x, node.y, neighbor.x, neighbor.y);
+  void draw() {
+    stroke(150, 1000); // Set line color to dark grey with lower transparency
+    for (AirportNode node : nodes) {
+      node.draw();
+      for (AirportNode neighbor : node.neighbors.keySet()) {
+        float thickness = node.neighbors.get(neighbor);
+        stroke(150, 100); // Set line color to dark grey with lower transparency
+        strokeWeight(thickness); // Set line thickness based on route popularity
+        line(node.x, node.y, neighbor.x, neighbor.y);
+      }
     }
   }
-}
-
 
   AirportNode getNodeUnderMouse() {
     for (AirportNode node : nodes) {
@@ -160,15 +228,6 @@ void draw() {
       }
     }
     return null;
-  }
-
-  void updateConnectedNodes(AirportNode movedNode) {
-    for (AirportNode node : nodes) {
-      if (node != movedNode && movedNode.neighbors.containsKey(node)) {
-        float thickness = movedNode.neighbors.get(node);
-        node.updateNeighborPosition(movedNode, thickness);
-      }
-    }
   }
 
   void update() {
@@ -256,12 +315,6 @@ class AirportNode {
     stroke(200); // Adjusted to a lighter grey
     strokeWeight(1); // Adjusted to a thinner line
     ellipse(x, y, radius * 2, radius * 2);
-  }
-
-  void updateNeighborPosition(AirportNode movedNode, float thickness) {
-    if (neighbors.containsKey(movedNode)) {
-      neighbors.put(movedNode, thickness);
-    }
   }
 
   boolean intersects(AirportNode other) {
