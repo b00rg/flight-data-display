@@ -55,11 +55,73 @@ void mousePressed() {
 
 void mouseDragged() {
   if (isDragging && hoveredNode != null) {
-    // Update node position while dragging
-    hoveredNode.x = mouseX - offsetX;
-    hoveredNode.y = mouseY - offsetY;
+    // Calculate the difference between the current and previous mouse positions
+    float deltaX = mouseX - pmouseX;
+    float deltaY = mouseY - pmouseY;
+
+    // Update position of the main dragged node
+    hoveredNode.x += deltaX;
+    hoveredNode.y += deltaY;
+
+    // Update positions of connected nodes (neighbors)
+    for (AirportNode neighbor : hoveredNode.neighbors.keySet()) {
+      // Apply dampening effect to the movement of connected nodes
+      float dampeningFactor = 0.2; // Adjust the dampening factor as needed
+      float neighborDeltaX = deltaX * dampeningFactor; // Apply dampening to the horizontal movement
+      float neighborDeltaY = deltaY * dampeningFactor; // Apply dampening to the vertical movement
+      
+      // Update position of the connected node
+      neighbor.x += neighborDeltaX;
+      neighbor.y += neighborDeltaY;
+      
+      // Update positions of nodes connected to the connected node
+      for (AirportNode nestedNeighbor : neighbor.neighbors.keySet()) {
+        // Apply further dampening effect to the movement of nested connected nodes
+        float nestedDampeningFactor = 0.1; // Adjust the nested dampening factor as needed
+        float nestedNeighborDeltaX = neighborDeltaX * nestedDampeningFactor; // Apply dampening to the horizontal movement
+        float nestedNeighborDeltaY = neighborDeltaY * nestedDampeningFactor; // Apply dampening to the vertical movement
+        
+        // Update position of the nested connected node
+        nestedNeighbor.x += nestedNeighborDeltaX;
+        nestedNeighbor.y += nestedNeighborDeltaY;
+      }
+    }
+    
+    // Update the original mouse position
+    offsetX = mouseX - hoveredNode.x;
+    offsetY = mouseY - hoveredNode.y;
   }
 }
+
+
+
+void updateConnectedNodes(AirportNode node, float deltaX, float deltaY, float strength, int maxDepth, int currentDepth) {
+  if (currentDepth > maxDepth) {
+    return; // Stop recursion if maximum depth is reached
+  }
+
+  for (AirportNode neighbor : node.neighbors.keySet()) {
+    // Calculate the direction vector from the dragged node to its neighbor
+    float directionX = neighbor.x - node.x;
+    float directionY = neighbor.y - node.y;
+
+    // Calculate the distance between the dragged node and its neighbor
+    float distance = sqrt(directionX * directionX + directionY * directionY);
+
+    // Define a factor to reduce movement strength based on distance
+    float movementFactor = strength / (1 + distance);
+
+    // Move the neighbor in the direction of the vector with reduced strength
+    neighbor.x += deltaX * movementFactor;
+    neighbor.y += deltaY * movementFactor;
+
+    // Recursively update connected nodes of the neighbor
+    updateConnectedNodes(neighbor, deltaX, deltaY, movementFactor * 0.8, maxDepth, currentDepth + 1); // Adjust the factor for less strength in subsequent nodes
+  }
+}
+
+
+
 
 void mouseReleased() {
   // Stop dragging when the mouse is released
