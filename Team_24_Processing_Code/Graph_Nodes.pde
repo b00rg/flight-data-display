@@ -65,8 +65,11 @@ void mouseDragged() {
 
     // Update positions of connected nodes (neighbors)
     for (AirportNode neighbor : hoveredNode.neighbors.keySet()) {
+      // Calculate dampening factors based on the size of the nodes
+      float nodeSizeRatio = hoveredNode.radius / neighbor.radius; // Calculate size ratio
+      float dampeningFactor = 0.2 * nodeSizeRatio; // Adjust the dampening factor based on size ratio
+      
       // Apply dampening effect to the movement of connected nodes
-      float dampeningFactor = 0.2; // Adjust the dampening factor as needed
       float neighborDeltaX = deltaX * dampeningFactor; // Apply dampening to the horizontal movement
       float neighborDeltaY = deltaY * dampeningFactor; // Apply dampening to the vertical movement
       
@@ -76,8 +79,11 @@ void mouseDragged() {
       
       // Update positions of nodes connected to the connected node
       for (AirportNode nestedNeighbor : neighbor.neighbors.keySet()) {
+        // Calculate nested dampening factors based on the size of the nodes
+        float nestedNodeSizeRatio = neighbor.radius / nestedNeighbor.radius; // Calculate size ratio
+        float nestedDampeningFactor = 0.1 * nestedNodeSizeRatio; // Adjust the nested dampening factor based on size ratio
+        
         // Apply further dampening effect to the movement of nested connected nodes
-        float nestedDampeningFactor = 0.1; // Adjust the nested dampening factor as needed
         float nestedNeighborDeltaX = neighborDeltaX * nestedDampeningFactor; // Apply dampening to the horizontal movement
         float nestedNeighborDeltaY = neighborDeltaY * nestedDampeningFactor; // Apply dampening to the vertical movement
         
@@ -92,6 +98,7 @@ void mouseDragged() {
     offsetY = mouseY - hoveredNode.y;
   }
 }
+
 
 
 
