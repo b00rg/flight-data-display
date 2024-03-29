@@ -166,11 +166,6 @@ void displaySelectedAirportData() {
 }
 
 
-
-
-
-
-
 class AirportGraph {
   ArrayList<AirportNode> nodes;
 
@@ -198,18 +193,39 @@ class AirportGraph {
     destNode.addNeighbor(originNode, thickness); // Assuming it's a bi-directional connection
   }
 
-  void draw() {
-    stroke(150, 1000); // Set line color to dark grey with lower transparency
-    for (AirportNode node : nodes) {
-      node.draw();
-      for (AirportNode neighbor : node.neighbors.keySet()) {
-        float thickness = node.neighbors.get(neighbor);
-        stroke(150, 100); // Set line color to dark grey with lower transparency
-        strokeWeight(thickness); // Set line thickness based on route popularity
-        line(node.x, node.y, neighbor.x, neighbor.y);
-      }
+void draw() {
+  if (isDragging || selectedAirportName != null) {
+    // If any node is being dragged or a node is selected, change the graph color to a lighter shade of grey
+    background(180); // Adjusted to a lighter shade of grey
+  } else {
+    background(40); // Default background color (dark grey)
+  }
+
+  for (AirportNode node : nodes) {
+    if (isDragging && node == hoveredNode) {
+      // If the node is being dragged, keep it white
+      fill(255);
+    } else if (selectedAirportName != null && node.name.equals(selectedAirportName)) {
+      // If the node is selected, keep it white
+      fill(255);
+    } else {
+      fill(120); // Default fill color for non-selected nodes
+    }
+
+    stroke(200); // Adjusted to a lighter grey
+    strokeWeight(1); // Adjusted to a thinner line
+    ellipse(node.x, node.y, node.radius * 2, node.radius * 2);
+
+    for (AirportNode neighbor : node.neighbors.keySet()) {
+      float thickness = node.neighbors.get(neighbor);
+      stroke(150, 100); // Set line color to dark grey with lower transparency
+      strokeWeight(thickness); // Set line thickness based on route popularity
+      line(node.x, node.y, neighbor.x, neighbor.y);
     }
   }
+}
+
+
 
   AirportNode getNodeUnderMouse() {
     for (AirportNode node : nodes) {
