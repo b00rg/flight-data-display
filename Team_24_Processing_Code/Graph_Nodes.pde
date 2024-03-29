@@ -79,12 +79,27 @@ void mousePressed() {
     selectedAirportData[1] = queries.getArrivals(selectedAirportName);
     selectedAirportData[2] = queries.getDepartures(selectedAirportName);
     selectedAirportData[0] = queries.getArrivals(selectedAirportName) + queries.getDepartures(selectedAirportName);
+        isDragging = true;
+    offsetX = mouseX - hoveredNode.x;
+    offsetY = mouseY - hoveredNode.y;
   } else {
     selectedAirportName = null;
+        isDragging = false;
     for (int i = 0; i < selectedAirportData.length; i++) {
       selectedAirportData[i] = 0;
     }
   }
+}
+void mouseDragged() {
+  if (isDragging && hoveredNode != null) {
+    // Update node position while dragging
+    hoveredNode.x = mouseX - offsetX;
+    hoveredNode.y = mouseY - offsetY;
+  }
+}
+void mouseReleased() {
+  // Stop dragging when the mouse is released
+  isDragging = false;
 }
 
 class AirportGraph {
