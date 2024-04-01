@@ -227,4 +227,45 @@ class QueriesSelect extends Queries {
     return dataList; 
   }
 
+ int getArrivals(String airportName) {
+    int arrivals = 0;
+    try {
+      Statement stmt = connection.createStatement();
+      String query = "SELECT COUNT(*) AS ARRIVALS FROM " + super.tableName + " WHERE DEST = '" + airportName + "'";
+      ResultSet resultSet = stmt.executeQuery(query);
+
+      if (resultSet.next()) {
+        arrivals = resultSet.getInt("ARRIVALS");
+      }
+
+      resultSet.close();
+      stmt.close();
+    } catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+    return arrivals;
+  }
+
+  int getDepartures(String airportName) {
+    int departures = 0;
+    try {
+      Statement stmt = connection.createStatement();
+      String query = "SELECT COUNT(*) AS DEPARTURES FROM " + super.tableName + " WHERE ORIGIN = '" + airportName + "'";
+      ResultSet resultSet = stmt.executeQuery(query);
+
+      if (resultSet.next()) {
+        departures = resultSet.getInt("DEPARTURES");
+      }
+
+      resultSet.close();
+      stmt.close();
+    } catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+    return departures;
+  }
 }
+
+
+
+
