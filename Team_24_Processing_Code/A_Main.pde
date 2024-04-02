@@ -106,7 +106,7 @@ void setup() {
   ReloadButton = new WidgetButton(50, 50, 50, 50, 1);
   
   // THEME BUTTON SETUP
-  ThemeSelection = new WidgetDropDown(250, 20, 200, 50, TextBoxFont, themeNames);
+  ThemeSelection = new WidgetDropDown(250, 30, 200, 50, TextBoxFont, themeNames);
   ThemeSelection.currentlySelectedElement = 0;
   
   //SCROLL BUTTON SETUP
