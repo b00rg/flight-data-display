@@ -23,21 +23,35 @@ Screen(){}
   // Database interaction panel (DIP)
   int TAB_WIDTH = 500, TAB_BORDER_WIDTH = 20;
   
-  int numberOfPages; // The amount of pages that the user can flick through based on the amount of data that needs to be displayed
+  int numberOfPages, numberOfGraphs; // The amount of pages that the user can flick through based on the amount of data that needs to be displayed
   int selectedPage = 1;
   int dataBlockYMargin = 5;
   // Layout of buttons and drop down menus
-  int HEIGHT_B = 70;
-  int WIDTH_B = 200;
+  int HEIGHT_B = 50;
+  int WIDTH_B = 150;
   
   // drop down buttons
   int NUMBER_OF_DROPDOWNS = 5;
+  
   void renderDIP(){
     renderUpperTab();
     fill(PRIMARY_COLOR);
     rect(0,0,TAB_WIDTH, displayHeight);
     fill(SECONDARY_COLOR);
     rect(TAB_WIDTH,0,TAB_BORDER_WIDTH, displayHeight);
+    
+    fill(TEXT_COLOR);
+    textFont(headingFont);
+    text("DATE", 100, 60);
+    text("TIME", 100, 220);
+    text("AIRPORT", 100, 500);
+    
+    textFont(TextBoxFont);
+    text("BETWEEN:", 25, (int) (height * 0.1) + (HEIGHT_B/2));
+    text("DEPARTURE:", 25, (int) (height * 0.25) + (HEIGHT_B/2));
+    text("ARRIVAL:", 25, (int) (height * 0.35) + (HEIGHT_B/2));
+    text("DEPARTS FROM:", 25, (int) (height * 0.52) + (HEIGHT_B/2));
+    text("ARRIVES AT:", 25, (int) (height * 0.6) + (HEIGHT_B/2));
   }
   void renderUpperTab(){
     fill(PRIMARY_COLOR);
@@ -122,27 +136,61 @@ Screen(){}
       case 1:
         graphP.drawPieChart(valuesP);
         break;
+      case 2:
+        graphD.draw(valuesD);
+        break;
+      case 3:
+        graphS.draw(valuesS);
+        break;
       default:
         println("No graph found");
         break;
     }
   }
   
-  /*void hasUserChangedPage(){ // The user clicked a button to chnange pages for the data display in tab 1
-  if(moveLeft.isClicked()){
-    screen.selectedPage--;
-    if(screen.selectedPage <= 0){
-      screen.selectedPage = 1;
+void pageSelectButtons()
+{
+  if(moveLeft.isClicked())
+  {
+    switch(currentlyActiveTab)
+    {
+      case 0:
+        screen.selectedPage--;
+        if(screen.selectedPage <= 0)
+          screen.selectedPage = 1;
+        break;
+      case 1:
+        displayedGraph--;
+        if(displayedGraph < 0)
+          displayedGraph = numberOfGraphs - 1;
+        break;
+      default:
+        println("No function");
+        break;
     }
   }
-    if(moveRight.isClicked()){
-      screen.selectedPage++;
-      if(screen.selectedPage > screen.numberOfPages){
-        screen.selectedPage = screen.numberOfPages;
-      }
+  
+  if(moveRight.isClicked())
+  {
+    switch(currentlyActiveTab)
+    {
+      case 0:
+        screen.selectedPage++;
+        if(screen.selectedPage > screen.numberOfPages)
+          screen.selectedPage = screen.numberOfPages;
+        break;
+      case 1:
+        displayedGraph++;
+        if(displayedGraph >= numberOfGraphs)
+          displayedGraph = 0;
+        break;
+      default:
+        println("No function");
+        break;
     }
-<<<<<<< HEAD
-  }*/
+  }
+}
+
   String adjustDateInput(String dd_mm_yyyy)
   {
     try
