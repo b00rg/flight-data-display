@@ -1,3 +1,15 @@
+// This code implements an interactive airport graph visualization:
+// It initializes variables and objects needed for the graph visualization.
+// It sets up the canvas and initializes the airport graph.
+// It fetches airport data and calculates the maximum flight count.
+// It adds airport nodes to the graph and connects them based on routes.
+// It handles mouse movement, press, drag, and release events for interaction with the graph.
+// This interactive visualization allows users to:
+// Drag airport nodes around the canvas.
+// Select an airport node to display detailed information about it.
+// See flight counts represented by node sizes and route thicknesses.
+// Detect collisions between nodes and adjust their positions accordingly.
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
