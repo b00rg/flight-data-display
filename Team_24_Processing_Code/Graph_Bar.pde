@@ -53,3 +53,12 @@ class GraphBar extends Graph {
         }
     }
 }
+
+/*
+  QueriesSelect queriesSelect = new QueriesSelect();
+  // Call the getBusyRoutes method to retrieve data for heatmap
+  ArrayList<RouteDataPoint> busyRoutes = queriesSelect.getBusyRoutes();
+  // Create an instance of DensityGraph and draw the heatmap
+  DensityGraph densityGraph = new DensityGraph();
+  densityGraph.draw(busyRoutes);
+*/
