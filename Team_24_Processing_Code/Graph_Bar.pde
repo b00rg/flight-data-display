@@ -1,3 +1,7 @@
+// defines a subclass GraphBar with a constructor and a method drawBarChart to draw a bar chart based on provided data points. 
+// It calculates bar dimensions, loops through data to draw bars, and includes a method drawScale to draw a scale. 
+// The commented-out section provides an example of how to use GraphBar, fetching data and drawing a heatmap using another class.
+
 class GraphBar extends Graph {
 // Constructor for the GraphBar class
     GraphBar(){
