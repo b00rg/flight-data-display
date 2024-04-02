@@ -251,7 +251,7 @@ void ReloadEvent(){
   int num1;
   int num2;
   
-  String selectedAriivalStation = "";
+  String selectedArrivalStation = "";
   String selectedDepartureStation = "";
   String date1 = "";
   String date2 = "";
@@ -261,15 +261,17 @@ void ReloadEvent(){
   if(textBoxList.get(2).textValue != "??:??"){
     depTime = false;
     num1 = Integer.parseInt(textBoxList.get(2).num1.trim());
-    num2 = Integer.parseInt(textBoxList.get(2).num2.trim());
-  } else  if ((textBoxList.get(4).textValue != "??:??"))
+    //num2 = Integer.parseInt(textBoxList.get(2).num2.trim());
+  } 
+  if ((textBoxList.get(3).textValue != "??:??"))
   {
-    depTime = true;
-    num1 = Integer.parseInt(textBoxList.get(4).num1.trim());
-    num2 = Integer.parseInt(textBoxList.get(4).num2.trim());
-  } else 
+    //depTime = true;
+    //num1 = Integer.parseInt(textBoxList.get(4).num1.trim());
+    num2 = Integer.parseInt(textBoxList.get(3).num1.trim());
+  }
+  //else 
   {
-    depTime = true; // doesn't matter
+    depTime = false; // doesn't matter
     num1 = 0000;
     num2 = 0000;
   }
@@ -277,10 +279,10 @@ void ReloadEvent(){
   
   if(dropDownList.get(0).currentlySelectedElement != -1)
   {
-    selectedAriivalStation = dropDownList.get(0).elements[dropDownList.get(0).currentlySelectedElement];
+    selectedArrivalStation = dropDownList.get(0).elements[dropDownList.get(0).currentlySelectedElement];
   } 
   else {
-    selectedAriivalStation = null;
+    selectedArrivalStation = null;
   }
   
   
@@ -300,7 +302,7 @@ void ReloadEvent(){
   }
   
   QueriesSelect selectQuery = new QueriesSelect();
-  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation, date1, date2);
+  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
   String DateRange = null;
   if((startDate.textValue != null || startDate.textValue != startDate.normal) && (endDate.textValue != null || endDate.textValue != endDate.normal))
   {
