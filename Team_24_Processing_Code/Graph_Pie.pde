@@ -1,3 +1,13 @@
+// This code defines a class GraphPie that extends the Graph class and implements a method to draw a pie chart based on provided PieDataPoint values:
+// It initializes variables for angles, label positions, and color.
+// It loops through each label to draw the pie chart slices.
+// It calculates the angle for each slice based on its position in the labels array.
+// It calculates the end angle for each slice.
+// It calculates the slice color based on its position in the labels array.
+// It draws each slice of the pie chart.
+// It draws labels for each slice.
+// It updates the start angle for the next slice.
+
 // Define a class GraphPie which extends the Graph class
 // Constructor for the GraphPie class
 class GraphPie extends Graph {
