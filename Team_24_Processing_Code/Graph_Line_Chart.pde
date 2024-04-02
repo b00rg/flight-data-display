@@ -1,3 +1,10 @@
+// This SimpleGraph class, extending Graph, draws a simple graph based on provided route data points:
+// It initializes drawing variables and calculates point spacing.
+// It finds the maximum flight count among the data points.
+// It draws the graph by iterating through the data points, mapping heights relative to canvas height and plotting points.
+// It labels each point with the corresponding origin and destination airports.
+// It draws a scale on the y-axis to represent flight count using the maximum flight count and top margin.
+
 import java.util.ArrayList;
 
 // Define a class SimpleGraph extending the Graph class
