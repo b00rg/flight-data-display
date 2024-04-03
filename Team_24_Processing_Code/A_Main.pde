@@ -30,30 +30,47 @@ static WidgetButton ReloadButton;
 static WidgetButton moveLeft;
 static WidgetButton moveRight;
 
+static WidgetButton cancelledFlights;
+static WidgetButton delayedFlights;
+static WidgetButton undisturbedFlights;
+
 static WidgetTextBox startDate;
 static WidgetTextBox endDate;
 
 static boolean[] statsShown = new boolean[18];
 color ON = color(100,255,100);
 color OFF = color(255,100,100);
-PFont TextBoxFont;
+PFont TextBoxFont, headingFont;
 ArrayList<DisplayDataPoint> filteredData;
 
 Screen screen = new Screen();
 int currentlyActiveTab = 0;
 boolean isDropDownActive = false;
 int WIDGET_ROUNDNESS = 10;
-  
+
 enum WIDGET_TEXT_TYPE{
   TIME,
   DATE
 }
 
+ArrayList<BarDataPoint> valuesB;
+GraphBar graphB;
+
+ArrayList<PieDataPoint> valuesP;
+GraphPie graphP;
+
+ArrayList<RouteDataPoint> valuesD;
+DensityGraph graphD;
+
+ArrayList<RouteDataPoint> valuesS;
+SimpleGraph graphS;
+
+int displayedGraph = 0;
 
 //SETUP FUNCTION
 void setup() {
   fullScreen();
-  
+
   // THEME SETUP
   screen.changeTheme(THEMES.DEFAULT);
   //DATA SETUP
@@ -63,31 +80,36 @@ void setup() {
   setupQuery.dropAndCreateTable();
   setupQuery.insertRows();
 
-  
-  //TEXTBOX SETUP
   TextBoxFont = loadFont("default.vlw");
-  WidgetTextBox departureTimeSelections = new WidgetTextBox(250, 500, screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
-  WidgetTextBox arrivalTimeSelections = new WidgetTextBox(50, 500, screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:?? - ??:??", WIDGET_TEXT_TYPE.TIME);
-  textBoxList.add(departureTimeSelections);
-  textBoxList.add(arrivalTimeSelections);
-  
-  
+  headingFont = loadFont("Heading.vlw");
+
   //DATE TEXT BOX SETUP
-  startDate = new WidgetTextBox(50, 800, (int)(screen.WIDTH_B / 1.5), screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/mm/yyyy", WIDGET_TEXT_TYPE.DATE);
-  endDate = new WidgetTextBox(150, 800, (int)(screen.WIDTH_B / 1.5), screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "dd/m/yyyy", WIDGET_TEXT_TYPE.DATE);
+  startDate = new WidgetTextBox((int) (width * 0.08), (int) (height * 0.1), screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "DD/MM/YYYY", WIDGET_TEXT_TYPE.DATE);
+  endDate = new WidgetTextBox((int) (width * 0.17), (int) (height * 0.1), screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "DD/MM/YYYY", WIDGET_TEXT_TYPE.DATE);
   textBoxList.add(startDate);
   textBoxList.add(endDate);
   
+  //TEXTBOX SETUP
+  WidgetTextBox departureLowerSelection = new WidgetTextBox((int) (width * 0.08), (int) (height * 0.25), screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:??", WIDGET_TEXT_TYPE.TIME);
+  WidgetTextBox departureUpperSelection = new WidgetTextBox((int) (width * 0.17), (int) (height * 0.25), screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:??", WIDGET_TEXT_TYPE.TIME);
+  WidgetTextBox arrivalLowerSelection = new WidgetTextBox((int) (width * 0.08), (int) (height * 0.35), screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:??", WIDGET_TEXT_TYPE.TIME);
+  WidgetTextBox arrivalUpperSelection = new WidgetTextBox((int) (width * 0.17), (int) (height * 0.35), screen.WIDTH_B, screen.HEIGHT_B, WIDGET_ROUNDNESS, TextBoxFont, "??:??", WIDGET_TEXT_TYPE.TIME);
+  textBoxList.add(departureLowerSelection);
+  textBoxList.add(departureUpperSelection);
+  textBoxList.add(arrivalLowerSelection);
+  textBoxList.add(arrivalUpperSelection);
   
   //AIRPORT DROP DOWN SETUP
   QueriesSelect selectQuery = new QueriesSelect();
   String[] departureAirports = selectQuery.getDepartureAirports();
   String[] arrivalAirports = selectQuery.getArrivalAirports();  
-  WidgetDropDown arrivals = new WidgetDropDown(50, 150, 200, 50, TextBoxFont, departureAirports);
-  dropDownList.add(arrivals);
-  WidgetDropDown departures = new WidgetDropDown(250, 150, 200, 50, TextBoxFont, arrivalAirports);
+  WidgetDropDown departures = new WidgetDropDown((int) (width * 0.13), (int) (height * 0.6), 200, 50, TextBoxFont, arrivalAirports);
   dropDownList.add(departures);
+  WidgetDropDown arrivals = new WidgetDropDown((int) (width * 0.13), (int) (height * 0.52), 200, 50, TextBoxFont, departureAirports);
+  dropDownList.add(arrivals);
   
+  //RELOAD BUTTON SETUP
+  ReloadButton = new WidgetButton((int) (width * 0.025),(int) (height * 0.88), 400, 75, 1);
   
   //TAB BUTTON SETUP
   int totalTabWidth = screen.TAB_WIDTH + screen.TAB_BORDER_WIDTH;
@@ -99,14 +121,41 @@ void setup() {
     TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
-  ReloadButton = new WidgetButton(50, 50, 50, 50, 1);
+  
   // THEME BUTTON SETUP
-  ThemeSelection = new WidgetDropDown(250, 20, 200, 50, TextBoxFont, themeNames);
+  ThemeSelection = new WidgetDropDown(250, 30, 200, 50, TextBoxFont, themeNames);
   ThemeSelection.currentlySelectedElement = 0;
+  
   //SCROLL BUTTON SETUP
   moveLeft = new WidgetButton(1100, 1000, 50, 50, 5);
   moveRight = new WidgetButton(1300, 1000, 50, 50, 5);
   
+
+  cancelledFlights = new WidgetButton(width/20, height / 10 * 7,50, 50, 20);
+  delayedFlights = new WidgetButton(width/20 * 2, height / 10 * 7, 50, 50, 20);
+  undisturbedFlights = new WidgetButton(width/20 * 3, height / 10 * 7, 50, 50, 20);
+
+  // Tab 1 setup
+  // please do not move this outside of setup void, for some reason processing does not likey likey that
+  
+  // Tab 2 setup
+    
+  //GRAPH SETUP
+  QueriesSelect queries = new QueriesSelect();
+  valuesB = queries.getRowsBarGraph();
+  valuesP = queries.getRowsPieChart();
+  valuesD = queries.getBusyRoutes();
+  valuesS = queries.getBusyRoutes();
+  
+  graphB = new GraphBar(600, 250, 1200, 700);
+  graphP = new GraphPie(1300, 560, 800, 800);
+  //graphD = new DensityGraph(800, 150, 1200, 700);
+  //graphS = new SimpleGraph(600, 500, 1200, 1000);
+  
+  Graph[] graphs = {graphB, graphP, graphD, graphS};
+  //screen.numberOfGraphs = 4;
+
+
 }
 
 
@@ -114,32 +163,47 @@ void draw(){
   
   background(screen.BACKGROUND);
   
+  noStroke();
+  
   moveLeft.render();
   moveRight.render();
   // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
   // User tab selection only effects everything on the right
   screen.renderDIP();
-  ThemeSelection.render();
+  //ThemeSelection.render();
+  ReloadButton.render();
+  cancelledFlights.render();
+  delayedFlights.render();
+  undisturbedFlights.render();
+  
   screen.renderButtons();
-  ThemeSelection.render();
+  //ThemeSelection.render();
+
   switch(currentlyActiveTab)
   {
     case 0: // user is looking at tab 1
       screen.renderTab1();
       break;
     case 1: // user is lookingat tab 2
+      screen.renderTab2();
+      break;
+    default:
+      println("Tab not found");
+      currentlyActiveTab = 0;
+      break;
   }
-  ReloadButton.render();
+  
 }
 
 
 //ADD COMMENT
-void mouseClicked(){
+void mouseClicked()
+{
   if(ReloadButton.isClicked())
   {
     ReloadButton.active = true;
     ReloadButton.render();
-    RealoadEvent();
+    ReloadEvent();
     screen.renderTab1();
     ReloadButton.active = false;
     ReloadButton.render();
@@ -159,8 +223,9 @@ void mouseClicked(){
        break;
      }
   }
+
   updateTabs();
-  screen.hasUserChangedPage();
+  screen.pageSelectButtons();
   ThemeSelection.isClicked();
   if(ThemeSelection.currentlySelectedElement == -1)
   {
@@ -188,55 +253,42 @@ void mouseClicked(){
       dropDownList.get(i).isClicked();
     }
   }
+  radioButtonsFlightStatus();
 }
-
 
 // checks which tab is currently active and applies a process depending on the scenario
 // At the moment this 
-void keyPressed(){ // todo, lots of this code is redudant since the user always has access to the buttons
-    switch(currentlyActiveTab) 
-    {
-      case 0:   // User is on tab 1
-
-        for(int i  = 0; i < textBoxList.size(); i++)
-        {
-          if(textBoxList.get(i).active)
-          {
-          textBoxList.get(i).input(key);
-          delay(10); // We must delay to stop the user from accidentally holding a key causing many inputs at once
-          }
-        }
-    }
-}
 
 
 // creates all querry related data pieces and collect the data from input buttons, some of the data is also processed
 // to be compatable with our querry system requerments, the filteredData is adjusted to contain the new data - Angelos
-void RealoadEvent(){
+void ReloadEvent(){
   // setup place holder values
   boolean depTime;
   int num1;
   int num2;
   
-  String selectedAriivalStation = "";
+  String selectedArrivalStation = "";
   String selectedDepartureStation = "";
   String date1 = "";
   String date2 = "";
   
   
-  // insert user querry values to the right places
-  if(textBoxList.get(1).textValue != "??:?? - ??:??"){
+  // insert user query values to the right places
+  if(textBoxList.get(2).textValue != "??:??"){
     depTime = false;
-    num1 = Integer.parseInt(textBoxList.get(1).num1.trim());
-    num2 = Integer.parseInt(textBoxList.get(1).num2.trim());
-  } else  if ((textBoxList.get(0).textValue != "??:?? - ??:??"))
+    num1 = Integer.parseInt(textBoxList.get(2).num1.trim());
+    //num2 = Integer.parseInt(textBoxList.get(2).num2.trim());
+  } 
+  if ((textBoxList.get(3).textValue != "??:??"))
   {
-    depTime = true;
-    num1 = Integer.parseInt(textBoxList.get(0).num1.trim());
-    num2 = Integer.parseInt(textBoxList.get(0).num2.trim());
-  } else 
+    //depTime = true;
+    //num1 = Integer.parseInt(textBoxList.get(4).num1.trim());
+    num2 = Integer.parseInt(textBoxList.get(3).num1.trim());
+  }
+  //else 
   {
-    depTime = true; // doesn't matter
+    depTime = false; // doesn't matter
     num1 = 0000;
     num2 = 0000;
   }
@@ -244,10 +296,10 @@ void RealoadEvent(){
   
   if(dropDownList.get(0).currentlySelectedElement != -1)
   {
-    selectedAriivalStation = dropDownList.get(0).elements[dropDownList.get(0).currentlySelectedElement];
+    selectedArrivalStation = dropDownList.get(0).elements[dropDownList.get(0).currentlySelectedElement];
   } 
   else {
-    selectedAriivalStation = null;
+    selectedArrivalStation = null;
   }
   
   
@@ -265,14 +317,26 @@ void RealoadEvent(){
     date1 = screen.adjustDateInput(startDate.textValue);
     date2 = screen.adjustDateInput(endDate.textValue);
   }
-  
+  // Flight status
+  boolean wantsCancelled = cancelledFlights.active;
   QueriesSelect selectQuery = new QueriesSelect();
-  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedAriivalStation, selectedDepartureStation, date1, date2);
+  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
+  String DateRange = null;
+  if((startDate.textValue != null || startDate.textValue != startDate.normal) && (endDate.textValue != null || endDate.textValue != endDate.normal))
+  {
+    date1 = screen.adjustDateInput(startDate.textValue);
+    date2 = screen.adjustDateInput(endDate.textValue);
+    DateRange = date1 +" - "+ date2;
+  }
+
+  int startTime = millis();
+  int endTime = millis();
+  int elapsed = endTime - startTime;
+  println("It took " + elapsed + " milliseconds to generate the new filtered data array");
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
   screen.selectedPage = 1;
-  
 }
 
 
@@ -284,7 +348,6 @@ void mouseWheel(MouseEvent event){
   }
 }
 
-
 // Updates the user tabs at the top of the screen to reflect which tab is currently active and de activate all other tabs - Angelos
 void updateTabs(){
   for(int i = 0; i < TabButtons.size(); i++)
@@ -295,7 +358,6 @@ void updateTabs(){
     }
   }
 }
-
 
 // In modern java an enum can be associated to a number, not in processing, this function converts the index of the theme that the user has selected
 // in the theme selection button to the curresponding theme in the enum, this is a product of using processing unfortunetly (i'm assuming this was angelos)
@@ -315,3 +377,52 @@ THEMES indexToTheme(int index)
       return THEMES.DEFAULT;
   }
 }
+
+
+// This function simply ensures that only one of the 3 radio buttons at the bottom of the buttons display is active
+// And that if the user clicks on an active one they are all disabled - Angelos
+void radioButtonsFlightStatus()
+  {
+      if(cancelledFlights.isClicked())
+    {
+      if(!cancelledFlights.active)
+      {
+        cancelledFlights.active = true;
+        delayedFlights.active = false;
+        undisturbedFlights.active = false;
+      } else 
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = false;
+        undisturbedFlights.active = false;
+      }
+    }
+    if(delayedFlights.isClicked())
+    {
+      if(!delayedFlights.active)
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = true;
+        undisturbedFlights.active = false;
+      } else 
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = false;
+        undisturbedFlights.active = false;
+      }
+    }
+    if(undisturbedFlights.isClicked())
+    {
+      if(!undisturbedFlights.active)
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = false;
+        undisturbedFlights.active = true;
+      } else 
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = false;
+        undisturbedFlights.active = false;
+      }
+    }
+  }

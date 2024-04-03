@@ -1,11 +1,11 @@
+
 // defines a subclass GraphBar with a constructor and a method drawBarChart to draw a bar chart based on provided data points. 
 // It calculates bar dimensions, loops through data to draw bars, and includes a method drawScale to draw a scale. 
 // The commented-out section provides an example of how to use GraphBar, fetching data and drawing a heatmap using another class.
 
 class GraphBar extends Graph {
-// Constructor for the GraphBar class
-    GraphBar(){
-        super(); // Call the constructor of the superclass (Graph)
+    GraphBar(int x, int y, int wide, int high){
+        super();
     }
 
 // Method to draw a bar chart based on the provided ArrayList of BarDataPoint objects
@@ -31,34 +31,36 @@ class GraphBar extends Graph {
             float barHeight = map(data.getTOTAL_DIST(), 0, maxVal, 0, height - topMargin);
           
             // Calculate the position of each bar
-            float x = leftMargin + i * (barWidth + barSpacing);
-            float y = height - barHeight;
+            float x = xpos + leftMargin + i * (barWidth + barSpacing);
+            float y = ypos + height - barHeight;
           
             // Draw the bar
             fill(barColour);
             rect(x, y, barWidth, barHeight);
           
             // Draw the label
-            textAlign(CENTER, CENTER);
+            textAlign(CENTER, CENTER - 20);
             text(data.getMKT_CARRIER(), x + barWidth/2, y - 10);
         }
 // Draw the scale based on the maximum value and top margin
         drawScale(maxVal, topMargin);
     }
+
     // Method to draw the scale for the bar chart
+
     void drawScale(float maxValue, float topMargin){
         float step = maxValue / 5; // Determine the step size for the scale
-    
+            
         // Draw tick marks and labels
         for (int i = 0; i <= 5; i++) {
-            float yPos = map(i * step, 0, maxValue, height - topMargin, 0);
+            float yPos = map(ypos + (i * step), 0, maxValue, height, 0);
         
             // Draw tick mark
-            line(10, yPos, 0, yPos);
+            line(xpos + 10, yPos, xpos, yPos);
         
             // Draw label
             textAlign(LEFT, CENTER);
-            text(nf(i * step, 0, 1), 10, yPos);
+            text(nf(i * (step / 1000), 0, 1) + "k", xpos - 20, yPos + ypos);
         }
     }
 }

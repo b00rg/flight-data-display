@@ -12,7 +12,7 @@ class DensityGraph extends Graph {
         // Set up variables for drawing
         float topMargin = 50;
         float leftMargin = 50;
-        float cellSize = 30;
+        float cellSize = 120;
 
         // Find the unique origin and destination airports
         ArrayList<String> airports = new ArrayList<>();
@@ -44,8 +44,8 @@ class DensityGraph extends Graph {
         for (int i = 0; i < airports.size(); i++) {
             for (int j = 0; j < airports.size(); j++) {
                 String route = airports.get(i) + "-" + airports.get(j);
-                float x = leftMargin + i * cellSize;
-                float y = topMargin + j * cellSize;
+                float x = xpos + leftMargin + i * cellSize;
+                float y = ypos + topMargin + j * cellSize;
 
                 // Fill the cell with appropriate shade of grey based on frequency
                 int frequency = frequencyMap.getOrDefault(route, 0);
@@ -71,15 +71,16 @@ class DensityGraph extends Graph {
   // Draw labels for x-axis (airports)
         textAlign(CENTER, TOP); // Adjusted textAlign for x-labels
         for (int i = 0; i < airports.size(); i++) {
-            float x = leftMargin + i * cellSize + cellSize / 2;
-            float y = topMargin - 10; // Adjusted y-coordinate for x-labels
+            float x = xpos + leftMargin + i * cellSize + cellSize / 2;
+            float y = ypos + topMargin - 20; // Adjusted y-coordinate for x-labels
             text(airports.get(i), x, y);
         }
 // Draw labels for y-axis (airports)
         textAlign(LEFT, CENTER);
         for (int j = 0; j < airports.size(); j++) {
-            float y = topMargin + j * cellSize + cellSize / 2;
-            text(airports.get(j), 30, y);
+            float x = xpos + leftMargin - 50;
+            float y = ypos + topMargin + j * cellSize + cellSize / 2;
+            text(airports.get(j), x, y);
         }
     }
 }
