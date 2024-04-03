@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 // Define a class SimpleGraph extending the Graph class
 class SimpleGraph extends Graph {
+  SimpleGraph(){
+        super();
+    }
 
  // Method to draw the simple graph
 

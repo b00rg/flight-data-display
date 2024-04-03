@@ -12,7 +12,7 @@
 // Define a class GraphPie which extends the Graph class
 // Constructor for the GraphPie class
 class GraphPie extends Graph {
-GraphPie(int x, int y, int wide, int high){
+  GraphPie(){
      super();
   }
   // Method to draw a pie chart based on provided PieDataPoint values

@@ -4,7 +4,7 @@
 // The commented-out section provides an example of how to use GraphBar, fetching data and drawing a heatmap using another class.
 
 class GraphBar extends Graph {
-    GraphBar(int x, int y, int wide, int high){
+    GraphBar(){
         super();
     }
 
