@@ -1,3 +1,4 @@
+
 // This code defines a class GraphPie that extends the Graph class and implements a method to draw a pie chart based on provided PieDataPoint values:
 // It initializes variables for angles, label positions, and color.
 // It loops through each label to draw the pie chart slices.
@@ -21,6 +22,7 @@ class GraphPie extends Graph {
     // Initialize variables for angles, label positions, and color
     int totalFlights = values.size();
     float startAngle = 0; 
+
     float labelX = 10;
     float labelY = 5;
     float colour = 0.0; 
@@ -31,11 +33,13 @@ class GraphPie extends Graph {
       float endAngle = startAngle + angle;       // Calculate end angle for this slice
 
       // Calculate slice color based on its position in the labels array
+
       // Calculate slice color 
       // ugly colours
       //colorMode(HSB);
       //fill(map(i, 0, labels.length, 0, 255), 255, 255);
       // greyscale 
+
       fill(map(i, 0, totalFlights, colour, colour), colour, colour);
       colour += 255.0/totalFlights*2; // Increment color for next slice
       
@@ -44,6 +48,7 @@ class GraphPie extends Graph {
       
       // Draw label for this slice
       labelY += 15;
+
       //textAlign(CENTER, CENTER);
       text(labels[i], labelX, labelY);
 
