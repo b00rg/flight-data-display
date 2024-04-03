@@ -35,7 +35,9 @@ class QueriesSelect extends Queries {
     ArrayList<PieDataPoint> dataList = new ArrayList<PieDataPoint>();
     try {
       Statement stmt = connection.createStatement();
-      String query = "SELECT  MKT_CARRIER, SUM(CASE WHEN CANCELLED = 1 THEN 1 ELSE 0 END) AS 'COUNT_CANCELLED', SUM(CASE WHEN DIVERTED = 1 THEN 1 ELSE 0 END) AS 'COUNT_DIVERTED', COUNT(*) - SUM(CANCELLED + DIVERTED) AS 'COUNT_EXPECTED' FROM flight_Data GROUP BY MKT_CARRIER";
+
+      String query = "SELECT  MKT_CARRIER, SUM(CASE WHEN CANCELLED = 1 THEN 1 ELSE 0 END) AS 'COUNT_CANCELLED', SUM(CASE WHEN DIVERTED = 1 THEN 1 ELSE 0 END) AS 'COUNT_DIVERTED', COUNT(*) - SUM(CANCELLED + DIVERTED) AS 'COUNT_EXPECTED' FROM flight_Data GROUP BY MKT_CARRIER;";
+
       ResultSet resultSet = stmt.executeQuery(query);
       
       while (resultSet.next()) {
