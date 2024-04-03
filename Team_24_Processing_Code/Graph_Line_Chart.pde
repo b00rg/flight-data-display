@@ -1,7 +1,12 @@
 import java.util.ArrayList;
 
-class SimpleGraph extends Graph {
-
+class SimpleGraph extends Graph 
+{
+    SimpleGraph(int x, int y, int wide, int high)
+    {
+        super(x, y, wide, high);
+    }
+    
     void draw(ArrayList<RouteDataPoint> values) {
         // Set up variables for drawing
         float topMargin = 50;
@@ -23,17 +28,17 @@ class SimpleGraph extends Graph {
             RouteDataPoint data = values.get(i);
             
             // Calculate the height of each point relative to the canvas height
-            float pointHeight = map(data.FLIGHT_COUNT, 0, maxFlightCount, height - topMargin, topMargin);
+            float pointHeight = ypos/2 + map(data.FLIGHT_COUNT, 0, maxFlightCount, height - topMargin, topMargin);
             
             // Calculate the x-coordinate of each point
-            float x = leftMargin + i * pointSpacing;
+            float x = xpos + leftMargin + i * pointSpacing;
             
             // Draw the point
             vertex(x, pointHeight);
             
             // Draw the label at the bottom
             textAlign(CENTER, TOP);
-            text(data.ORIGIN + " to " + data.DEST, x, height - 10);
+            text(data.ORIGIN + " to " + data.DEST, x, height - 100);
         }
         endShape();
         
@@ -46,14 +51,15 @@ class SimpleGraph extends Graph {
 
         // Draw tick marks and labels
         for (int i = 0; i <= 5; i++) {
-            float yPos = map(i * step, 0, maxValue, height - topMargin, 0);
+            float yPos = ypos/2 + map(i * step, 0, maxValue, ypos, 0);
 
             // Draw tick mark
-            line(10, yPos, 0, yPos);
+            stroke(100);
+            line(xpos, yPos, xpos + width, yPos);
 
             // Draw label
             textAlign(LEFT, CENTER);
-            text(nf(i * step, 0, 1), 10, yPos);
+            text(nf(i * step, 0, 1), xpos, yPos + 10);
         }
     }
 }
