@@ -146,10 +146,13 @@ Screen(){}
         graphP.drawPieChart(valuesP);
         break;
       case 2:
-        graphD.draw(valuesD);
+        graphD.draw(valuesDS);
         break;
       case 3:
-        graphS.draw(valuesS);
+        graphS.draw(valuesDS);
+        break;
+      case 4:
+        //graphA.draw();
         break;
       default:
         println("No graph found");

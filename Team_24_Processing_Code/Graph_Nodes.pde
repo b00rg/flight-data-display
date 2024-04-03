@@ -1,17 +1,16 @@
-import java.util.ArrayList;
+/*import java.util.ArrayList;
 import java.util.HashMap;
 
-AirportGraph graph;
+Graph graph = graphA;
 AirportNode hoveredNode = null;
 boolean isDragging = false;
 float offsetX, offsetY;
-PFont labelFont;
+//PFont labelFont;
 String selectedAirportName = null;
 int[] selectedAirportData = new int[3]; // Array to hold total, arrivals, and departures
-float prevSelectedNodeX;
-float prevSelectedNodeY;
+float prevSelectedNodeX, prevSelectedNodeY;
 
-void setup() {
+/*void setup() {
     fullScreen();
     labelFont = createFont("Arial", 14);
     graph = new AirportGraph();
@@ -24,9 +23,9 @@ void setup() {
 
   // Adding nodes (airports) to the graph
   addNodesToGraph(airports, maxFlightCount);
-}
+}*/
 
-void draw() {
+/*void draw() {
   background(40); // Set background color to dark grey (similar to Obsidian)
   graph.update(); // Update node positions and check for collisions
   graph.draw();
@@ -36,12 +35,8 @@ void draw() {
 
   // Display selected airport name and flights in a window
   displaySelectedAirportData();
-}
-
-void mouseMoved() {
-  hoveredNode = graph.getNodeUnderMouse();
-}
-
+}*/
+/*
 void mousePressed() {
   if (hoveredNode != null) {
     selectAirport();
@@ -135,23 +130,6 @@ void mouseReleased() {
   isDragging = false;
 }
 
-void addNodesToGraph(ArrayList<RouteDataPoint> airports, int maxFlightCount) {
-  for (RouteDataPoint airport : airports) {
-    float nodeSize = map(airport.FLIGHT_COUNT, 0, maxFlightCount, 5, 25); // Adjust node size based on flight count
-    addNodeToGraph(airport.ORIGIN, airport.FLIGHT_COUNT, nodeSize);
-    addNodeToGraph(airport.DEST, airport.FLIGHT_COUNT, nodeSize);
-    float thickness = map(airport.FLIGHT_COUNT, 0, maxFlightCount, 0.5, 2); // Adjust line thickness based on flight count
-    graph.connectAirports(airport.ORIGIN, airport.DEST, thickness);
-  }
-}
-
-void addNodeToGraph(String name, int flightCount, float nodeSize) {
-  if (!graph.containsNode(name)) {
-    AirportNode node = new AirportNode(name, flightCount, nodeSize);
-    graph.addNode(node);
-  }
-}
-
 int getMaxFlightCount(ArrayList<RouteDataPoint> airports) {
   int maxFlightCount = 0;
   for (RouteDataPoint airport : airports) {
@@ -235,12 +213,24 @@ void displaySelectedAirportData() {
 }
 
 
-class AirportGraph {
+class AirportGraph extends Graph {
   ArrayList<AirportNode> nodes;
 
-  AirportGraph() {
+  AirportGraph(int x, int y, int wide, int high)
+  {
+    super(x, y, wide, high);
+    
     nodes = new ArrayList<AirportNode>();
+    int maxFlightCount = getMaxFlightCount(valuesA);
+    addNodesToGraph(valuesA, maxFlightCount);
   }
+  
+  void addNodeToGraph(String name, int flightCount, float nodeSize) {
+  if (!containsNode(name)) {
+    AirportNode node = new AirportNode(name, flightCount, nodeSize);
+    addNode(node);
+  }
+}
 
   void addNode(AirportNode node) {
     nodes.add(node);
@@ -261,38 +251,48 @@ class AirportGraph {
     originNode.addNeighbor(destNode, thickness);
     destNode.addNeighbor(originNode, thickness); // Assuming it's a bi-directional connection
   }
-
-void draw() {
-  if (isDragging || selectedAirportName != null) {
-    // If any node is being dragged or a node is selected, change the graph color to a lighter shade of grey
-    background(180); // Adjusted to a lighter shade of grey
-  } else {
-    background(40); // Default background color (dark grey)
+  
+  void addNodesToGraph(ArrayList<RouteDataPoint> airports, int maxFlightCount) {
+    for (RouteDataPoint airport : airports) {
+      float nodeSize = map(airport.FLIGHT_COUNT, 0, maxFlightCount, 5, 25); // Adjust node size based on flight count
+      addNodeToGraph(airport.ORIGIN, airport.FLIGHT_COUNT, nodeSize);
+      addNodeToGraph(airport.DEST, airport.FLIGHT_COUNT, nodeSize);
+      float thickness = map(airport.FLIGHT_COUNT, 0, maxFlightCount, 0.5, 2); // Adjust line thickness based on flight count
+      connectAirports(airport.ORIGIN, airport.DEST, thickness);
+    }
   }
 
-  for (AirportNode node : nodes) {
-    if (isDragging && node == hoveredNode) {
-      // If the node is being dragged, keep it white
-      fill(255);
-    } else if (selectedAirportName != null && node.name.equals(selectedAirportName)) {
-      // If the node is selected, keep it white
-      fill(255);
+  void draw() {
+    if (isDragging || selectedAirportName != null) {
+      // If any node is being dragged or a node is selected, change the graph color to a lighter shade of grey
+      background(180); // Adjusted to a lighter shade of grey
     } else {
-      fill(120); // Default fill color for non-selected nodes
+      background(40); // Default background color (dark grey)
     }
 
-    stroke(200); // Adjusted to a lighter grey
-    strokeWeight(1); // Adjusted to a thinner line
-    ellipse(node.x, node.y, node.radius * 2, node.radius * 2);
+    for (AirportNode node : nodes) {
+      if (isDragging && node == hoveredNode) {
+        // If the node is being dragged, keep it white
+        fill(255);
+      } else if (selectedAirportName != null && node.name.equals(selectedAirportName)) {
+        // If the node is selected, keep it white
+        fill(255);
+      } else {
+        fill(120); // Default fill color for non-selected nodes
+      }
 
-    for (AirportNode neighbor : node.neighbors.keySet()) {
-      float thickness = node.neighbors.get(neighbor);
-      stroke(150, 100); // Set line color to dark grey with lower transparency
-      strokeWeight(thickness); // Set line thickness based on route popularity
-      line(node.x, node.y, neighbor.x, neighbor.y);
+      stroke(200); // Adjusted to a lighter grey
+      strokeWeight(1); // Adjusted to a thinner line
+      ellipse(node.x, node.y, node.radius * 2, node.radius * 2);
+
+      for (AirportNode neighbor : node.neighbors.keySet()) {
+        float thickness = node.neighbors.get(neighbor);
+        stroke(150, 100); // Set line color to dark grey with lower transparency
+        strokeWeight(thickness); // Set line thickness based on route popularity
+        line(node.x, node.y, neighbor.x, neighbor.y);
+      }
     }
   }
-}
 
 
 
@@ -304,6 +304,10 @@ void draw() {
       }
     }
     return null;
+  }
+  
+  void mouseMoved() {
+    hoveredNode = getNodeUnderMouse();
   }
 
   AirportNode getNodeByName(String name) {
@@ -408,4 +412,4 @@ class AirportNode {
     float distance = sqrt(dx * dx + dy * dy);
     return distance < this.radius + other.radius;
   }
-}
+}*/

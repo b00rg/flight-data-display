@@ -265,7 +265,3 @@ class QueriesSelect extends Queries {
     return departures;
   }
 }
-
-
-
-

@@ -8,7 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-// THEMSE
+// THEMES
 enum THEMES
   {
     DEFAULT,
@@ -20,6 +20,7 @@ enum THEMES
   }
 String themeNames[] = new String[] {"DEFAULT", "GIRLBOSS", "BOYBOSS", "DAY", "NIGHT", "CUSTOM_THEME"};
 WidgetDropDown ThemeSelection;
+
 //STATIC SETUP VARIABLE
 static ArrayList<WidgetTextBox> textBoxList = new ArrayList<WidgetTextBox>();
 static ArrayList<WidgetButton> buttonList = new ArrayList<WidgetButton>();
@@ -55,11 +56,12 @@ GraphBar graphB;
 ArrayList<PieDataPoint> valuesP;
 GraphPie graphP;
 
-ArrayList<RouteDataPoint> valuesD;
+ArrayList<RouteDataPoint> valuesDS;
 DensityGraph graphD;
-
-ArrayList<RouteDataPoint> valuesS;
 SimpleGraph graphS;
+
+ArrayList<RouteDataPoint> valuesA;
+Graph graphA;
 
 int displayedGraph = 0;
 
@@ -135,16 +137,17 @@ void setup() {
   QueriesSelect queries = new QueriesSelect();
   valuesB = queries.getRowsBarGraph();
   valuesP = queries.getRowsPieChart();
-  valuesD = queries.getBusyRoutes();
-  valuesS = queries.getBusyRoutes();
+  valuesDS = queries.getBusyRoutes();
+  valuesA = queries.getAllRoutes();
   
   graphB = new GraphBar(600, 250, 1200, 700);
   graphP = new GraphPie(1300, 560, 800, 800);
   graphD = new DensityGraph(800, 150, 1200, 700);
   graphS = new SimpleGraph(600, 500, 1200, 1000);
+  //graphA = new AirportGraph(600, 500, 1200, 1000);
   
-  Graph[] graphs = {graphB, graphP, graphD, graphS};
-  screen.numberOfGraphs = 4;
+  Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
+  screen.numberOfGraphs = graphs.length;
 }
 
 
@@ -328,6 +331,18 @@ void mouseWheel(MouseEvent event){
   for(int i = 0; i < dropDownList.size(); i++)
   {
     dropDownList.get(i).scroll((int)event.getCount());
+  }
+}
+
+void keyPressed()
+{
+  int keyIndex = -1;
+  for(int i = 0, n = textBoxList.size(); i < n; i++)
+  {
+    if(textBoxList.get(i).active)
+    {
+      textBoxList.get(i).input(key);
+    }
   }
 }
 
