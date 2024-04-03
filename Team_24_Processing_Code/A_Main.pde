@@ -155,7 +155,6 @@ void setup() {
   Graph[] graphs = {graphB, graphP, graphD, graphS};
   //screen.numberOfGraphs = 4;
 
-
 }
 
 
