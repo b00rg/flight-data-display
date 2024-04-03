@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 
 class SimpleGraph extends Graph {
+  SimpleGraph(){
+        super();
+    }
 
     void draw(ArrayList<RouteDataPoint> values) {
         // Set up variables for drawing

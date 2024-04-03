@@ -1,4 +1,7 @@
 class DensityGraph extends Graph {
+  DensityGraph(){
+        super();
+    }
 
     void draw(ArrayList<RouteDataPoint> values) {
         // Set up variables for drawing

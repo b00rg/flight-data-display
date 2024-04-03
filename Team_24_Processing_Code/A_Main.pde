@@ -147,10 +147,10 @@ void setup() {
   valuesD = queries.getBusyRoutes();
   valuesS = queries.getBusyRoutes();
   
-  graphB = new GraphBar(600, 250, 1200, 700);
-  graphP = new GraphPie(1300, 560, 800, 800);
-  //graphD = new DensityGraph(800, 150, 1200, 700);
-  //graphS = new SimpleGraph(600, 500, 1200, 1000);
+  graphB = new GraphBar();
+  graphP = new GraphPie();
+  graphD = new DensityGraph();
+  graphS = new SimpleGraph();
   
   Graph[] graphs = {graphB, graphP, graphD, graphS};
   //screen.numberOfGraphs = 4;

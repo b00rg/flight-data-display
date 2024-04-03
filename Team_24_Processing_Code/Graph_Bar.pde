@@ -1,5 +1,5 @@
 class GraphBar extends Graph {
-    GraphBar(int x, int y, int wide, int high){
+    GraphBar(){
         super();
     }
   

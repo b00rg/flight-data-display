@@ -1,5 +1,5 @@
 class GraphPie extends Graph {
-  GraphPie(int x, int y, int wide, int high){
+  GraphPie(){
      super();
   }
   void drawPieChart(ArrayList<PieDataPoint> values){
