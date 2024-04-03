@@ -3,7 +3,7 @@ class WidgetTextBox extends Widget{
   String normal;
   boolean active = false;
   String num1;
-  String num2;
+  //String num2;
   WIDGET_TEXT_TYPE myType;
   //int xpos, ypos, wide, heigh;
   PFont font;
@@ -110,9 +110,9 @@ class WidgetTextBox extends Widget{
     {
       String[] uservalues = textValue.split("-");
       num1 = uservalues[0].trim();// we trim the whitespaces from the values
-      num2 = uservalues[1].trim();
+      //num2 = uservalues[1].trim();
       num1 = uservalues[0].replace(":","");// we remove the colon to have the user input in pure integer format
-      num2 = uservalues[1].replace(":","");
+      //num2 = uservalues[1].replace(":","");
       boolean temp = false;
       for(int i = 0; i < textBoxList.size(); i++)
       {
@@ -125,7 +125,7 @@ class WidgetTextBox extends Widget{
       {
         this.textValue = "??:?? - ??:??";
         this.num1 ="error";
-        this.num2 ="error";
+        //this.num2 ="error";
       }
     } else 
     {
