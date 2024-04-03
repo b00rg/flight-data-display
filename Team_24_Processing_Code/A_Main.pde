@@ -103,10 +103,10 @@ void setup() {
   QueriesSelect selectQuery = new QueriesSelect();
   String[] departureAirports = selectQuery.getDepartureAirports();
   String[] arrivalAirports = selectQuery.getArrivalAirports();  
-  WidgetDropDown arrivals = new WidgetDropDown((int) (width * 0.13), (int) (height * 0.52), 200, 50, TextBoxFont, departureAirports);
-  dropDownList.add(arrivals);
   WidgetDropDown departures = new WidgetDropDown((int) (width * 0.13), (int) (height * 0.6), 200, 50, TextBoxFont, arrivalAirports);
   dropDownList.add(departures);
+  WidgetDropDown arrivals = new WidgetDropDown((int) (width * 0.13), (int) (height * 0.52), 200, 50, TextBoxFont, departureAirports);
+  dropDownList.add(arrivals);
   
   //RELOAD BUTTON SETUP
   ReloadButton = new WidgetButton((int) (width * 0.025),(int) (height * 0.88), 400, 75, 1);
@@ -121,9 +121,6 @@ void setup() {
     TabButtons.add(new WidgetButton(x,0,tabRange/3, (int)(height / 10), 0));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
-
-  ReloadButton = new WidgetButton(50, 50, 50, 50, 1);
-
   
   // THEME BUTTON SETUP
   ThemeSelection = new WidgetDropDown(250, 30, 200, 50, TextBoxFont, themeNames);
@@ -134,9 +131,9 @@ void setup() {
   moveRight = new WidgetButton(1300, 1000, 50, 50, 5);
   
 
-  cancelledFlights = new WidgetButton(50, 1000,50, 50, 20);
-  delayedFlights = new WidgetButton(150, 1000, 50, 50, 20);
-  undisturbedFlights = new WidgetButton(250, 1000, 50, 50, 20);
+  cancelledFlights = new WidgetButton(width/20, height / 10 * 7,50, 50, 20);
+  delayedFlights = new WidgetButton(width/20 * 2, height / 10 * 7, 50, 50, 20);
+  undisturbedFlights = new WidgetButton(width/20 * 3, height / 10 * 7, 50, 50, 20);
 
   // Tab 1 setup
   // please do not move this outside of setup void, for some reason processing does not likey likey that
@@ -166,13 +163,18 @@ void draw(){
   background(screen.BACKGROUND);
   
   noStroke();
+  
   moveLeft.render();
   moveRight.render();
   // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
   // User tab selection only effects everything on the right
   screen.renderDIP();
-  
   //ThemeSelection.render();
+  ReloadButton.render();
+  cancelledFlights.render();
+  delayedFlights.render();
+  undisturbedFlights.render();
+  
   screen.renderButtons();
   //ThemeSelection.render();
 
@@ -189,10 +191,7 @@ void draw(){
       currentlyActiveTab = 0;
       break;
   }
-  ReloadButton.render();
-  cancelledFlights.render();
-  delayedFlights.render();
-  undisturbedFlights.render();
+  
 }
 
 
