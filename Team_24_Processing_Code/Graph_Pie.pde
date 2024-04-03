@@ -12,8 +12,8 @@
 // Define a class GraphPie which extends the Graph class
 // Constructor for the GraphPie class
 class GraphPie extends Graph {
-  GraphPie(){
-     super(); // Call the constructor of the superclass
+GraphPie(int x, int y, int wide, int high){
+     super();
   }
   // Method to draw a pie chart based on provided PieDataPoint values
   void drawPieChart(ArrayList<PieDataPoint> values){
