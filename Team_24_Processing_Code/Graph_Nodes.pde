@@ -1,3 +1,4 @@
+/*import java.util.ArrayList;
 
 // This code implements an interactive airport graph visualization:
 // It initializes variables and objects needed for the graph visualization.
@@ -11,7 +12,6 @@
 // See flight counts represented by node sizes and route thicknesses.
 // Detect collisions between nodes and adjust their positions accordingly.
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 // Declare global variables and objects
@@ -430,5 +430,6 @@ class AirportNode {
     float distance = sqrt(dx * dx + dy * dy);
     return distance < this.radius + other.radius;
   }
+
 }
 */
