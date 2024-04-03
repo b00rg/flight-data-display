@@ -30,6 +30,10 @@ static WidgetButton ReloadButton;
 static WidgetButton moveLeft;
 static WidgetButton moveRight;
 
+static WidgetButton cancelledFlights;
+static WidgetButton delayedFlights;
+static WidgetButton undisturbedFlights;
+
 static WidgetTextBox startDate;
 static WidgetTextBox endDate;
 
@@ -99,10 +103,10 @@ void setup() {
   QueriesSelect selectQuery = new QueriesSelect();
   String[] departureAirports = selectQuery.getDepartureAirports();
   String[] arrivalAirports = selectQuery.getArrivalAirports();  
-  WidgetDropDown arrivals = new WidgetDropDown((int) (width * 0.13), (int) (height * 0.52), 200, 50, TextBoxFont, departureAirports);
-  dropDownList.add(arrivals);
   WidgetDropDown departures = new WidgetDropDown((int) (width * 0.13), (int) (height * 0.6), 200, 50, TextBoxFont, arrivalAirports);
   dropDownList.add(departures);
+  WidgetDropDown arrivals = new WidgetDropDown((int) (width * 0.13), (int) (height * 0.52), 200, 50, TextBoxFont, departureAirports);
+  dropDownList.add(arrivals);
   
   //RELOAD BUTTON SETUP
   ReloadButton = new WidgetButton((int) (width * 0.025),(int) (height * 0.88), 400, 75, 1);
@@ -119,13 +123,18 @@ void setup() {
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
   
   // THEME BUTTON SETUP
-  ThemeSelection = new WidgetDropDown(250, 20, 200, 50, TextBoxFont, themeNames);
+  ThemeSelection = new WidgetDropDown(250, 30, 200, 50, TextBoxFont, themeNames);
   ThemeSelection.currentlySelectedElement = 0;
   
   //SCROLL BUTTON SETUP
   moveLeft = new WidgetButton(1100, 1000, 50, 50, 5);
   moveRight = new WidgetButton(1300, 1000, 50, 50, 5);
   
+
+  cancelledFlights = new WidgetButton(width/20, height / 10 * 7,50, 50, 20);
+  delayedFlights = new WidgetButton(width/20 * 2, height / 10 * 7, 50, 50, 20);
+  undisturbedFlights = new WidgetButton(width/20 * 3, height / 10 * 7, 50, 50, 20);
+
   // Tab 1 setup
   // please do not move this outside of setup void, for some reason processing does not likey likey that
   
@@ -145,6 +154,7 @@ void setup() {
   
   Graph[] graphs = {graphB, graphP, graphD, graphS};
   screen.numberOfGraphs = 4;
+
 }
 
 
@@ -153,13 +163,18 @@ void draw(){
   background(screen.BACKGROUND);
   
   noStroke();
+  
   moveLeft.render();
   moveRight.render();
   // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
   // User tab selection only effects everything on the right
   screen.renderDIP();
-  
   //ThemeSelection.render();
+  ReloadButton.render();
+  cancelledFlights.render();
+  delayedFlights.render();
+  undisturbedFlights.render();
+  
   screen.renderButtons();
   //ThemeSelection.render();
 
@@ -176,7 +191,7 @@ void draw(){
       currentlyActiveTab = 0;
       break;
   }
-  ReloadButton.render();
+  
 }
 
 
@@ -237,6 +252,7 @@ void mouseClicked()
       dropDownList.get(i).isClicked();
     }
   }
+  radioButtonsFlightStatus();
 }
 
 // checks which tab is currently active and applies a process depending on the scenario
@@ -300,7 +316,8 @@ void ReloadEvent(){
     date1 = screen.adjustDateInput(startDate.textValue);
     date2 = screen.adjustDateInput(endDate.textValue);
   }
-  
+  // Flight status
+  boolean wantsCancelled = cancelledFlights.active;
   QueriesSelect selectQuery = new QueriesSelect();
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
   String DateRange = null;
@@ -319,7 +336,6 @@ void ReloadEvent(){
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
   screen.selectedPage = 1;
-  
 }
 
 
@@ -360,3 +376,52 @@ THEMES indexToTheme(int index)
       return THEMES.DEFAULT;
   }
 }
+
+
+// This function simply ensures that only one of the 3 radio buttons at the bottom of the buttons display is active
+// And that if the user clicks on an active one they are all disabled - Angelos
+void radioButtonsFlightStatus()
+  {
+      if(cancelledFlights.isClicked())
+    {
+      if(!cancelledFlights.active)
+      {
+        cancelledFlights.active = true;
+        delayedFlights.active = false;
+        undisturbedFlights.active = false;
+      } else 
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = false;
+        undisturbedFlights.active = false;
+      }
+    }
+    if(delayedFlights.isClicked())
+    {
+      if(!delayedFlights.active)
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = true;
+        undisturbedFlights.active = false;
+      } else 
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = false;
+        undisturbedFlights.active = false;
+      }
+    }
+    if(undisturbedFlights.isClicked())
+    {
+      if(!undisturbedFlights.active)
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = false;
+        undisturbedFlights.active = true;
+      } else 
+      {
+        cancelledFlights.active = false;
+        delayedFlights.active = false;
+        undisturbedFlights.active = false;
+      }
+    }
+  }

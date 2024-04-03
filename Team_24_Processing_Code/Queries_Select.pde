@@ -35,7 +35,9 @@ class QueriesSelect extends Queries {
     ArrayList<PieDataPoint> dataList = new ArrayList<PieDataPoint>();
     try {
       Statement stmt = connection.createStatement();
-      String query = "SELECT  MKT_CARRIER, SUM(CASE WHEN CANCELLED = 1 THEN 1 ELSE 0 END) AS 'COUNT_CANCELLED', SUM(CASE WHEN DIVERTED = 1 THEN 1 ELSE 0 END) AS 'COUNT_DIVERTED', COUNT(*) - SUM(CANCELLED + DIVERTED) AS 'COUNT_EXPECTED' FROM flight_Data GROUP BY MKT_CARRIER";
+
+      String query = "SELECT  MKT_CARRIER, SUM(CASE WHEN CANCELLED = 1 THEN 1 ELSE 0 END) AS 'COUNT_CANCELLED', SUM(CASE WHEN DIVERTED = 1 THEN 1 ELSE 0 END) AS 'COUNT_DIVERTED', COUNT(*) - SUM(CANCELLED + DIVERTED) AS 'COUNT_EXPECTED' FROM flight_Data GROUP BY MKT_CARRIER;";
+
       ResultSet resultSet = stmt.executeQuery(query);
       
       while (resultSet.next()) {
@@ -55,21 +57,26 @@ class QueriesSelect extends Queries {
   
   
   ArrayList<DisplayDataPoint> getRowsDisplay(boolean depTrue, int lowerVal, int upperVal, String depAirport, String arrAirport, String startDateRange, String endDateRange) {
-    
+    String word = "";
+
     ArrayList<DisplayDataPoint> dataList = new ArrayList<>();
     try {   
         Statement stmt = connection.createStatement();
         
         // Construct the WHERE clause dynamically
         StringBuilder whereClauseBuilder = new StringBuilder();
-        
-        // Time range filter
         String column = depTrue ? "DEP_TIME" : "ARR_TIME";
-        if (lowerVal < upperVal) {
+
+        // Time range filter
+
+        if (lowerVal != 0 && upperVal != 0){
+          if (lowerVal < upperVal) {
             whereClauseBuilder.append(column).append(" BETWEEN ").append(lowerVal).append(" AND ").append(upperVal);
-        } else {
+          } else {
             whereClauseBuilder.append(column).append(" NOT BETWEEN ").append(upperVal).append(" AND ").append(lowerVal);
+          }
         }
+        
         
         // Departure airport filter
         if (depAirport != null && !depAirport.isEmpty()) {
@@ -101,9 +108,13 @@ class QueriesSelect extends Queries {
         }
         
         // Construct the full SQL query
+        if (whereClauseBuilder.length() > 0) {
+          word = " WHERE ";
+        }
+ 
         String query = "SELECT FL_DATE, MKT_CARRIER, ORIGIN, DEST, DEP_TIME, ARR_TIME, CANCELLED, DIVERTED FROM " 
-                        + super.tableName + " WHERE " + whereClauseBuilder.toString();
-        
+                        + super.tableName + word + whereClauseBuilder.toString();
+        println(query);
         ResultSet resultSet = stmt.executeQuery(query);
         
         while (resultSet.next()) {
@@ -218,4 +229,41 @@ class QueriesSelect extends Queries {
     return dataList; 
   }
 
+ int getArrivals(String airportName) {
+    int arrivals = 0;
+    try {
+      Statement stmt = connection.createStatement();
+      String query = "SELECT COUNT(*) AS ARRIVALS FROM " + super.tableName + " WHERE DEST = '" + airportName + "'";
+      ResultSet resultSet = stmt.executeQuery(query);
+
+      if (resultSet.next()) {
+        arrivals = resultSet.getInt("ARRIVALS");
+      }
+
+      resultSet.close();
+      stmt.close();
+    } catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+    return arrivals;
+  }
+
+  int getDepartures(String airportName) {
+    int departures = 0;
+    try {
+      Statement stmt = connection.createStatement();
+      String query = "SELECT COUNT(*) AS DEPARTURES FROM " + super.tableName + " WHERE ORIGIN = '" + airportName + "'";
+      ResultSet resultSet = stmt.executeQuery(query);
+
+      if (resultSet.next()) {
+        departures = resultSet.getInt("DEPARTURES");
+      }
+
+      resultSet.close();
+      stmt.close();
+    } catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+    return departures;
+  }
 }
