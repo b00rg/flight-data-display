@@ -184,6 +184,7 @@ class DelaysDataPoint extends RawDataPoint {
   DelaysDataPoint(ResultSet resultSet) {
     super(resultSet); // Call superclass constructor
     try {
+      MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
       DEP_TIME = columnExists(resultSet, "DEP_TIME") ? resultSet.getInt("DEP_TIME") : 0;
       ARR_TIME = columnExists(resultSet, "ARR_TIME") ? resultSet.getInt("ARR_TIME") : 0;
       CRS_DEP_TIME = columnExists(resultSet, "CRS_DEP_TIME") ? resultSet.getInt("DEP_TIME") : 0;
