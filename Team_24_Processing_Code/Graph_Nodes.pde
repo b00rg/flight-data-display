@@ -12,10 +12,10 @@ float prevSelectedNodeX;
 float prevSelectedNodeY;
 
 void setup() {
-    fullScreen();
-    labelFont = createFont("Arial", 14);
-    graph = new AirportGraph();
-    QueriesSelect queriesSelect = new QueriesSelect(); // Instantiate QueriesSelect object
+  fullScreen(); // Set up full screen
+  labelFont = createFont("Arial", 14); // Create font for labels
+  graph = new AirportGraph(); // Initialize the airport graph
+  QueriesSelect queriesSelect = new QueriesSelect(); // Instantiate QueriesSelect object
 
     // Fetching airport data
     ArrayList<RouteDataPoint> airports = queriesSelect.getAllRoutes();
@@ -407,5 +407,5 @@ class AirportNode {
     float dy = this.y - other.y;
     float distance = sqrt(dx * dx + dy * dy);
     return distance < this.radius + other.radius;
-  }
+  }
 }*/
