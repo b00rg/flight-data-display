@@ -41,7 +41,6 @@ void setup() {
   labelFont = createFont("Arial", 14); // Create font for labels
   graph = new AirportGraph(); // Initialize the airport graph
   QueriesSelect queriesSelect = new QueriesSelect(); // Instantiate QueriesSelect object
->>>>>>> 6e18fb28507ee1ccaa72231084a350a7f36ab499
 
     // Fetching airport data
     ArrayList<RouteDataPoint> airports = queriesSelect.getAllRoutes();
@@ -51,9 +50,9 @@ void setup() {
 
   // Adding nodes (airports) to the graph
   addNodesToGraph(airports, maxFlightCount);
-}*/
+}
 
-/*void draw() {
+void draw() {
   background(40); // Set background color to dark grey (similar to Obsidian)
   graph.update(); // Update node positions and check for collisions
   graph.draw();
