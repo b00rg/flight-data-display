@@ -250,45 +250,45 @@ void mouseClicked()
     }
     for(int i = 0; i < buttonList.size(); i++)
     {
-      if (buttonList.get(0).isClicked())
+      if (!buttonList.isEmpty() && buttonList.get(0).isClicked())
       {
-        Screen.changeTheme(GIRLBOSS);
+        indexToTheme(1);
         println("Button 0 has been clicked");
       }
       if (buttonList.get(1).isClicked()){
-        Screen.changeTheme(BOYBOSS);
+        indexToTheme(2);
         println("Button 1 has been clicked");
       }
       if (buttonList.get(2).isClicked()){
-        Screen.changeTheme(DAY);
+        indexToTheme(2);
         println("Button 2 has been clicked");
       }
       if (buttonList.get(3).isClicked()){
-        Screen.changeTheme(NIGHT);
+        indexToTheme(3);
         println("Button 3 has been clicked");
       }
       if (buttonList.get(4).isClicked()){
-        Screen.changeTheme(COSMIC);
+        indexToTheme(4);
         println("Button 4 has been clicked");
       }
       if (buttonList.get(5).isClicked()) {
-        Screen.changeTheme(RUST);
+        indexToTheme(5);
         println("Button 5 has been clicked");
       }
        if (buttonList.get(6).isClicked()) {
-        Screen.changeTheme(MARINE);
+        indexToTheme(6);
         println("Button 6 has been clicked");
       }
        if (buttonList.get(7).isClicked()) {
-        Screen.changeTheme(STELLAR);
+        indexToTheme(7);
         println("Button 7 has been clicked");
       }
        if (buttonList.get(8).isClicked()) {
-        Screen.changeTheme(COLOURBLIND);
+        indexToTheme(8);
         println("Button 8 has been clicked");
       }
        if (buttonList.get(9).isClicked()) {
-        Screen.changeTheme(CUSTOM_THEME);
+        indexToTheme(9);
         println("Button 9 has been clicked");
       }
     }
