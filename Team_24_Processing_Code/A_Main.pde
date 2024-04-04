@@ -17,10 +17,15 @@ enum THEMES
     GIRLBOSS,
     BOYBOSS,
     DAY,
-    NIGHT,
-    CUSTOM_THEME
+    DUSK,
+    CUSTOM_THEME,
+    COSMIC,
+    RUST,
+    MARINE,
+    STELLAR,
+    COLOURBLIND
   }
-String themeNames[] = new String[] {"DEFAULT", "GIRLBOSS", "BOYBOSS", "DAY", "NIGHT", "CUSTOM_THEME"};
+String themeNames[] = new String[] {"DEFAULT", "GIRLBOSS", "BOYBOSS", "DAY", "NIGHT", "CUSTOM_THEME", "COSMIC", "RUST", "MARINE", "STELLAR", "COLOURBLIND"};
 WidgetDropDown ThemeSelection;
 
 //STATIC SETUP VARIABLE
@@ -249,7 +254,47 @@ void mouseClicked()
     }
     for(int i = 0; i < buttonList.size(); i++)
     {
-      
+      if (!buttonList.isEmpty() && buttonList.get(0).isClicked())
+      {
+        indexToTheme(1);
+        println("Button 0 has been clicked");
+      }
+      if (buttonList.get(1).isClicked()){
+        indexToTheme(2);
+        println("Button 1 has been clicked");
+      }
+      if (buttonList.get(2).isClicked()){
+        indexToTheme(2);
+        println("Button 2 has been clicked");
+      }
+      if (buttonList.get(3).isClicked()){
+        indexToTheme(3);
+        println("Button 3 has been clicked");
+      }
+      if (buttonList.get(4).isClicked()){
+        indexToTheme(4);
+        println("Button 4 has been clicked");
+      }
+      if (buttonList.get(5).isClicked()) {
+        indexToTheme(5);
+        println("Button 5 has been clicked");
+      }
+       if (buttonList.get(6).isClicked()) {
+        indexToTheme(6);
+        println("Button 6 has been clicked");
+      }
+       if (buttonList.get(7).isClicked()) {
+        indexToTheme(7);
+        println("Button 7 has been clicked");
+      }
+       if (buttonList.get(8).isClicked()) {
+        indexToTheme(8);
+        println("Button 8 has been clicked");
+      }
+       if (buttonList.get(9).isClicked()) {
+        indexToTheme(9);
+        println("Button 9 has been clicked");
+      }
     }
     for(int i = 0; i < dropDownList.size(); i++)
     {
@@ -387,7 +432,17 @@ THEMES indexToTheme(int index)
     case 3:
       return THEMES.DAY;
     case 4:
-      return THEMES.NIGHT;
+      return THEMES.DUSK;
+    case 5:
+      return THEMES.COSMIC;
+    case 6:
+      return THEMES.RUST;
+    case 7:
+      return THEMES.MARINE;
+    case 8:
+      return THEMES.STELLAR;
+    case 9:
+      return THEMES.COLOURBLIND;
     default:
       return THEMES.DEFAULT;
   }
