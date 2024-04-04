@@ -4,11 +4,11 @@
 // The commented-out section provides an example of how to use GraphBar, fetching data and drawing a heatmap using another class.
 
 class GraphBar extends Graph {
-// Constructor for the GraphBar class
-    GraphBar(){
-        super(); // Call the constructor of the superclass (Graph)
 
-    }
+  GraphBar(int x, int y, int wide, int high)
+  {
+     super(x, y, wide, high);
+  }
 
 // Method to draw a bar chart based on the provided ArrayList of BarDataPoint objects
     void drawBarChart(ArrayList<BarDataPoint> values){

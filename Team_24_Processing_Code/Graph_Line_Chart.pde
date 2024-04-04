@@ -9,7 +9,9 @@ import java.util.ArrayList;
 
 // Define a class SimpleGraph extending the Graph class
 class SimpleGraph extends Graph {
-
+SimpleGraph(int x, int y, int wide, int high){
+     super(x, y, wide, high);
+  }
  // Method to draw the simple graph
 
     void draw(ArrayList<RouteDataPoint> values) {

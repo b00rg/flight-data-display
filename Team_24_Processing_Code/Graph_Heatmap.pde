@@ -6,7 +6,9 @@
 // It uses adjusted text alignment for proper labeling.
 
 class DensityGraph extends Graph {
-
+DensityGraph(int x, int y, int wide, int high){
+     super(x, y, wide, high);
+  }
 // Method to draw the density graph
     void draw(ArrayList<RouteDataPoint> values) {
         // Set up variables for drawing

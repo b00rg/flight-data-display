@@ -155,14 +155,8 @@ void setup() {
   graphS = new SimpleGraph(600, 500, 1200, 1000);
   //graphA = new AirportGraph(600, 500, 1200, 1000);
   
-<<<<<<< HEAD
   Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
   screen.numberOfGraphs = graphs.length;
-=======
-  Graph[] graphs = {graphB, graphP, graphD, graphS};
-  screen.numberOfGraphs = 4;
-
->>>>>>> 6e18fb28507ee1ccaa72231084a350a7f36ab499
 }
 
 

@@ -1,23 +1,3 @@
-<<<<<<< HEAD
-/*import java.util.ArrayList;
-import java.util.HashMap;
-
-Graph graph = graphA;
-AirportNode hoveredNode = null;
-boolean isDragging = false;
-float offsetX, offsetY;
-//PFont labelFont;
-String selectedAirportName = null;
-int[] selectedAirportData = new int[3]; // Array to hold total, arrivals, and departures
-float prevSelectedNodeX, prevSelectedNodeY;
-
-/*void setup() {
-    fullScreen();
-    labelFont = createFont("Arial", 14);
-    graph = new AirportGraph();
-    QueriesSelect queriesSelect = new QueriesSelect(); // Instantiate QueriesSelect object
-=======
-
 // This code implements an interactive airport graph visualization:
 // It initializes variables and objects needed for the graph visualization.
 // It sets up the canvas and initializes the airport graph.
@@ -28,7 +8,18 @@ float prevSelectedNodeX, prevSelectedNodeY;
 // Drag airport nodes around the canvas.
 // Select an airport node to display detailed information about it.
 // See flight counts represented by node sizes and route thicknesses.
-// Detect collisions between nodes and adjust their positions accordingly.
+// Detect collisions between nodes and adjust their positions accordingly.import java.util.ArrayList;
+/*
+import java.util.HashMap;
+
+Graph graph = graphA;
+AirportNode hoveredNode = null;
+boolean isDragging = false;
+float offsetX, offsetY;
+//PFont labelFont;
+String selectedAirportName = null;
+int[] selectedAirportData = new int[3]; // Array to hold total, arrivals, and departures
+float prevSelectedNodeX, prevSelectedNodeY;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -490,7 +481,3 @@ class AirportNode {
   }
 <<<<<<< HEAD
 }*/
-=======
-}
-*/
->>>>>>> 6e18fb28507ee1ccaa72231084a350a7f36ab499
