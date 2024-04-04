@@ -407,5 +407,5 @@ class AirportNode {
     float dy = this.y - other.y;
     float distance = sqrt(dx * dx + dy * dy);
     return distance < this.radius + other.radius;
-  }
+  }
 }*/

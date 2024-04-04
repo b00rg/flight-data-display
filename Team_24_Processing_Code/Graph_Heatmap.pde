@@ -1,8 +1,8 @@
 class DensityGraph extends Graph {
-  DensityGraph(){
-        super();
-    }
-
+DensityGraph(int x, int y, int wide, int high){
+     super(x, y, wide, high);
+  }
+// Method to draw the density graph
     void draw(ArrayList<RouteDataPoint> values) {
         // Set up variables for drawing
         float topMargin = 50;
