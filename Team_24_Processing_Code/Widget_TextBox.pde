@@ -15,23 +15,22 @@ class WidgetTextBox extends Widget {
   }
 
   void render() {
-    if (active)
+    if (active) {
       fill(255); // Color when active
-    else
-      fill(screen.INACTIVE_TEXT_BOX); // Color when inactive
-
+    } else {
+      fill(200);
+      //fill(screen.INACTIVE_TEXT_BOX); // Color when inactive
+    }
     rect(xpos, ypos, wide, high, roundness);
     fill(screen.TEXT_COLOR);
     textAlign(LEFT, CENTER);
     textFont(font);
-    text(textValue, xpos + 5, ypos + high/3);
-  }
-
-  boolean isNumber(char testChar)
-  {
-    if (testChar >= '0' && testChar <= '9')
-      return true;
-    return false;
+    if ((myType == WIDGET_TEXT_TYPE.DATE && active || (textValue != "DD/MM/YYYY")&& myType == WIDGET_TEXT_TYPE.DATE)) {
+      text(textValue + "/01/2022", xpos + 5, ypos + high/3);
+    } else
+    {
+      text(textValue, xpos + 5, ypos + high/3);
+    }
   }
 
   void input(char key)
@@ -48,6 +47,7 @@ class WidgetTextBox extends Widget {
           break;
         case 10:
           active = false; // user pressed enter
+          addColonAndCheckCompletion();
           break;
         case '0':
         case '1':
@@ -60,8 +60,10 @@ class WidgetTextBox extends Widget {
         case '8':
         case '9':
           textValue += key;
+          addColonAndCheckCompletion();
           break;
         default:
+          addColonAndCheckCompletion();
           break; // We do not allow the user to input anything but acceptable characters
         }
 
@@ -85,15 +87,17 @@ class WidgetTextBox extends Widget {
         case '7':
         case '8':
         case '9':
-        case '/':
+          //case '/':
           textValue += key;
+          if (textValue.length() == 2) {
+            active = false;
+          }
           break;
         default:
           break;
         }
       }
     }
-    addColon();
   }
 
   // this method is called for all text boxes when the user clickes, this method checks if the text box has been clicked, if yes, it activates
@@ -108,85 +112,10 @@ class WidgetTextBox extends Widget {
       active = false;
       if (isStringValid())
       {
-        prepareUserInput();
       } else
       {
-        textValue = normal;
+        userInputInvalid();
       }
-    }
-  }
-
-  boolean isStringValid()
-  {
-    if (myType == WIDGET_TEXT_TYPE.TIME)
-    {
-      try {
-        return true;
-      }
-      catch (Exception e)
-      {
-        return false;
-      }
-    } else // myType == DATE
-    {
-      try {
-        String dateString = textValue;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        sdf.setLenient(false);
-        Date date = sdf.parse(dateString);
-        return true;
-      }
-      catch (Exception e)
-      {
-        return false;
-      }
-    }
-  }
-  void prepareUserInput() {
-    if (myType == WIDGET_TEXT_TYPE.TIME)
-    {
-      num1 = textValue.replace(":", "");// we remove the colon to have the user input in pure integer format
-
-      boolean temp = false;
-      for (int i = 0; i < textBoxList.size(); i++)
-      {
-        if (textBoxList.get(i).textValue == normal)
-        {
-          temp = true;
-        }
-      }
-      if (!temp)
-      {
-        this.textValue = "??:??";
-        this.num1 ="error";
-        //this.num2 ="error";
-      }
-    } else
-    {
-      // User is already prepared in format dd/mm/yyyy
-    }
-  }
-
-  boolean isInputValidtimeRange(String input) { // Checks if the inputed "XX:XX" string is a vald 24 hour clock representation
-
-    if (input.length() == 5)
-    {
-      println(input.charAt(0) + input.charAt(1));
-      int num1 = (int(input.charAt(0)) * 10) + int(input.charAt(1));
-      int num2 = (int(input.charAt(3)) * 10) + int(input.charAt(4));
-      if ((num1 >= 0 && num1 <= 23) || (num2 >= 0 && num2 <= 59))
-        return true;
-    }
-    try {
-      String regex = "^(?:[01]?[0-9]|2[0-3]):[0-5][0-9]$";
-      Pattern pattern = Pattern.compile(regex);
-      Matcher matcher = pattern.matcher(input);
-      return matcher.matches();
-    }
-    catch (Exception e)
-    {
-      println("Input error");
-      return false; //if anything goes wrong with this most likely the user's input is bad
     }
   }
 
@@ -204,50 +133,70 @@ class WidgetTextBox extends Widget {
   }
 
   // Search to see if the user input already has the HH of the HH:MM, if so add the semicolon to make the typing easier for the user;
-  void addColon() {
+  // In addition the method checks if the user has completed a full input, and automaticall deactivates the button should the user do so
+  void addColonAndCheckCompletion() {
     if (textValue.length() == 2)
     {
       textValue += ":";
     }
+    if (textValue.length() == 5)
+    {
+      active = false;
+      if (!isStringValid())
+      {
+        textValue = normal;
+      }
+    }
+  }
+
+  // instructions of what to do if the input the user has entered by either pressing enter or clicking away is not valid
+  // This should be called only when the user has given their full input
+  void userInputInvalid() {
+    active = false;
+    textValue = normal;
+  }
+  // Investigate if textValue, the user input, is actually a valid input for the button type of this object
+  boolean isStringValid() {
+    if (myType == WIDGET_TEXT_TYPE.TIME)
+    {
+      if (textValue.length() != 5)
+      {
+        return false; // takes care of a specific edge case
+      }
+      String[] parts = textValue.split(":");
+      if (parts.length == 2) { // Ensure there are two parts
+        try {
+          int hours = Integer.parseInt(parts[0]);
+          int minutes = Integer.parseInt(parts[1]);
+
+          // Check if hours and minutes are in valid ranges
+          if (hours >= 0 && hours <= 23 && minutes >= 0 && minutes <= 59) {
+            return true; // Time is valid
+          }
+        }
+        catch (NumberFormatException e) {
+          return false;
+        }
+      } else
+      {
+        return Integer.parseInt(textValue) >= 0 && Integer.parseInt(textValue) <= 31;
+      }
+    } else
+    {// button type is date
+      println(textValue);
+      return true;
+    }
+    return false; // unreachable code, processing still needs it for some reason though
+  }
+  // method used in the reload event, it returns a string representation of the button's input
+  String giveProcessedUserInput() {
+    if (myType == WIDGET_TEXT_TYPE.TIME)
+    {
+      return textValue.replace(":", "").trim();
+    } else 
+    {
+      String Day = textValue;
+      return "2022/01/" + Day;
+    }
   }
 }
-
-/*
-    if ((textValue.length() == 4) && isNumber(key))
- {
- active = false;
- if (isInputValidtimeRange(textValue))
- {
- prepareUserInput();
- }
- else
- {
- textValue = normal;
- }
- }
- else if (key == 10)
- {
- active = false;
- if (isInputValidtimeRange(textValue))
- {
- prepareUserInput();
- } else
- {
- textValue = normal;
- }
- 
- }
- else if (key == 65535)
- {
- // do nothing if the user presses shift
- }
- else if (key == 8)
- {
- 
- 
- }
- else if (key >= '0' && key <= '9')
- {
- textValue += key;
- }
- */
