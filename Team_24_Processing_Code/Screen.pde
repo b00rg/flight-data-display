@@ -21,25 +21,37 @@ Screen(){}
   // TAB 1----------------
   
   // Database interaction panel (DIP)
-  int TAB_WIDTH = 500;
-  int TAB_BORDER_WIDTH = 20;
+  int TAB_WIDTH = 500, TAB_BORDER_WIDTH = 20;
   
-  int numberOfPages; // The amount of pages that the user can flick through based on the amount of data that needs to be displayed
+  int numberOfPages, numberOfGraphs; // The amount of pages that the user can flick through based on the amount of data that needs to be displayed
   int selectedPage = 1;
   int dataBlockYMargin = 5;
   // Layout of buttons and drop down menus
-  int HEIGHT_B = 70;
-  int WIDTH_B = 200;
+  int HEIGHT_B = 50;
+  int WIDTH_B = 150;
   
-
   // drop down buttons
   int NUMBER_OF_DROPDOWNS = 5;
+  
   void renderDIP(){
     renderUpperTab();
     fill(PRIMARY_COLOR);
     rect(0,0,TAB_WIDTH, displayHeight);
     fill(SECONDARY_COLOR);
     rect(TAB_WIDTH,0,TAB_BORDER_WIDTH, displayHeight);
+    
+    fill(TEXT_COLOR);
+    textFont(headingFont);
+    text("DATE", 100, 60);
+    text("TIME", 100, 220);
+    text("AIRPORT", 100, 500);
+    
+    textFont(TextBoxFont);
+    text("BETWEEN:", 25, (int) (height * 0.1) + (HEIGHT_B/2));
+    text("DEPARTURE:", 25, (int) (height * 0.25) + (HEIGHT_B/2));
+    text("ARRIVAL:", 25, (int) (height * 0.35) + (HEIGHT_B/2));
+    text("DEPARTS FROM:", 25, (int) (height * 0.52) + (HEIGHT_B/2));
+    text("ARRIVES AT:", 25, (int) (height * 0.6) + (HEIGHT_B/2));
   }
   void renderUpperTab(){
     fill(PRIMARY_COLOR);
@@ -58,7 +70,7 @@ Screen(){}
     {
       textBoxList.get(i).render();
     }
-    for(int i = 0; i < buttonList.size(); i++)
+    for(int i = 0, n = buttonList.size(); i < n; i++)
     {
       buttonList.get(i).render();
     }
@@ -107,43 +119,95 @@ Screen(){}
     fill(TERTIARY_COLOR);
     rect(xpos, ypos, w, h, 10);
     fill(TEXT_COLOR);
-    text("Arrivals: " + D.ORIGIN,xpos + 2, ypos + h / 10);
-    text("Destination: " + D.DEST,xpos + 2, ypos + h/2);
+    text("Arrivals: " + D.ORIGIN,xpos, ypos + h / 10);
+    text("Destination: " + D.DEST,xpos, ypos + h/2);
     
-    if(D.CANCELLED != 1)
+    if(D.CANCELLED == 0 && D.DIVERTED == 0)
     {
-      text("Time: " + D.ARR_TIME, xpos + 2, ypos + h / 10 * 3);
-      text("Time: " + D.DEP_TIME, xpos + 2,ypos + h/2 + h/4);
+      text("Time: " + D.ARR_TIME, xpos, ypos + h / 10 * 3);
+      text("Time: " + D.DEP_TIME, xpos,ypos + h/2 + h/4);
+    } else if(D.DIVERTED == 1 && D.CANCELLED == 0) 
+    {
+      text("Time: " + D.ARR_TIME, xpos, ypos + h / 10 * 3);
+      text("Time: " + D.DEP_TIME, xpos,ypos + h/2 + h/4);
+      fill(BUTTON_OFF);
+      text("Diverted",xpos+ w/2, ypos + h / 2);      
     } else 
     {
       fill(BUTTON_OFF);
-      text("CANCELLED", xpos, ypos + h / 3);
+      text("CANCELLED", xpos+ w/2, ypos + h / 2);
     }
-    
+    fill(TEXT_COLOR);
+    text("Carrier: " + D.MKT_CARRIER, xpos + w/2, ypos + h / 10);
+    text("Date: " + D.FL_DATE, xpos + w/2,ypos + h / 10 *3);
     
   }
-  void printTable()
+  
+  void renderTab2()
   {
-    for(int i = 0, n = 20 /*temp length*/; i <n; i++)
+    switch(displayedGraph)
     {
-      
+      case 0:
+        graphB.drawBarChart(valuesB);
+        break;
+      case 1:
+        graphP.drawPieChart(valuesP);
+        break;
+      case 2:
+        graphD.draw(valuesD);
+        break;
+      case 3:
+        graphS.draw(valuesS);
+        break;
+      default:
+        println("No graph found");
+        break;
     }
   }
   
-  void hasUserChangedPage(){ // The user clicked a button to chnange pages for the data display in tab 1
-  if(moveLeft.isClicked()){
-    screen.selectedPage--;
-    if(screen.selectedPage <= 0){
-      screen.selectedPage = 1;
+void pageSelectButtons()
+{
+  if(moveLeft.isClicked())
+  {
+    switch(currentlyActiveTab)
+    {
+      case 0:
+        screen.selectedPage--;
+        if(screen.selectedPage <= 0)
+          screen.selectedPage = 1;
+        break;
+      case 1:
+        displayedGraph--;
+        if(displayedGraph < 0)
+          displayedGraph = numberOfGraphs - 1;
+        break;
+      default:
+        println("No function");
+        break;
     }
   }
-    if(moveRight.isClicked()){
-      screen.selectedPage++;
-      if(screen.selectedPage > screen.numberOfPages){
-        screen.selectedPage = screen.numberOfPages;
-      }
+  
+  if(moveRight.isClicked())
+  {
+    switch(currentlyActiveTab)
+    {
+      case 0:
+        screen.selectedPage++;
+        if(screen.selectedPage > screen.numberOfPages)
+          screen.selectedPage = screen.numberOfPages;
+        break;
+      case 1:
+        displayedGraph++;
+        if(displayedGraph >= numberOfGraphs)
+          displayedGraph = 0;
+        break;
+      default:
+        println("No function");
+        break;
     }
   }
+}
+
   String adjustDateInput(String dd_mm_yyyy)
   {
     try
@@ -163,47 +227,107 @@ void changeTheme(THEMES selectedTheme)
   switch (selectedTheme) 
   {
   case DEFAULT:
-    System.out.println("Default theme selected");
     PRIMARY_COLOR = color(0,50,100);
     SECONDARY_COLOR = color(200,200, 255);
     TERTIARY_COLOR = color(100, 200, 200);
     BACKGROUND = color(230,230,230); 
     BUTTON_ON = color(100,250,100);
     BUTTON_OFF = color(250,100,100);
-    TEXT_COLOR = color(0,0,0);
+    TEXT_COLOR = color(0);
     INACTIVE_TEXT_BOX = color(255);
     break;
   case GIRLBOSS:
-    System.out.println("Girl boss theme selected");
-    PRIMARY_COLOR = color(255,150,150);
-    SECONDARY_COLOR = color(200,200, 250);
-    TERTIARY_COLOR = color(250, 200, 250);
-    BACKGROUND = color(255,210,210); 
-    BUTTON_ON = color(100,100,250);
-    BUTTON_OFF = color(250,150,100);
-    TEXT_COLOR = color(25,0,100);
-    INACTIVE_TEXT_BOX = color(255,100,100);
+    PRIMARY_COLOR = color(255, 5, 164);
+    SECONDARY_COLOR = color(255, 176, 226);
+    TERTIARY_COLOR = color(216, 0, 170);
+    BACKGROUND = color(255, 0, 149); 
+    BUTTON_ON = color(201, 0, 54);
+    BUTTON_OFF = color(57, 0, 33);
+    TEXT_COLOR = color(0);
+    INACTIVE_TEXT_BOX = color(150);
     break;
   case BOYBOSS:
-    System.out.println("Boy boss theme selected");
+    PRIMARY_COLOR = color(31, 31, 31);
+    SECONDARY_COLOR = color(70, 69, 129);
+    TERTIARY_COLOR = color(40, 39, 113);
+    BACKGROUND = color(134, 134, 203); 
+    BUTTON_ON = color(2, 0, 157);
+    BUTTON_OFF = color(1, 0, 100);
+    TEXT_COLOR = color(0);
+    INACTIVE_TEXT_BOX = color(150);
     break;
   case DAY:
-    System.out.println("Day theme selected");
-    PRIMARY_COLOR = color(255,150,150);
-    SECONDARY_COLOR = color(100,100, 0);
-    TERTIARY_COLOR = color(250, 250, 200);
-    BACKGROUND = color(255,255,255); 
-    BUTTON_ON = color(100,100,250);
-    BUTTON_OFF = color(250,250,100);
-    TEXT_COLOR = color(0,25,25);
-    INACTIVE_TEXT_BOX = color(100,250,100);
+    PRIMARY_COLOR = color(162, 248, 255);
+    SECONDARY_COLOR = color(57, 240, 255);
+    TERTIARY_COLOR = color(0, 174, 188);
+    BACKGROUND = color(150, 266, 222); 
+    BUTTON_ON = color(0, 236, 255);
+    BUTTON_OFF = color(44, 111, 116);
+    TEXT_COLOR = color(0);
+    INACTIVE_TEXT_BOX = color(150);
     break;
-  case NIGHT:
-    System.out.println("Night theme selected");
+  case DUSK:
+    PRIMARY_COLOR = color(34, 32, 113);
+    SECONDARY_COLOR = color(67, 31, 93);
+    TERTIARY_COLOR = color(53, 19, 98);
+    BACKGROUND = color(84, 50, 113); 
+    BUTTON_ON = color(75, 21, 124);
+    BUTTON_OFF = color(35, 0, 67);
+    TEXT_COLOR = color(0);
+    INACTIVE_TEXT_BOX = color(150);
     break;
   case CUSTOM_THEME:
-    System.out.println("Custom theme selected");
     break;
+   case COSMIC:
+     PRIMARY_COLOR = color(90, 3, 255);
+     SECONDARY_COLOR = color(129, 83, 216);
+     TERTIARY_COLOR = color(140, 83, 216);
+     BACKGROUND = color(83, 104, 216); 
+     BUTTON_ON = color(30, 25, 224);
+     BUTTON_OFF = color(3, 0, 124);
+     TEXT_COLOR = color(0);
+     INACTIVE_TEXT_BOX = color(150);
+     break;
+   case RUST:
+     PRIMARY_COLOR = color(149, 137, 134);
+     SECONDARY_COLOR = color(108, 96, 94);
+     TERTIARY_COLOR = color(165, 137, 132);
+     BACKGROUND = color(116, 88, 88); 
+     BUTTON_ON = color(255);
+     BUTTON_OFF = color(57, 49, 49);
+     TEXT_COLOR = color(0);
+     INACTIVE_TEXT_BOX = color(150);
+     break;
+   case MARINE:
+     PRIMARY_COLOR = color(10, 88, 129);
+     SECONDARY_COLOR = color(25, 112, 157);
+     TERTIARY_COLOR = color(76, 156, 198);
+     BACKGROUND = color(81, 178, 229); 
+     BUTTON_ON = color(0, 168, 255);
+     BUTTON_OFF = color(2, 67, 100);
+     TEXT_COLOR = color(0);
+     INACTIVE_TEXT_BOX = color(150);
+     break;
+   case STELLAR:
+     PRIMARY_COLOR = color(225, 237, 60);
+     SECONDARY_COLOR = color(254, 255, 10);
+     TERTIARY_COLOR = color(252, 252, 148);
+     BACKGROUND = color(242, 242, 42); 
+     BUTTON_ON = color(255, 255, 191);
+     BUTTON_OFF = color(116, 116, 64);
+     TEXT_COLOR = color(0);
+     INACTIVE_TEXT_BOX = color(150);
+     break;
+   case COLOURBLIND:
+     PRIMARY_COLOR = color(160);
+     SECONDARY_COLOR = color(118);
+     TERTIARY_COLOR = color(90);
+     BACKGROUND = color(193); 
+     BUTTON_ON = color(255);
+     BUTTON_OFF = color(0);
+     TEXT_COLOR = color(0);
+     INACTIVE_TEXT_BOX = color(150);
+     break;
   default:
     System.out.println("Unknown theme selected, error");
     break;
