@@ -1,8 +1,3 @@
-
-// defines a subclass GraphBar with a constructor and a method drawBarChart to draw a bar chart based on provided data points. 
-// It calculates bar dimensions, loops through data to draw bars, and includes a method drawScale to draw a scale. 
-// The commented-out section provides an example of how to use GraphBar, fetching data and drawing a heatmap using another class.
-
 class GraphBar extends Graph {
 
   GraphBar(int x, int y, int wide, int high)
@@ -10,7 +5,6 @@ class GraphBar extends Graph {
      super(x, y, wide, high);
   }
 
-// Method to draw a bar chart based on the provided ArrayList of BarDataPoint objects
     void drawBarChart(ArrayList<BarDataPoint> values){
 // Set up variables for bar width, spacing, margins, and color
         // Set up variables for bar width and spacing
@@ -75,8 +69,3 @@ class GraphBar extends Graph {
   DensityGraph densityGraph = new DensityGraph();
   densityGraph.draw(busyRoutes);
 */
-
-// The following commented code is an example of how to use the GraphBar class to draw a bar chart.
-// It retrieves data for the heatmap from a database using QueriesSelect class and then creates
-// an instance of DensityGraph class to draw the heatmap.
-// However, this code is not directly relevant to the GraphBar class and is provided here as an example.

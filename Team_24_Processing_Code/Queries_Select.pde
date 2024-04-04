@@ -35,9 +35,8 @@ class QueriesSelect extends Queries {
     ArrayList<PieDataPoint> dataList = new ArrayList<PieDataPoint>();
     try {
       Statement stmt = connection.createStatement();
-
-      String query = "SELECT  MKT_CARRIER, SUM(CASE WHEN CANCELLED = 1 THEN 1 ELSE 0 END) AS 'COUNT_CANCELLED', SUM(CASE WHEN DIVERTED = 1 THEN 1 ELSE 0 END) AS 'COUNT_DIVERTED', COUNT(*) - SUM(CANCELLED + DIVERTED) AS 'COUNT_EXPECTED' FROM flight_Data GROUP BY MKT_CARRIER;";
-
+      String query = "SELECT  MKT_CARRIER, SUM(CASE WHEN CANCELLED = 1 THEN 1 ELSE 0 END) AS 'COUNT_CANCELLED', " +
+      "SUM(CASE WHEN DIVERTED = 1 THEN 1 ELSE 0 END) AS 'COUNT_DIVERTED', COUNT(*) - SUM(CANCELLED + DIVERTED) AS 'COUNT_EXPECTED' FROM flight_Data GROUP BY MKT_CARRIER;";
       ResultSet resultSet = stmt.executeQuery(query);
       
       while (resultSet.next()) {
@@ -57,8 +56,8 @@ class QueriesSelect extends Queries {
   
   
   ArrayList<DisplayDataPoint> getRowsDisplay(boolean depTrue, int lowerVal, int upperVal, String depAirport, String arrAirport, String startDateRange, String endDateRange) {
+    
     String word = "";
-
     ArrayList<DisplayDataPoint> dataList = new ArrayList<>();
     try {   
         Statement stmt = connection.createStatement();
@@ -68,13 +67,18 @@ class QueriesSelect extends Queries {
         String column = depTrue ? "DEP_TIME" : "ARR_TIME";
 
         // Time range filter
-
         if (lowerVal != 0 && upperVal != 0){
           if (lowerVal < upperVal) {
             whereClauseBuilder.append(column).append(" BETWEEN ").append(lowerVal).append(" AND ").append(upperVal);
           } else {
             whereClauseBuilder.append(column).append(" NOT BETWEEN ").append(upperVal).append(" AND ").append(lowerVal);
           }
+        }
+        else if (lowerVal != 0){
+          whereClauseBuilder.append(column).append(" <= ").append(lowerVal);
+        }
+        else if (upperVal != 0){
+          whereClauseBuilder.append(column).append(" >= ").append(upperVal);
         }
         
         
@@ -94,7 +98,9 @@ class QueriesSelect extends Queries {
             whereClauseBuilder.append("DEST = '").append(arrAirport).append("'");
         }
         
+        /*
         // Date range filter
+        println(startDateRange);
         if (startDateRange != null && endDateRange != null && !startDateRange.isEmpty() && !endDateRange.isEmpty()) {
             if (whereClauseBuilder.length() > 0) {
                 whereClauseBuilder.append(" AND ");
@@ -106,6 +112,18 @@ class QueriesSelect extends Queries {
               whereClauseBuilder.append("FL_DATE NOT BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
             }
         }
+        else if (startDateRange != null && !startDateRange.isEmpty()){
+          if (whereClauseBuilder.length() > 0) {
+            whereClauseBuilder.append(" AND ");
+          }
+          whereClauseBuilder.append("FL_DATE <= '").append(startDateRange);
+        }
+        else if (endDateRange != null && !endDateRange.isEmpty()){
+          if (whereClauseBuilder.length() > 0) {
+            whereClauseBuilder.append("FL_DATE >= '").append(endDateRange);
+          }
+            
+        }*/
         
         // Construct the full SQL query
         if (whereClauseBuilder.length() > 0) {
@@ -183,6 +201,7 @@ class QueriesSelect extends Queries {
   }
   
   
+  //GET ROUTES (BUSY/ ALL) 
   ArrayList<RouteDataPoint> getBusyRoutes(){
     
     ArrayList<RouteDataPoint> dataList = new ArrayList<RouteDataPoint>();
@@ -204,11 +223,7 @@ class QueriesSelect extends Queries {
     }
     return dataList; 
   }
-  
-  
-  
   ArrayList<RouteDataPoint> getAllRoutes(){
-    
     ArrayList<RouteDataPoint> dataList = new ArrayList<RouteDataPoint>();
     try {
       Statement stmt = connection.createStatement();
@@ -229,7 +244,9 @@ class QueriesSelect extends Queries {
     return dataList; 
   }
 
- int getArrivals(String airportName) {
+  
+  // GET NUMBER OF ARRIVALS AND DEPARTURES PER AIRPORT - NODE MAP (EMMA)
+  int getArrivals(String airportName) {
     int arrivals = 0;
     try {
       Statement stmt = connection.createStatement();
@@ -247,7 +264,6 @@ class QueriesSelect extends Queries {
     }
     return arrivals;
   }
-
   int getDepartures(String airportName) {
     int departures = 0;
     try {
@@ -266,4 +282,5 @@ class QueriesSelect extends Queries {
     }
     return departures;
   }
+
 }
