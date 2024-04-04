@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 class SimpleGraph extends Graph {
-  SimpleGraph(){
-        super();
+  SimpleGraph(int x, int y, int h, int w){
+        super(x, y, h, w);
     }
 
     void draw(ArrayList<RouteDataPoint> values) {
