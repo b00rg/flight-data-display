@@ -2,6 +2,12 @@ class DensityGraph extends Graph {
   DensityGraph(int x, int y, int wide, int high) {
     super(x, y, wide, high);
   }
+// Method to draw the density graph
+    void draw(ArrayList<RouteDataPoint> values) {
+        // Set up variables for drawing
+        float topMargin = 50;
+        float leftMargin = 50;
+        float cellSize = 120;
 
   void draw(ArrayList<RouteDataPoint> values) {
     // Set up variables for drawing
@@ -21,14 +27,21 @@ class DensityGraph extends Graph {
     }
     airports.sort(String::compareTo);
 
-    // Calculate the maximum flight count
-    int maxFlightCount = 0;
-    for (RouteDataPoint data : values) {
-      maxFlightCount = Math.max(maxFlightCount, data.FLIGHT_COUNT);
-    }
 
-    // Create a hashmap to store frequencies for each route
-    HashMap<String, Integer> frequencyMap = new HashMap<>();
+        // Create a hashmap to store frequencies for each route
+        HashMap<String, Integer> frequencyMap = new HashMap<>();
+// Draw the grid
+        for (RouteDataPoint data : values) {
+            String route = data.ORIGIN + "-" + data.DEST;
+            frequencyMap.put(route, data.FLIGHT_COUNT);
+        }
+
+        // Draw the grid
+        for (int i = 0; i < airports.size(); i++) {
+            for (int j = 0; j < airports.size(); j++) {
+                String route = airports.get(i) + "-" + airports.get(j);
+                float x = xpos + leftMargin + i * cellSize;
+                float y = ypos + topMargin + j * cellSize;
 
     // Draw the grid
     for (RouteDataPoint data : values) {
@@ -60,6 +73,20 @@ class DensityGraph extends Graph {
           text(frequency, x + cellSize / 2, y + cellSize / 2);
         } else {
           text("X", x + cellSize / 2, y + cellSize / 2);
+
+  // Draw labels for x-axis (airports)
+        textAlign(CENTER, TOP); // Adjusted textAlign for x-labels
+        for (int i = 0; i < airports.size(); i++) {
+            float x = xpos + leftMargin + i * cellSize + cellSize / 2;
+            float y = ypos + topMargin - 20; // Adjusted y-coordinate for x-labels
+            text(airports.get(i), x, y);
+        }
+// Draw labels for y-axis (airports)
+        textAlign(LEFT, CENTER);
+        for (int j = 0; j < airports.size(); j++) {
+            float x = xpos + leftMargin - 50;
+            float y = ypos + topMargin + j * cellSize + cellSize / 2;
+            text(airports.get(j), x, y);
         }
       }
     }

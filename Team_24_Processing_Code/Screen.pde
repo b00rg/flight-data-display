@@ -236,35 +236,101 @@ void changeTheme(THEMES selectedTheme)
     BACKGROUND = color(230,230,230); 
     BUTTON_ON = color(100,250,100);
     BUTTON_OFF = color(250,100,100);
-    TEXT_COLOR = color(0,0,0);
+    TEXT_COLOR = color(0);
     INACTIVE_TEXT_BOX = color(255);
     break;
   case GIRLBOSS:
-    PRIMARY_COLOR = color(255,150,150);
-    SECONDARY_COLOR = color(200,200, 250);
-    TERTIARY_COLOR = color(250, 200, 250);
-    BACKGROUND = color(255,210,210); 
-    BUTTON_ON = color(100,100,250);
-    BUTTON_OFF = color(250,150,100);
-    TEXT_COLOR = color(25,0,100);
-    INACTIVE_TEXT_BOX = color(255,100,100);
+    PRIMARY_COLOR = color(255, 5, 164);
+    SECONDARY_COLOR = color(255, 176, 226);
+    TERTIARY_COLOR = color(216, 0, 170);
+    BACKGROUND = color(255, 0, 149); 
+    BUTTON_ON = color(201, 0, 54);
+    BUTTON_OFF = color(57, 0, 33);
+    TEXT_COLOR = color(0);
+    INACTIVE_TEXT_BOX = color(150);
     break;
   case BOYBOSS:
+    PRIMARY_COLOR = color(31, 31, 31);
+    SECONDARY_COLOR = color(70, 69, 129);
+    TERTIARY_COLOR = color(40, 39, 113);
+    BACKGROUND = color(134, 134, 203); 
+    BUTTON_ON = color(2, 0, 157);
+    BUTTON_OFF = color(1, 0, 100);
+    TEXT_COLOR = color(0);
+    INACTIVE_TEXT_BOX = color(150);
     break;
   case DAY:
-    PRIMARY_COLOR = color(255,150,150);
-    SECONDARY_COLOR = color(100,100, 0);
-    TERTIARY_COLOR = color(250, 250, 200);
-    BACKGROUND = color(255,255,255); 
-    BUTTON_ON = color(100,100,250);
-    BUTTON_OFF = color(250,250,100);
-    TEXT_COLOR = color(0,25,25);
-    INACTIVE_TEXT_BOX = color(100,250,100);
+    PRIMARY_COLOR = color(162, 248, 255);
+    SECONDARY_COLOR = color(57, 240, 255);
+    TERTIARY_COLOR = color(0, 174, 188);
+    BACKGROUND = color(150, 266, 222); 
+    BUTTON_ON = color(0, 236, 255);
+    BUTTON_OFF = color(44, 111, 116);
+    TEXT_COLOR = color(0);
+    INACTIVE_TEXT_BOX = color(150);
     break;
-  case NIGHT:
+  case DUSK:
+    PRIMARY_COLOR = color(34, 32, 113);
+    SECONDARY_COLOR = color(67, 31, 93);
+    TERTIARY_COLOR = color(53, 19, 98);
+    BACKGROUND = color(84, 50, 113); 
+    BUTTON_ON = color(75, 21, 124);
+    BUTTON_OFF = color(35, 0, 67);
+    TEXT_COLOR = color(0);
+    INACTIVE_TEXT_BOX = color(150);
     break;
   case CUSTOM_THEME:
     break;
+   case COSMIC:
+     PRIMARY_COLOR = color(90, 3, 255);
+     SECONDARY_COLOR = color(129, 83, 216);
+     TERTIARY_COLOR = color(140, 83, 216);
+     BACKGROUND = color(83, 104, 216); 
+     BUTTON_ON = color(30, 25, 224);
+     BUTTON_OFF = color(3, 0, 124);
+     TEXT_COLOR = color(0);
+     INACTIVE_TEXT_BOX = color(150);
+     break;
+   case RUST:
+     PRIMARY_COLOR = color(149, 137, 134);
+     SECONDARY_COLOR = color(108, 96, 94);
+     TERTIARY_COLOR = color(165, 137, 132);
+     BACKGROUND = color(116, 88, 88); 
+     BUTTON_ON = color(255);
+     BUTTON_OFF = color(57, 49, 49);
+     TEXT_COLOR = color(0);
+     INACTIVE_TEXT_BOX = color(150);
+     break;
+   case MARINE:
+     PRIMARY_COLOR = color(10, 88, 129);
+     SECONDARY_COLOR = color(25, 112, 157);
+     TERTIARY_COLOR = color(76, 156, 198);
+     BACKGROUND = color(81, 178, 229); 
+     BUTTON_ON = color(0, 168, 255);
+     BUTTON_OFF = color(2, 67, 100);
+     TEXT_COLOR = color(0);
+     INACTIVE_TEXT_BOX = color(150);
+     break;
+   case STELLAR:
+     PRIMARY_COLOR = color(225, 237, 60);
+     SECONDARY_COLOR = color(254, 255, 10);
+     TERTIARY_COLOR = color(252, 252, 148);
+     BACKGROUND = color(242, 242, 42); 
+     BUTTON_ON = color(255, 255, 191);
+     BUTTON_OFF = color(116, 116, 64);
+     TEXT_COLOR = color(0);
+     INACTIVE_TEXT_BOX = color(150);
+     break;
+   case COLOURBLIND:
+     PRIMARY_COLOR = color(160);
+     SECONDARY_COLOR = color(118);
+     TERTIARY_COLOR = color(90);
+     BACKGROUND = color(193); 
+     BUTTON_ON = color(255);
+     BUTTON_OFF = color(0);
+     TEXT_COLOR = color(0);
+     INACTIVE_TEXT_BOX = color(150);
+     break;
   default:
     System.out.println("Unknown theme selected, error");
     break;

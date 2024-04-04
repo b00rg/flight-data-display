@@ -4,6 +4,7 @@ class GraphBar extends Graph {
     super(x, y, wide, high);
   }
 
+
   void drawBarChart(ArrayList<BarDataPoint> values) {
     // Set up variables for bar width, spacing, margins, and color
     // Set up variables for bar width and spacing
@@ -36,6 +37,7 @@ class GraphBar extends Graph {
       // Draw the label
       textAlign(CENTER, CENTER - 20);
       text(data.getMKT_CARRIER(), x + barWidth/2, y - 10);
+
     }
     // Draw the scale based on the maximum value and top margin
     drawScale(maxVal, topMargin);

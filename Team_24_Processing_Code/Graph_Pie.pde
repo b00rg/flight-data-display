@@ -22,9 +22,9 @@ class GraphPie extends Graph {
     int totalFlights = values.size();
     float startAngle = 0; 
 
-    float labelX = 10;
-    float labelY = 5;
-    float colour = 0.0; 
+    float labelX = xpos/2;
+    float labelY = ypos * 1.3;
+    float colour = 0.0, colourB = 150.00; 
     // Loop through each label to draw the pie chart slices
     for (int i = 0; i < labels.length; i++) {
       float angle = radians(map(i, 0, labels.length, 0, 360)); ; // Calculate angle for this slice
@@ -43,10 +43,10 @@ class GraphPie extends Graph {
       colour += 255.0/totalFlights*2; // Increment color for next slice
       
        // Draw slice of the pie chart
-      arc(width/2, height/2, 300, 300, startAngle, endAngle);
+      arc(xpos, ypos, width, height, startAngle, endAngle);
       
       // Draw label for this slice
-      labelY += 15;
+      labelY += 25;
 
       //textAlign(CENTER, CENTER);
       text(labels[i], labelX, labelY);

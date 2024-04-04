@@ -11,16 +11,22 @@ import java.util.Date;
 // CHANGE
 
 // THEMES
-enum THEMES {
-  DEFAULT,
-  GIRLBOSS,
-  BOYBOSS,
-  DAY,
-  NIGHT,
-  CUSTOM_THEME
-}
 
-String themeNames[] = new String[] {"DEFAULT", "GIRLBOSS", "BOYBOSS", "DAY", "NIGHT", "CUSTOM_THEME"};
+enum THEMES
+  {
+    DEFAULT,
+    GIRLBOSS,
+    BOYBOSS,
+    DAY,
+    DUSK,
+    CUSTOM_THEME,
+    COSMIC,
+    RUST,
+    MARINE,
+    STELLAR,
+    COLOURBLIND
+  }
+String themeNames[] = new String[] {"DEFAULT", "GIRLBOSS", "BOYBOSS", "DAY", "NIGHT", "CUSTOM_THEME", "COSMIC", "RUST", "MARINE", "STELLAR", "COLOURBLIND"};
 WidgetDropDown ThemeSelection;
 
 // STATIC SETUP VARIABLE
@@ -231,7 +237,7 @@ void mouseClicked() {
       textBoxList.get(i).isClicked();
     }
     for (int i = 0; i < buttonList.size(); i++) {
-      
+
     }
     for (int i = 0; i < dropDownList.size(); i++) {
       dropDownList.get(i).isClicked();
@@ -353,7 +359,17 @@ THEMES indexToTheme(int index) {
     case 3:
       return THEMES.DAY;
     case 4:
-      return THEMES.NIGHT;
+      return THEMES.DUSK;
+    case 5:
+      return THEMES.COSMIC;
+    case 6:
+      return THEMES.RUST;
+    case 7:
+      return THEMES.MARINE;
+    case 8:
+      return THEMES.STELLAR;
+    case 9:
+      return THEMES.COLOURBLIND;
     default:
       return THEMES.DEFAULT;
   }
