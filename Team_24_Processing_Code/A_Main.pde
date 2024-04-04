@@ -298,11 +298,14 @@ void ReloadEvent() {
   } else {
     selectedDepartureStation = null;
   }
-
+  date2 = null;
+  date1 = null;
   // FLIGHT STATUS SELECTION
   QueriesSelect selectQuery = new QueriesSelect();
   println("date1 = " + date1);
   println("date2 = " + date2);
+  println("time " + num1);
+  println(num2);
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
 
   
