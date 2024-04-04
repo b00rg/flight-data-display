@@ -9,11 +9,7 @@ class DensityGraph extends Graph {
         float cellSize = 120;
 
   void draw(ArrayList<RouteDataPoint> values) {
-        // Set up variables for drawing
-        float topMargin = 50;
-        float leftMargin = 50;
-        float cellSize = 120;
-
+    
         // Find the unique origin and destination airports
         ArrayList<String> airports = new ArrayList<>();
         for (RouteDataPoint data : values) {
