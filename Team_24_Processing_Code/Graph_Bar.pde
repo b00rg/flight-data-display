@@ -1,6 +1,6 @@
 class GraphBar extends Graph {
-    GraphBar(int x, int y, int l, int w){
-        super(x, y, l, w);
+    GraphBar(){
+        super();
     }
   
     void drawBarChart(ArrayList<BarDataPoint> values){
