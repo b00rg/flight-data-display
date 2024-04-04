@@ -9,7 +9,9 @@
 // It updates the start angle for the next slice.
 
 // Define a class GraphPie which extends the Graph class
-// Constructor for the GraphPie class
+
+import java.util.ArrayList;
+
 class GraphPie extends Graph {
   GraphPie(int x, int y, int wide, int high){
      super(x, y, wide, high);
