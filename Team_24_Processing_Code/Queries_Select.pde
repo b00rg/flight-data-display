@@ -120,7 +120,7 @@ class QueriesSelect extends Queries {
             whereClauseBuilder.append("DEST = '").append(arrAirport).append("'");
         }
         
-        /*
+        
         // Date range filter
         println(startDateRange);
         if (startDateRange != null && endDateRange != null && !startDateRange.isEmpty() && !endDateRange.isEmpty()) {
@@ -145,7 +145,7 @@ class QueriesSelect extends Queries {
             whereClauseBuilder.append("FL_DATE >= '").append(endDateRange);
           }
             
-        }*/
+        }
         
         // Construct the full SQL query
         if (whereClauseBuilder.length() > 0) {

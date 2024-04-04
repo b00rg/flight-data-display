@@ -183,7 +183,6 @@ class WidgetTextBox extends Widget {
       }
     } else
     {// button type is date
-      println(textValue);
       return true;
     }
     return false; // unreachable code, processing still needs it for some reason though
@@ -196,7 +195,9 @@ class WidgetTextBox extends Widget {
     } else 
     {
       String Day = textValue;
-      return "2022/01/" + Day;
+      Day = (("2022/01/" + Day));
+      Day = Day.replace("/","-");
+      return Day;
     }
   }
 }

@@ -165,6 +165,9 @@ void setup() {
 }
 
 void draw() {
+  undisturbedFlights.render();
+  cancelledFlights.render();
+  delayedFlights.render();
   background(screen.BACKGROUND);
 
   noStroke();
@@ -175,11 +178,9 @@ void draw() {
   // User tab selection only affects everything on the right
   screen.renderDIP();
   // ThemeSelection.render();
-  ReloadButton.render();
-  cancelledFlights.render();
-  delayedFlights.render();
-  undisturbedFlights.render();
 
+
+  ReloadButton.render();
   screen.renderButtons();
   // ThemeSelection.render();
 
@@ -281,7 +282,8 @@ void ReloadEvent() {
   if((textBoxList.get(0).textValue != "") && (textBoxList.get(1).textValue != ""))
   {
     date1 = textBoxList.get(0).giveProcessedUserInput();
-    date2 = textBoxList.get(2).giveProcessedUserInput();
+    date2 = textBoxList.get(1).giveProcessedUserInput();
+    
   }
   // AIRPORT SELECTION
   // If the drop down has a selected item on it, selectedArrivalStation stores it
@@ -298,15 +300,11 @@ void ReloadEvent() {
   }
 
   // FLIGHT STATUS SELECTION
-  boolean wantsCancelled = cancelledFlights.active;
   QueriesSelect selectQuery = new QueriesSelect();
+  println("date1 = " + date1);
+  println("date2 = " + date2);
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
-  String DateRange = null;
-  if ((startDate.textValue != null || startDate.textValue != startDate.normal) && (endDate.textValue != null || endDate.textValue != endDate.normal)) {
-    date1 = screen.adjustDateInput(startDate.textValue);
-    date2 = screen.adjustDateInput(endDate.textValue);
-    DateRange = date1 +" - "+ date2;
-  }
+
   
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
