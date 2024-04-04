@@ -250,7 +250,47 @@ void mouseClicked()
     }
     for(int i = 0; i < buttonList.size(); i++)
     {
-      
+      if (buttonList.get(0).isClicked())
+      {
+        Screen.changeTheme(GIRLBOSS);
+        println("Button 0 has been clicked");
+      }
+      if (buttonList.get(1).isClicked()){
+        Screen.changeTheme(BOYBOSS);
+        println("Button 1 has been clicked");
+      }
+      if (buttonList.get(2).isClicked()){
+        Screen.changeTheme(DAY);
+        println("Button 2 has been clicked");
+      }
+      if (buttonList.get(3).isClicked()){
+        Screen.changeTheme(NIGHT);
+        println("Button 3 has been clicked");
+      }
+      if (buttonList.get(4).isClicked()){
+        Screen.changeTheme(COSMIC);
+        println("Button 4 has been clicked");
+      }
+      if (buttonList.get(5).isClicked()) {
+        Screen.changeTheme(RUST);
+        println("Button 5 has been clicked");
+      }
+       if (buttonList.get(6).isClicked()) {
+        Screen.changeTheme(MARINE);
+        println("Button 6 has been clicked");
+      }
+       if (buttonList.get(7).isClicked()) {
+        Screen.changeTheme(STELLAR);
+        println("Button 7 has been clicked");
+      }
+       if (buttonList.get(8).isClicked()) {
+        Screen.changeTheme(COLOURBLIND);
+        println("Button 8 has been clicked");
+      }
+       if (buttonList.get(9).isClicked()) {
+        Screen.changeTheme(CUSTOM_THEME);
+        println("Button 9 has been clicked");
+      }
     }
     for(int i = 0; i < dropDownList.size(); i++)
     {
