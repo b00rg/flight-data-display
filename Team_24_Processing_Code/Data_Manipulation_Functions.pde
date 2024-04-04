@@ -1,7 +1,9 @@
 class DataManipFunc {
-  DataManipFunc(){ }
+  DataManipFunc() {
+  }
+
   // miles flown to pounds of CO2 released
-  float milesToPounds(float miles){
-    return miles*53.3;  
+  float milesToPounds(float miles) {
+    return miles * 53.3;
   }
 }
