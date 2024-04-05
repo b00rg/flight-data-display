@@ -24,7 +24,7 @@ class WidgetTextBox extends Widget {
     rect(xpos, ypos, wide, high, roundness);
     fill(screen.TEXT_COLOR);
     textAlign(LEFT, CENTER);
-    textFont(font);
+    textFont(TextBoxFont);
     if ((myType == WIDGET_TEXT_TYPE.DATE && active || (textValue != "DD/MM/YYYY")&& myType == WIDGET_TEXT_TYPE.DATE)) {
       text(textValue + "/01/2022", xpos + 5, ypos + high/3);
     } else
