@@ -80,7 +80,7 @@ void setup() {
 
   // THEME SETUP
   screen.changeTheme(THEMES.DEFAULT);
-  ThemeSelection = new WidgetDropDown(width / 7, 0, 200, 30, TextBoxFont, themeNames);
+  ThemeSelection = new WidgetDropDown(width / 6, 0, 200, 40, TextBoxFont, themeNames);
   ThemeSelection.currentlySelectedElement = 0;
   // DATA SETUP
   QueriesInitial setupQuery = new QueriesInitial();
