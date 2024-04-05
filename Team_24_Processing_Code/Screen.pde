@@ -269,8 +269,6 @@ class Screen
       TEXT_COLOR = color(0);
       INACTIVE_TEXT_BOX = color(150);
       break;
-    case CUSTOM_THEME:
-      break;
     case COSMIC:
       PRIMARY_COLOR = color(90, 3, 255);
       SECONDARY_COLOR = color(129, 83, 216);

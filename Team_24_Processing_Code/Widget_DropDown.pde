@@ -46,7 +46,7 @@ class WidgetDropDown extends Widget{
   }
   void renderDrops()
   {
-    textFont(font);
+    textFont(TextBoxFont);
     for(int i = 0; i < numOfDropsToDisplay; i++)
     {
       fill(screen.TERTIARY_COLOR);

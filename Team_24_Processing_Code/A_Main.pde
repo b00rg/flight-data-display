@@ -17,14 +17,13 @@ enum THEMES
     BOYBOSS,
     DAY,
     DUSK,
-    CUSTOM_THEME,
     COSMIC,
     RUST,
     MARINE,
     STELLAR,
     COLOURBLIND
 }
-String themeNames[] = new String[] {"DEFAULT", "GIRLBOSS", "BOYBOSS", "DAY", "NIGHT", "CUSTOM_THEME", "COSMIC", "RUST", "MARINE", "STELLAR", "COLOURBLIND"};
+String themeNames[] = new String[] {"DEFAULT", "GIRLBOSS", "BOYBOSS", "DAY", "DUSK", "COSMIC", "RUST", "MARINE", "STELLAR", "COLOURBLIND"};
 WidgetDropDown ThemeSelection;
 
 // STATIC SETUP VARIABLE
@@ -81,6 +80,8 @@ void setup() {
 
   // THEME SETUP
   screen.changeTheme(THEMES.DEFAULT);
+  ThemeSelection = new WidgetDropDown(width / 6, 0, 200, 40, TextBoxFont, themeNames);
+  ThemeSelection.currentlySelectedElement = 0;
   // DATA SETUP
   QueriesInitial setupQuery = new QueriesInitial();
   setupQuery.createDatabase();
@@ -130,18 +131,16 @@ void setup() {
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
 
-  // THEME BUTTON SETUP
-  ThemeSelection = new WidgetDropDown(250, 30, 200, 50, TextBoxFont, themeNames);
-  ThemeSelection.currentlySelectedElement = 0;
+
 
   // SCROLL BUTTON SETUP
   moveLeft = new WidgetButton(1100, 1000, 50, 50, 5);
   moveRight = new WidgetButton(1300, 1000, 50, 50, 5);
-
+  /*
   cancelledFlights = new WidgetButton(width/20, height / 10 * 7, 50, 50, 20);
-  delayedFlights = new WidgetButton(width/20 * 2, height / 10 * 7, 50, 50, 20);
-  undisturbedFlights = new WidgetButton(width/20 * 3, height / 10 * 7, 50, 50, 20);
-
+   delayedFlights = new WidgetButton(width/20 * 2, height / 10 * 7, 50, 50, 20);
+   undisturbedFlights = new WidgetButton(width/20 * 3, height / 10 * 7, 50, 50, 20);
+   */
   // Tab 1 setup
   // please do not move this outside of setup void, for some reason processing does not like that
 
@@ -165,25 +164,23 @@ void setup() {
 }
 
 void draw() {
+  /*
   undisturbedFlights.render();
-  cancelledFlights.render();
-  delayedFlights.render();
+   cancelledFlights.render();
+   delayedFlights.render();
+   */
   background(screen.BACKGROUND);
 
   noStroke();
 
   moveLeft.render();
   moveRight.render();
-  // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
-  // User tab selection only affects everything on the right
+
   screen.renderDIP();
-  // ThemeSelection.render();
-
-
+  
   ReloadButton.render();
   screen.renderButtons();
-  // ThemeSelection.render();
-
+  
   switch (currentlyActiveTab) {
   case 0: // user is looking at tab 1
     screen.renderTab1();
@@ -196,6 +193,7 @@ void draw() {
     currentlyActiveTab = 0;
     break;
   }
+  ThemeSelection.render();
 }
 
 // ADD COMMENT
@@ -241,7 +239,7 @@ void mouseClicked() {
       dropDownList.get(i).isClicked();
     }
   }
-  radioButtonsFlightStatus();
+  //radioButtonsFlightStatus();
 }
 
 // checks which tab is currently active and applies a process depending on the scenario
@@ -287,22 +285,22 @@ void ReloadEvent() {
     textBoxList.get(5).textValue = textBoxList.get(5).normal;
     depTime = false;
   }
-  
-  
+
+
   // DATE SELECTION
   if ((textBoxList.get(0).textValue != "" || textBoxList.get(0).textValue != null) && (textBoxList.get(1).textValue != "" || textBoxList.get(1).textValue != null))
   {
     date1 = textBoxList.get(0).giveProcessedUserInput();
     date2 = textBoxList.get(1).giveProcessedUserInput();
     println("The input i got for time selection is: \n date1 = " + date1 + "\ndate2 = " + date2);
-  } else 
+  } else
   {
     // if the user did not give a full date seelction we empty date selection, the dates are left null
     textBoxList.get(0).userInputInvalid();
     textBoxList.get(1).userInputInvalid();
   }
-  
-  
+
+
   // AIRPORT SELECTION
   // If the drop down has a selected item on it, selectedArrivalStation stores it
   if (dropDownList.get(0).currentlySelectedElement != -1) {
@@ -318,8 +316,16 @@ void ReloadEvent() {
   }
 
   QueriesSelect selectQuery = new QueriesSelect();
-  if(date1 == null){println("test case passed for date1");} else {println(date1);}
-  if(date2 == null){println("test case passed for date2");} else {println(date2);}
+  if (date1 == null) {
+    println("test case passed for date1");
+  } else {
+    println(date1);
+  }
+  if (date2 == null) {
+    println("test case passed for date2");
+  } else {
+    println(date2);
+  }
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
 
 
@@ -334,6 +340,7 @@ void mouseWheel(MouseEvent event) {
   for (int i = 0; i < dropDownList.size(); i++) {
     dropDownList.get(i).scroll((int)event.getCount());
   }
+  ThemeSelection.scroll((int)event.getCount());
 }
 
 void keyPressed() {
@@ -383,38 +390,40 @@ THEMES indexToTheme(int index) {
 
 // This function simply ensures that only one of the 3 radio buttons at the bottom of the buttons display is active
 // And that if the user clicks on an active one they are all disabled - Angelos
+/*
 void radioButtonsFlightStatus() {
-  if (cancelledFlights.isClicked()) {
-    if (!cancelledFlights.active) {
-      cancelledFlights.active = true;
-      delayedFlights.active = false;
-      undisturbedFlights.active = false;
-    } else {
-      cancelledFlights.active = false;
-      delayedFlights.active = false;
-      undisturbedFlights.active = false;
-    }
-  }
-  if (delayedFlights.isClicked()) {
-    if (!delayedFlights.active) {
-      cancelledFlights.active = false;
-      delayedFlights.active = true;
-      undisturbedFlights.active = false;
-    } else {
-      cancelledFlights.active = false;
-      delayedFlights.active = false;
-      undisturbedFlights.active = false;
-    }
-  }
-  if (undisturbedFlights.isClicked()) {
-    if (!undisturbedFlights.active) {
-      cancelledFlights.active = false;
-      delayedFlights.active = false;
-      undisturbedFlights.active = true;
-    } else {
-      cancelledFlights.active = false;
-      delayedFlights.active = false;
-      undisturbedFlights.active = false;
-    }
-  }
+ if (cancelledFlights.isClicked()) {
+ if (!cancelledFlights.active) {
+ cancelledFlights.active = true;
+ delayedFlights.active = false;
+ undisturbedFlights.active = false;
+ } else {
+ cancelledFlights.active = false;
+ delayedFlights.active = false;
+ undisturbedFlights.active = false;
+ }
+ }
+ if (delayedFlights.isClicked()) {
+ if (!delayedFlights.active) {
+ cancelledFlights.active = false;
+ delayedFlights.active = true;
+ undisturbedFlights.active = false;
+ } else {
+ cancelledFlights.active = false;
+ delayedFlights.active = false;
+ undisturbedFlights.active = false;
+ }
+ }
+ if (undisturbedFlights.isClicked()) {
+ if (!undisturbedFlights.active) {
+ cancelledFlights.active = false;
+ delayedFlights.active = false;
+ undisturbedFlights.active = true;
+ } else {
+ cancelledFlights.active = false;
+ delayedFlights.active = false;
+ undisturbedFlights.active = false;
+ }
+ }
 }
+*/
