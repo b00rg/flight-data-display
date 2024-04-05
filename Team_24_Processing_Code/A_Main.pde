@@ -257,34 +257,52 @@ void ReloadEvent() {
 
   String selectedArrivalStation = "";
   String selectedDepartureStation = "";
-  String date1 = "";
-  String date2 = "";
+  String date1 = null;
+  String date2 = null;
 
   // TIME SELECTION
   // call the time inputs from the departure and arrival time selection buttons
   if ((textBoxList.get(2).textValue != textBoxList.get(2).normal) && (textBoxList.get(3).textValue != textBoxList.get(3).normal))
-  {
+  { // if departure airport time selection has a valid input
     num1 = Integer.parseInt(textBoxList.get(2).giveProcessedUserInput());
     num2 = Integer.parseInt(textBoxList.get(3).giveProcessedUserInput());
+    textBoxList.get(4).textValue = textBoxList.get(4).normal; // we flush the other time selection buttons in case the user has inputted anything there
+    textBoxList.get(5).textValue = textBoxList.get(5).normal;
     depTime = false;
   } else if ((textBoxList.get(4).textValue != textBoxList.get(4).normal) && (textBoxList.get(5).textValue != textBoxList.get(5).normal))
-  {
+  { // if arrival airport time selection has a valid input
     num1 = Integer.parseInt(textBoxList.get(4).giveProcessedUserInput());
     num2 = Integer.parseInt(textBoxList.get(5).giveProcessedUserInput());
+    textBoxList.get(2).textValue = textBoxList.get(2).normal; // we flush the other time selection buttons in case the user has inputted anything there
+    textBoxList.get(3).textValue = textBoxList.get(3).normal;
     depTime = true;
-  } else 
+  } else
   {
+    // we flush all time selection buttons in case the user has inputted anything there that is incomplete and as such invalid
     num1 = 0000;
     num2 = 0000;
+    textBoxList.get(2).textValue = textBoxList.get(2).normal;
+    textBoxList.get(3).textValue = textBoxList.get(3).normal;
+    textBoxList.get(4).textValue = textBoxList.get(4).normal;
+    textBoxList.get(5).textValue = textBoxList.get(5).normal;
     depTime = false;
   }
+  
+  
   // DATE SELECTION
-  if((textBoxList.get(0).textValue != "") && (textBoxList.get(1).textValue != ""))
+  if ((textBoxList.get(0).textValue != "" || textBoxList.get(0).textValue != null) && (textBoxList.get(1).textValue != "" || textBoxList.get(1).textValue != null))
   {
     date1 = textBoxList.get(0).giveProcessedUserInput();
     date2 = textBoxList.get(1).giveProcessedUserInput();
-    
+    println("The input i got for time selection is: \n date1 = " + date1 + "\ndate2 = " + date2);
+  } else 
+  {
+    // if the user did not give a full date seelction we empty date selection, the dates are left null
+    textBoxList.get(0).userInputInvalid();
+    textBoxList.get(1).userInputInvalid();
   }
+  
+  
   // AIRPORT SELECTION
   // If the drop down has a selected item on it, selectedArrivalStation stores it
   if (dropDownList.get(0).currentlySelectedElement != -1) {
@@ -298,17 +316,13 @@ void ReloadEvent() {
   } else {
     selectedDepartureStation = null;
   }
-  date2 = null;
-  date1 = null;
-  // FLIGHT STATUS SELECTION
+
   QueriesSelect selectQuery = new QueriesSelect();
-  println("date1 = " + date1);
-  println("date2 = " + date2);
-  println("time " + num1);
-  println(num2);
+  if(date1 == null){println("test case passed for date1");} else {println(date1);}
+  if(date2 == null){println("test case passed for date2");} else {println(date2);}
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
 
-  
+
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
