@@ -251,9 +251,9 @@ void mouseClicked() {
 // to be compatible with our query system requirements, the filteredData is adjusted to contain the new data - Angelos
 void ReloadEvent() {
   // setup place holder values
-  boolean depTime;
-  int num1;
-  int num2;
+  boolean depTime = false;
+  int time1 = 0;
+  int time2 = 0;
 
   String selectedArrivalStation = "";
   String selectedDepartureStation = "";
@@ -261,29 +261,35 @@ void ReloadEvent() {
   String date2 = "";
 
   // TIME SELECTION
-  // call the time inputs from the departure and arrival time selection buttons
-  if ((textBoxList.get(2).textValue != textBoxList.get(2).normal) && (textBoxList.get(3).textValue != textBoxList.get(3).normal))
-  {
-    num1 = Integer.parseInt(textBoxList.get(2).giveProcessedUserInput());
-    num2 = Integer.parseInt(textBoxList.get(3).giveProcessedUserInput());
-    depTime = false;
-  } else if ((textBoxList.get(4).textValue != textBoxList.get(4).normal) && (textBoxList.get(5).textValue != textBoxList.get(5).normal))
-  {
-    num1 = Integer.parseInt(textBoxList.get(4).giveProcessedUserInput());
-    num2 = Integer.parseInt(textBoxList.get(5).giveProcessedUserInput());
+  // Extract text values for easier reference
+  String textValue2 = textBoxList.get(2).textValue;
+  String textValue3 = textBoxList.get(3).textValue;
+  String textValue4 = textBoxList.get(4).textValue;
+  String textValue5 = textBoxList.get(5).textValue;
+  // Check if text values are different from normal
+  boolean notNormal2 = textValue2 != textBoxList.get(2).normal;
+  boolean notNormal3 = textValue3 != textBoxList.get(3).normal;
+  boolean notNormal4 = textValue4 != textBoxList.get(4).normal;
+  boolean notNormal5 = textValue5 != textBoxList.get(5).normal;
+
+  // Check for departure time condition
+  if ((notNormal2 || notNormal3) && !(notNormal4 || notNormal5)) {
+    time1 = notNormal2 ? Integer.parseInt(textBoxList.get(2).giveProcessedUserInput()) : 0;
+    time2 = notNormal3 ? Integer.parseInt(textBoxList.get(3).giveProcessedUserInput()) : 0;
     depTime = true;
-  } else 
-  {
-    num1 = 0000;
-    num2 = 0000;
-    depTime = false;
+  } 
+  // Check for arrival time condition
+  else if ((notNormal4 || notNormal5) && !(notNormal2 || notNormal3)) {
+      time1 = notNormal4 ? Integer.parseInt(textBoxList.get(4).giveProcessedUserInput()) : 0;
+      time2 = notNormal5 ? Integer.parseInt(textBoxList.get(5).giveProcessedUserInput()) : 0;
+      depTime = false;
   }
+  
   // DATE SELECTION
   if((textBoxList.get(0).textValue != "") && (textBoxList.get(1).textValue != ""))
   {
     date1 = textBoxList.get(0).giveProcessedUserInput();
-    date2 = textBoxList.get(1).giveProcessedUserInput();
-    
+    date2 = textBoxList.get(1).giveProcessedUserInput();    
   }
   // AIRPORT SELECTION
   // If the drop down has a selected item on it, selectedArrivalStation stores it
@@ -298,15 +304,10 @@ void ReloadEvent() {
   } else {
     selectedDepartureStation = null;
   }
-  date2 = null;
-  date1 = null;
+    
   // FLIGHT STATUS SELECTION
   QueriesSelect selectQuery = new QueriesSelect();
-  println("date1 = " + date1);
-  println("date2 = " + date2);
-  println("time " + num1);
-  println(num2);
-  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
+  filteredData = selectQuery.getRowsDisplay(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
 
   
   // screen setup
