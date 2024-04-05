@@ -241,6 +241,7 @@ void mouseClicked() {
       dropDownList.get(i).isClicked();
     }
   }
+  screen.changeTheme(stringToEnum(ThemeSelection.selectedValue));
 }
 
 // creates all query related data pieces and collect the data from input buttons, some of the data is also processed
@@ -360,33 +361,33 @@ void updateTabs() {
   }
 }
 
-// In modern java an enum can be associated to a number, not in processing, this function converts the index of the theme that the user has selected
-// in the theme selection button to the corresponding theme in the enum, this is a product of using processing unfortunately (I'm assuming this was Angelos)
-THEMES indexToTheme(int index) {
-  switch(index) {
-  case 1:
-    return THEMES.GIRLBOSS;
-  case 2:
-    return THEMES.BOYBOSS;
-  case 3:
-    return THEMES.DAY;
-  case 4:
-    return THEMES.DUSK;
-  case 5:
-    return THEMES.COSMIC;
-  case 6:
-    return THEMES.RUST;
-  case 7:
-    return THEMES.MARINE;
-  case 8:
-    return THEMES.STELLAR;
-  case 9:
-    return THEMES.COLOURBLIND;
-  default:
-    return THEMES.DEFAULT;
-  }
+// takes the input of the themes button and returns the selected enum, yes this is the only way to do this sorry
+THEMES stringToEnum(String input) {
+    switch(input) {
+        case "DEFAULT":
+            return THEMES.DEFAULT;
+        case "GIRLBOSS":
+            return THEMES.GIRLBOSS;
+        case "BOYBOSS":
+            return THEMES.BOYBOSS;
+        case "DAY":
+            return THEMES.DAY;
+        case "DUSK":
+            return THEMES.DUSK;
+        case "COSMIC":
+            return THEMES.COSMIC;
+        case "RUST":
+            return THEMES.RUST;
+        case "MARINE":
+            return THEMES.MARINE;
+        case "STELLAR":
+            return THEMES.STELLAR;
+        case "COLOURBLIND":
+            return THEMES.COLOURBLIND;
+        default:
+            return THEMES.DEFAULT;
+    }
 }
-
 // This function simply ensures that only one of the 3 radio buttons at the bottom of the buttons display is active
 // And that if the user clicks on an active one they are all disabled - Angelos
 /*

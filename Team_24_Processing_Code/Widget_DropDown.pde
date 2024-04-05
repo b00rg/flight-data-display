@@ -129,6 +129,7 @@ class WidgetDropDown extends Widget {
         Search += input;
         searchBarUpdated();
       }
+      scrollIndex = 0;
     }
     catch (Exception e)
     {
