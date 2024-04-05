@@ -8,13 +8,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-// CHANGE
-
 // THEMES
 
 enum THEMES
-  {
-    DEFAULT,
+{
+  DEFAULT,
     GIRLBOSS,
     BOYBOSS,
     DAY,
@@ -25,7 +23,7 @@ enum THEMES
     MARINE,
     STELLAR,
     COLOURBLIND
-  }
+}
 String themeNames[] = new String[] {"DEFAULT", "GIRLBOSS", "BOYBOSS", "DAY", "NIGHT", "CUSTOM_THEME", "COSMIC", "RUST", "MARINE", "STELLAR", "COLOURBLIND"};
 WidgetDropDown ThemeSelection;
 
@@ -59,7 +57,7 @@ int WIDGET_ROUNDNESS = 10;
 
 enum WIDGET_TEXT_TYPE {
   TIME,
-  DATE
+    DATE
 }
 
 ArrayList<BarDataPoint> valuesB;
@@ -146,56 +144,57 @@ void setup() {
 
   // Tab 1 setup
   // please do not move this outside of setup void, for some reason processing does not like that
-  
+
   // Tab 2 setup
-    
+
   // GRAPH SETUP
   QueriesSelect queries = new QueriesSelect();
   valuesB = queries.getRowsBarGraph();
   valuesP = queries.getRowsPieChart();
   valuesDS = queries.getBusyRoutes();
   valuesA = queries.getAllRoutes();
-  
+
   graphB = new GraphBar(600, 250, 1200, 700);
   graphP = new GraphPie(1300, 560, 800, 800);
   graphD = new DensityGraph(800, 150, 1200, 700);
   graphS = new SimpleGraph(600, 500, 1200, 1000);
   // graphA = new AirportGraph(600, 500, 1200, 1000);
-  
+
   Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
   screen.numberOfGraphs = graphs.length;
 }
 
 void draw() {
+  undisturbedFlights.render();
+  cancelledFlights.render();
+  delayedFlights.render();
   background(screen.BACKGROUND);
-  
+
   noStroke();
-  
+
   moveLeft.render();
   moveRight.render();
   // REMINDER: from now on buttons and the tab on the left on the screen are always the same regardless of selected tab
   // User tab selection only affects everything on the right
   screen.renderDIP();
   // ThemeSelection.render();
+
+
   ReloadButton.render();
-  cancelledFlights.render();
-  delayedFlights.render();
-  undisturbedFlights.render();
-  
   screen.renderButtons();
   // ThemeSelection.render();
 
   switch (currentlyActiveTab) {
-    case 0: // user is looking at tab 1
-      screen.renderTab1();
-      break;
-    case 1: // user is looking at tab 2
-      screen.renderTab2();
-      break;
-    default:
-      println("Tab not found");
-      currentlyActiveTab = 0;
-      break;
+  case 0: // user is looking at tab 1
+    screen.renderTab1();
+    break;
+  case 1: // user is looking at tab 2
+    screen.renderTab2();
+    break;
+  default:
+    println("Tab not found");
+    currentlyActiveTab = 0;
+    break;
   }
 }
 
@@ -237,7 +236,6 @@ void mouseClicked() {
       textBoxList.get(i).isClicked();
     }
     for (int i = 0; i < buttonList.size(); i++) {
-
     }
     for (int i = 0; i < dropDownList.size(); i++) {
       dropDownList.get(i).isClicked();
@@ -247,7 +245,7 @@ void mouseClicked() {
 }
 
 // checks which tab is currently active and applies a process depending on the scenario
-// At the moment this 
+// At the moment this
 
 // creates all query related data pieces and collect the data from input buttons, some of the data is also processed
 // to be compatible with our query system requirements, the filteredData is adjusted to contain the new data - Angelos
@@ -256,67 +254,61 @@ void ReloadEvent() {
   boolean depTime;
   int num1;
   int num2;
-  
+
   String selectedArrivalStation = "";
   String selectedDepartureStation = "";
   String date1 = "";
   String date2 = "";
-  
-  
-  // insert user query values to the right places
-  if (textBoxList.get(2).textValue != "??:??") {
-    depTime = false;
-    num1 = Integer.parseInt(textBoxList.get(2).num1.trim());
-    // num2 = Integer.parseInt(textBoxList.get(2).num2.trim());
-  } 
-  if ((textBoxList.get(3).textValue != "??:??")) {
-    // depTime = true;
-    // num1 = Integer.parseInt(textBoxList.get(4).num1.trim());
-    num2 = Integer.parseInt(textBoxList.get(3).num1.trim());
-  }
-  // else {
+
+  // TIME SELECTION
+  // call the time inputs from the departure and arrival time selection buttons
+  if ((textBoxList.get(2).textValue != textBoxList.get(2).normal) && (textBoxList.get(3).textValue != textBoxList.get(3).normal))
   {
-    depTime = false; // doesn't matter
+    num1 = Integer.parseInt(textBoxList.get(2).giveProcessedUserInput());
+    num2 = Integer.parseInt(textBoxList.get(3).giveProcessedUserInput());
+    depTime = false;
+  } else if ((textBoxList.get(4).textValue != textBoxList.get(4).normal) && (textBoxList.get(5).textValue != textBoxList.get(5).normal))
+  {
+    num1 = Integer.parseInt(textBoxList.get(4).giveProcessedUserInput());
+    num2 = Integer.parseInt(textBoxList.get(5).giveProcessedUserInput());
+    depTime = true;
+  } else 
+  {
     num1 = 0000;
     num2 = 0000;
+    depTime = false;
   }
-
-  
+  // DATE SELECTION
+  if((textBoxList.get(0).textValue != "") && (textBoxList.get(1).textValue != ""))
+  {
+    date1 = textBoxList.get(0).giveProcessedUserInput();
+    date2 = textBoxList.get(1).giveProcessedUserInput();
+    
+  }
+  // AIRPORT SELECTION
+  // If the drop down has a selected item on it, selectedArrivalStation stores it
   if (dropDownList.get(0).currentlySelectedElement != -1) {
     selectedArrivalStation = dropDownList.get(0).elements[dropDownList.get(0).currentlySelectedElement];
-  } 
-  else {
+  } else { // or else it becomes null
     selectedArrivalStation = null;
   }
-  
-  
+  // Repeat for departure station
   if (dropDownList.get(1).currentlySelectedElement != -1) {
     selectedDepartureStation = dropDownList.get(1).elements[dropDownList.get(1).currentlySelectedElement];
-  } 
-  else {
+  } else {
     selectedDepartureStation = null;
   }
-
-  // Process user date range input
-  if ((startDate.textValue != null || startDate.textValue != startDate.normal) && (endDate.textValue != null || endDate.textValue != endDate.normal)) {
-    date1 = screen.adjustDateInput(startDate.textValue);
-    date2 = screen.adjustDateInput(endDate.textValue);
-  }
-  // Flight status
-  boolean wantsCancelled = cancelledFlights.active;
+  date2 = null;
+  date1 = null;
+  // FLIGHT STATUS SELECTION
   QueriesSelect selectQuery = new QueriesSelect();
+  println("date1 = " + date1);
+  println("date2 = " + date2);
+  println("time " + num1);
+  println(num2);
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
-  String DateRange = null;
-  if ((startDate.textValue != null || startDate.textValue != startDate.normal) && (endDate.textValue != null || endDate.textValue != endDate.normal)) {
-    date1 = screen.adjustDateInput(startDate.textValue);
-    date2 = screen.adjustDateInput(endDate.textValue);
-    DateRange = date1 +" - "+ date2;
-  }
 
-  int startTime = millis();
-  int endTime = millis();
-  int elapsed = endTime - startTime;
-  println("It took " + elapsed + " milliseconds to generate the new filtered data array");
+  
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
@@ -352,26 +344,26 @@ void updateTabs() {
 // in the theme selection button to the corresponding theme in the enum, this is a product of using processing unfortunately (I'm assuming this was Angelos)
 THEMES indexToTheme(int index) {
   switch(index) {
-    case 1:
-      return THEMES.GIRLBOSS;
-    case 2:
-      return THEMES.BOYBOSS;
-    case 3:
-      return THEMES.DAY;
-    case 4:
-      return THEMES.DUSK;
-    case 5:
-      return THEMES.COSMIC;
-    case 6:
-      return THEMES.RUST;
-    case 7:
-      return THEMES.MARINE;
-    case 8:
-      return THEMES.STELLAR;
-    case 9:
-      return THEMES.COLOURBLIND;
-    default:
-      return THEMES.DEFAULT;
+  case 1:
+    return THEMES.GIRLBOSS;
+  case 2:
+    return THEMES.BOYBOSS;
+  case 3:
+    return THEMES.DAY;
+  case 4:
+    return THEMES.DUSK;
+  case 5:
+    return THEMES.COSMIC;
+  case 6:
+    return THEMES.RUST;
+  case 7:
+    return THEMES.MARINE;
+  case 8:
+    return THEMES.STELLAR;
+  case 9:
+    return THEMES.COLOURBLIND;
+  default:
+    return THEMES.DEFAULT;
   }
 }
 
