@@ -64,22 +64,22 @@ class QueriesInitial extends Queries {
         String createQuery = "CREATE TABLE " +  super.tableName + " ("
                 + "FL_DATE DATE, "
                 + "MKT_CARRIER VARCHAR(50), "
-                + "MKT_CARRIER_FL_NUM INT, "
+                + "MKT_CARRIER_FL_NUM DECIMAL, "
                 + "ORIGIN VARCHAR(50), "
                 + "ORIGIN_CITY_NAME VARCHAR(50), "
                 + "ORIGIN_STATE_ABR VARCHAR(50), "
-                + "ORIGIN_WAC INT, "
+                + "ORIGIN_WAC DECIMAL, "
                 + "DEST VARCHAR(50), "
                 + "DEST_CITY_NAME VARCHAR(50), "
                 + "DEST_STATE_ABR VARCHAR(50), "
-                + "DEST_WAC INT, "
-                + "CRS_DEP_TIME INT, "
-                + "DEP_TIME INT, "
-                + "CRS_ARR_TIME INT, "
-                + "ARR_TIME INT, "
+                + "DEST_WAC DECIMAL, "
+                + "CRS_DEP_TIME DECIMAL, "
+                + "DEP_TIME DECIMAL, "
+                + "CRS_ARR_TIME DECIMAL, "
+                + "ARR_TIME DECIMAL, "
                 + "CANCELLED VARCHAR(50), "
                 + "DIVERTED VARCHAR(50), "
-                + "DISTANCE INT)";
+                + "DISTANCE DECIMAL)";
         statement.executeUpdate(createQuery);
         System.out.println("Table " +  super.tableName + " created successfully.");
 
@@ -131,7 +131,7 @@ class QueriesInitial extends Queries {
 
                     }
                     else if (i == 2 || i == 6 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17) { // Integer fields
-                        queryBuilder.append(Integer.parseInt(data[i]));
+                        queryBuilder.append(Double.parseDouble(data[i]));
                     }
                     else {
                         queryBuilder.append("'").append(data[i]).append("'");

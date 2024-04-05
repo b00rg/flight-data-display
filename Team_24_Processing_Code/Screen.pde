@@ -154,10 +154,13 @@ Screen(){}
         graphP.drawPieChart(valuesP);
         break;
       case 2:
-        graphD.draw(valuesD);
+        graphD.draw(valuesDS);
         break;
       case 3:
-        graphS.draw(valuesS);
+        graphS.draw(valuesDS);
+        break;
+      case 4:
+        //graphA.draw();
         break;
       default:
         println("No graph found");
@@ -208,20 +211,6 @@ void pageSelectButtons()
   }
 }
 
-  String adjustDateInput(String dd_mm_yyyy)
-  {
-    try
-    {
-      String[] parts = dd_mm_yyyy.split("/");
-      String reversedDate = parts[2] + "-" + parts[1] + "-" + parts[0];
-      return reversedDate;
-    } catch(Exception e)
-    {
-      println("How did an invalid date input " + dd_mm_yyyy + " make it to adjustDateInput?");
-      return null;
-    }
-  }
-  
 void changeTheme(THEMES selectedTheme) 
 {
   switch (selectedTheme) 

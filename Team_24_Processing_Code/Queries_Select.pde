@@ -4,7 +4,29 @@ class QueriesSelect extends Queries {
     super();
   }
   
-  
+  ArrayList<DelaysDataPoint> getRowsDelayGraph() {
+    ArrayList<DelaysDataPoint> dataList = new ArrayList<DelaysDataPoint>();
+    try {
+        Statement stmt = connection.createStatement();
+        String query = "SELECT MKT_CARRIER, DEP_TIME, ARR_TIME, CRS_DEP_TIME, CRS_ARR_TIME " +
+                       "FROM " + super.tableName +
+                       " GROUP BY MKT_CARRIER;";
+        ResultSet resultSet = stmt.executeQuery(query);
+        
+        while (resultSet.next()) {
+            DelaysDataPoint data = new DelaysDataPoint(resultSet);
+            dataList.add(data);
+        }
+        
+        resultSet.close();
+        stmt.close();
+    } catch (SQLException e) {
+        println("SQLException: " + e.getMessage());
+    }
+    
+    return dataList;
+}
+
   ArrayList<BarDataPoint> getRowsBarGraph() {
     
     ArrayList<BarDataPoint> dataList = new ArrayList<BarDataPoint>();
@@ -98,7 +120,7 @@ class QueriesSelect extends Queries {
             whereClauseBuilder.append("DEST = '").append(arrAirport).append("'");
         }
         
-        /*
+        
         // Date range filter
         println(startDateRange);
         if (startDateRange != null && endDateRange != null && !startDateRange.isEmpty() && !endDateRange.isEmpty()) {
@@ -123,7 +145,7 @@ class QueriesSelect extends Queries {
             whereClauseBuilder.append("FL_DATE >= '").append(endDateRange);
           }
             
-        }*/
+        }
         
         // Construct the full SQL query
         if (whereClauseBuilder.length() > 0) {
