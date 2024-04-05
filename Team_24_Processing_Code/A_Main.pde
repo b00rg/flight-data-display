@@ -12,7 +12,7 @@ import java.util.Date;
 
 enum THEMES
 {
-  DEFAULT,
+    DEFAULT,
     GIRLBOSS,
     BOYBOSS,
     DAY,
@@ -23,7 +23,7 @@ enum THEMES
     STELLAR,
     COLOURBLIND
 }
-String themeNames[] = new String[] {"DEFAULT", "GIRLBOSS", "BOYBOSS", "DAY", "DUSK", "COSMIC", "RUST", "MARINE", "STELLAR", "COLOURBLIND"};
+String themeNames[] = new String[] {"GIRLBOSS", "BOYBOSS", "DAY", "DUSK", "COSMIC", "RUST", "MARINE", "STELLAR", "COLOURBLIND"};
 WidgetDropDown ThemeSelection;
 
 // STATIC SETUP VARIABLE
@@ -49,7 +49,7 @@ color OFF = color(255, 100, 100);
 PFont TextBoxFont, headingFont;
 ArrayList<DisplayDataPoint> filteredData;
 
-Screen screen = new Screen();
+Screen screen;
 int currentlyActiveTab = 0;
 boolean isDropDownActive = false;
 int WIDGET_ROUNDNESS = 10;
@@ -77,11 +77,11 @@ int displayedGraph = 0;
 // SETUP FUNCTION
 void setup() {
   fullScreen();
-
+  screen = new Screen(width, height);
   // THEME SETUP
   screen.changeTheme(THEMES.DEFAULT);
-  ThemeSelection = new WidgetDropDown(width / 6, 0, 200, 40, TextBoxFont, themeNames);
-  ThemeSelection.currentlySelectedElement = 0;
+  ThemeSelection = new WidgetDropDown(width / 6, 0, (int)(width * 0.10416), (int)(height*0.037037), TextBoxFont, themeNames, "DEFAULT");
+  ThemeSelection.selectedValue = "DEFAULT";
   // DATA SETUP
   QueriesInitial setupQuery = new QueriesInitial();
   setupQuery.createDatabase();
@@ -112,9 +112,9 @@ void setup() {
   QueriesSelect selectQuery = new QueriesSelect();
   String[] departureAirports = selectQuery.getDepartureAirports();
   String[] arrivalAirports = selectQuery.getArrivalAirports();
-  WidgetDropDown departures = new WidgetDropDown((int) (width * 0.13), (int) (height * 0.6), 200, 50, TextBoxFont, arrivalAirports);
+  WidgetDropDown departures = new WidgetDropDown((int) (width * 0.13), (int) (height * 0.6), 200, 50, TextBoxFont, arrivalAirports, "");
   dropDownList.add(departures);
-  WidgetDropDown arrivals = new WidgetDropDown((int) (width * 0.13), (int) (height * 0.52), 200, 50, TextBoxFont, departureAirports);
+  WidgetDropDown arrivals = new WidgetDropDown((int) (width * 0.13), (int) (height * 0.52), 200, 50, TextBoxFont, departureAirports, "");
   dropDownList.add(arrivals);
 
   // RELOAD BUTTON SETUP
@@ -134,8 +134,8 @@ void setup() {
 
 
   // SCROLL BUTTON SETUP
-  moveLeft = new WidgetButton(1100, 1000, 50, 50, 5);
-  moveRight = new WidgetButton(1300, 1000, 50, 50, 5);
+  moveLeft = new WidgetButton((int)(width * 0.572916), (int)(height * 0.925925), 50, 50, 5);
+  moveRight = new WidgetButton((int)(width * 0.677083), (int)(height * 0.925925), 50, 50, 5);
   /*
   cancelledFlights = new WidgetButton(width/20, height / 10 * 7, 50, 50, 20);
    delayedFlights = new WidgetButton(width/20 * 2, height / 10 * 7, 50, 50, 20);
@@ -198,7 +198,8 @@ void draw() {
 
 // ADD COMMENT
 void mouseClicked() {
-  if (ReloadButton.isClicked()) {
+  if (ReloadButton.isClicked()) 
+  {
     ReloadButton.active = true;
     ReloadButton.render();
     ReloadEvent();
@@ -206,44 +207,42 @@ void mouseClicked() {
     ReloadButton.active = false;
     ReloadButton.render();
   }
-  for (int i = 0; i < TabButtons.size(); i++) { // we first investigate if the user is trying to change tabs
+  for (int i = 0; i < TabButtons.size(); i++) 
+  { // we first investigate if the user is trying to change tabs
     if (TabButtons.get(i).isMouseover()) {  // For every tab button
       TabButtons.get(i).active = true;  // We find the active button
-      for (int j = 0; j < TabButtons.size(); j++) {
-        if (TabButtons.get(i) != TabButtons.get(j)) { // We disable all other buttons
+      for (int j = 0; j < TabButtons.size(); j++) 
+      {
+        if (TabButtons.get(i) != TabButtons.get(j)) 
+        { // We disable all other buttons
           TabButtons.get(j).active = false;
         }
       } // This means that that only tab button is on at any given moment, and if the user clicks the same one twice it makes no difference
       break;
     }
   }
-
   updateTabs();
   screen.pageSelectButtons();
   ThemeSelection.isClicked();
-  if (ThemeSelection.currentlySelectedElement == -1) {
-    ThemeSelection.currentlySelectedElement = 0;
-  }
-  screen.changeTheme(indexToTheme(ThemeSelection.currentlySelectedElement));
-  if (isDropDownActive) {
-    for (int i = 0; i < dropDownList.size(); i++) {
+  if (isDropDownActive) 
+  {
+    for (int i = 0; i < dropDownList.size(); i++) 
+    {
       dropDownList.get(i).isClicked();
     }
-  } else {
-    for (int i = 0; i < textBoxList.size(); i++) {
+  } else 
+  {
+    for (int i = 0; i < textBoxList.size(); i++) 
+    {
       textBoxList.get(i).isClicked();
     }
-    for (int i = 0; i < buttonList.size(); i++) {
-    }
-    for (int i = 0; i < dropDownList.size(); i++) {
+    for (int i = 0; i < dropDownList.size(); i++) 
+    {
       dropDownList.get(i).isClicked();
     }
   }
-  //radioButtonsFlightStatus();
+  screen.changeTheme(stringToEnum(ThemeSelection.selectedValue));
 }
-
-// checks which tab is currently active and applies a process depending on the scenario
-// At the moment this
 
 // creates all query related data pieces and collect the data from input buttons, some of the data is also processed
 // to be compatible with our query system requirements, the filteredData is adjusted to contain the new data - Angelos
@@ -303,29 +302,20 @@ void ReloadEvent() {
 
   // AIRPORT SELECTION
   // If the drop down has a selected item on it, selectedArrivalStation stores it
-  if (dropDownList.get(0).currentlySelectedElement != -1) {
-    selectedArrivalStation = dropDownList.get(0).elements[dropDownList.get(0).currentlySelectedElement];
+  if (dropDownList.get(0).selectedValue != "") {
+    selectedArrivalStation = dropDownList.get(0).selectedValue;
   } else { // or else it becomes null
     selectedArrivalStation = null;
   }
   // Repeat for departure station
-  if (dropDownList.get(1).currentlySelectedElement != -1) {
-    selectedDepartureStation = dropDownList.get(1).elements[dropDownList.get(1).currentlySelectedElement];
+  if (dropDownList.get(1).selectedValue != "") {
+    selectedDepartureStation = dropDownList.get(1).selectedValue;
   } else {
     selectedDepartureStation = null;
   }
+  
 
   QueriesSelect selectQuery = new QueriesSelect();
-  if (date1 == null) {
-    println("test case passed for date1");
-  } else {
-    println(date1);
-  }
-  if (date2 == null) {
-    println("test case passed for date2");
-  } else {
-    println(date2);
-  }
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
 
 
@@ -344,10 +334,20 @@ void mouseWheel(MouseEvent event) {
 }
 
 void keyPressed() {
-  int keyIndex = -1;
   for (int i = 0, n = textBoxList.size(); i < n; i++) {
     if (textBoxList.get(i).active) {
       textBoxList.get(i).input(key);
+    }
+  }
+  if(ThemeSelection.amIActive)
+  {
+    ThemeSelection.searchBarinput(key);
+  }
+  for (int i = 0; i < dropDownList.size(); i++) 
+  {
+    if(dropDownList.get(i).amIActive)
+    {
+      dropDownList.get(i).searchBarinput(key);
     }
   }
 }
@@ -361,33 +361,33 @@ void updateTabs() {
   }
 }
 
-// In modern java an enum can be associated to a number, not in processing, this function converts the index of the theme that the user has selected
-// in the theme selection button to the corresponding theme in the enum, this is a product of using processing unfortunately (I'm assuming this was Angelos)
-THEMES indexToTheme(int index) {
-  switch(index) {
-  case 1:
-    return THEMES.GIRLBOSS;
-  case 2:
-    return THEMES.BOYBOSS;
-  case 3:
-    return THEMES.DAY;
-  case 4:
-    return THEMES.DUSK;
-  case 5:
-    return THEMES.COSMIC;
-  case 6:
-    return THEMES.RUST;
-  case 7:
-    return THEMES.MARINE;
-  case 8:
-    return THEMES.STELLAR;
-  case 9:
-    return THEMES.COLOURBLIND;
-  default:
-    return THEMES.DEFAULT;
-  }
+// takes the input of the themes button and returns the selected enum, yes this is the only way to do this sorry
+THEMES stringToEnum(String input) {
+    switch(input) {
+        case "DEFAULT":
+            return THEMES.DEFAULT;
+        case "GIRLBOSS":
+            return THEMES.GIRLBOSS;
+        case "BOYBOSS":
+            return THEMES.BOYBOSS;
+        case "DAY":
+            return THEMES.DAY;
+        case "DUSK":
+            return THEMES.DUSK;
+        case "COSMIC":
+            return THEMES.COSMIC;
+        case "RUST":
+            return THEMES.RUST;
+        case "MARINE":
+            return THEMES.MARINE;
+        case "STELLAR":
+            return THEMES.STELLAR;
+        case "COLOURBLIND":
+            return THEMES.COLOURBLIND;
+        default:
+            return THEMES.DEFAULT;
+    }
 }
-
 // This function simply ensures that only one of the 3 radio buttons at the bottom of the buttons display is active
 // And that if the user clicks on an active one they are all disabled - Angelos
 /*
