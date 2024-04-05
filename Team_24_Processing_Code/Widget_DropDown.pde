@@ -22,6 +22,7 @@ class WidgetDropDown extends Widget {
   
   // initiates the drop down
   void initiativeDropDown() {
+    searchBarUpdated();
     isDropDownActive = true;
     this.amIActive = true;
   }
