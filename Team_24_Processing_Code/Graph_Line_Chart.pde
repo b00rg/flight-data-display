@@ -4,12 +4,12 @@
 // It draws the graph by iterating through the data points, mapping heights relative to canvas height and plotting points.
 // It labels each point with the corresponding origin and destination airports.
 // It draws a scale on the y-axis to represent flight count using the maximum flight count and top margin.
-
 import java.util.ArrayList;
-
 // Define a class SimpleGraph extending the Graph class
 class SimpleGraph extends Graph {
-
+SimpleGraph(int x, int y, int wide, int high){
+     super(x, y, wide, high);
+  }
  // Method to draw the simple graph
 
     void draw(ArrayList<RouteDataPoint> values) {

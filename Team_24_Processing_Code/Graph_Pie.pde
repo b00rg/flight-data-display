@@ -1,4 +1,3 @@
-
 // This code defines a class GraphPie that extends the Graph class and implements a method to draw a pie chart based on provided PieDataPoint values:
 // It initializes variables for angles, label positions, and color.
 // It loops through each label to draw the pie chart slices.
@@ -10,22 +9,24 @@
 // It updates the start angle for the next slice.
 
 // Define a class GraphPie which extends the Graph class
-// Constructor for the GraphPie class
+
+import java.util.ArrayList;
+
 class GraphPie extends Graph {
-GraphPie(int x, int y, int wide, int high){
-     super();
+  GraphPie(int x, int y, int wide, int high){
+     super(x, y, wide, high);
   }
   // Method to draw a pie chart based on provided PieDataPoint values
-  void drawPieChart(ArrayList<PieDataPoint> values){
+ void drawPieChart(ArrayList<PieDataPoint> values){
 // Define labels for the slices of the pie chart
     String[] labels = {"Flights Cancelled", "Flights Diverted", "Flights As Expected"};
     // Initialize variables for angles, label positions, and color
     int totalFlights = values.size();
     float startAngle = 0; 
 
-    float labelX = 10;
-    float labelY = 5;
-    float colour = 0.0; 
+    float labelX = xpos/2;
+    float labelY = ypos * 1.3;
+    float colour = 0.0, colourB = 150.00; 
     // Loop through each label to draw the pie chart slices
     for (int i = 0; i < labels.length; i++) {
       float angle = radians(map(i, 0, labels.length, 0, 360)); ; // Calculate angle for this slice
@@ -44,10 +45,10 @@ GraphPie(int x, int y, int wide, int high){
       colour += 255.0/totalFlights*2; // Increment color for next slice
       
        // Draw slice of the pie chart
-      arc(width/2, height/2, 300, 300, startAngle, endAngle);
+      arc(xpos, ypos, width, height, startAngle, endAngle);
       
       // Draw label for this slice
-      labelY += 15;
+      labelY += 25;
 
       //textAlign(CENTER, CENTER);
       text(labels[i], labelX, labelY);
@@ -56,4 +57,4 @@ GraphPie(int x, int y, int wide, int high){
       startAngle += angle;
     }
   }
-} 
+}

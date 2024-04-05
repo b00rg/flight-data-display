@@ -1,19 +1,15 @@
-// This DensityGraph class, extending Graph, draws a density graph based on provided route data points:
-// It initializes drawing variables and finds unique airports.
-// It calculates the maximum flight count and creates a frequency map for each route.
-// It draws a grid, filling cells with shades according to flight frequency.
-// It labels x-axis and y-axis with airport names.
-// It uses adjusted text alignment for proper labeling.
-
 class DensityGraph extends Graph {
-
+  DensityGraph(int x, int y, int wide, int high) {
+    super(x, y, wide, high);
+  }
 // Method to draw the density graph
-    void draw(ArrayList<RouteDataPoint> values) {
         // Set up variables for drawing
         float topMargin = 50;
         float leftMargin = 50;
         float cellSize = 120;
 
+  void draw(ArrayList<RouteDataPoint> values) {
+    
         // Find the unique origin and destination airports
         ArrayList<String> airports = new ArrayList<>();
         for (RouteDataPoint data : values) {
