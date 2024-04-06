@@ -41,9 +41,14 @@ class WidgetDropDown extends Widget {
     if (scrollIndex < 0) {
       scrollIndex = 0 ;
     }
-    if (scrollIndex > - numOfDropsToDisplay + elements.length)
+    if (scrollIndex > - numOfDropsToDisplay + validData.size())
     {
-      scrollIndex = elements.length - numOfDropsToDisplay;
+      scrollIndex = validData.size() - numOfDropsToDisplay;
+    }
+    println(validData.size() + "    "  + scrollIndex);
+    if (validData.size() <= scrollIndex)
+    {
+      scrollIndex = 0;
     }
   }
   
