@@ -1,7 +1,11 @@
 class Screen
 {
 
-  Screen() {
+  Screen(int w, int h) {
+    TAB_WIDTH =  (int)(width * 0.260416);
+    TAB_BORDER_WIDTH =  (int)(width * 0.010416);
+    HEIGHT_B = (int)(height * 0.04629);
+    WIDTH_B = (int)(width * 0.078123);
   }
 
   // THEME-------------------
@@ -22,14 +26,15 @@ class Screen
   // TAB 1----------------
 
   // Database interaction panel (DIP)
-  int TAB_WIDTH = 500, TAB_BORDER_WIDTH = 20;
+  int TAB_WIDTH;
+  int TAB_BORDER_WIDTH;
 
   int numberOfPages, numberOfGraphs; // The amount of pages that the user can flick through based on the amount of data that needs to be displayed
   int selectedPage = 1;
   int dataBlockYMargin = 5;
   // Layout of buttons and drop down menus
-  int HEIGHT_B = 50;
-  int WIDTH_B = 150;
+  int HEIGHT_B;
+  int WIDTH_B;
 
   // drop down buttons
   int NUMBER_OF_DROPDOWNS = 5;
@@ -43,9 +48,9 @@ class Screen
 
     fill(TEXT_COLOR);
     textFont(headingFont);
-    text("DATE", 100, 60);
-    text("TIME", 100, 220);
-    text("AIRPORT", 100, 500);
+    text("DATE", (int)(width * 0.052083), (int)(height * 0.055555));
+    text("TIME", (int)(width * 0.052083), (int)(height * 0.2037037));
+    text("AIRPORT", (int)(width * 0.052083), (int)(height * 0.4629));
 
     textFont(TextBoxFont);
     text("BETWEEN:", 25, (int) (height * 0.1) + (HEIGHT_B/2));
@@ -86,7 +91,7 @@ class Screen
   void renderTab1()
   {
     fill(SECONDARY_COLOR);
-    rect(0, 0, 350, 40,0,0,20,0);
+    rect(0, 0, (int)(width * 0.18232916), (int)(height * 0.037037),0,0,20,0);
     textSize(20);
     fill(TEXT_COLOR);
     if (filteredData != null && filteredData.size() != 0)
@@ -219,16 +224,6 @@ class Screen
   {
     switch (selectedTheme)
     {
-    case DEFAULT:
-      PRIMARY_COLOR = color(0, 50, 100);
-      SECONDARY_COLOR = color(200, 200, 255);
-      TERTIARY_COLOR = color(100, 200, 200);
-      BACKGROUND = color(230, 230, 230);
-      BUTTON_ON = color(100, 250, 100);
-      BUTTON_OFF = color(250, 100, 100);
-      TEXT_COLOR = color(0);
-      INACTIVE_TEXT_BOX = color(255);
-      break;
     case GIRLBOSS:
       PRIMARY_COLOR = color(255, 5, 164);
       SECONDARY_COLOR = color(255, 176, 226);
@@ -268,8 +263,6 @@ class Screen
       BUTTON_OFF = color(35, 0, 67);
       TEXT_COLOR = color(0);
       INACTIVE_TEXT_BOX = color(150);
-      break;
-    case CUSTOM_THEME:
       break;
     case COSMIC:
       PRIMARY_COLOR = color(90, 3, 255);
@@ -322,7 +315,14 @@ class Screen
       INACTIVE_TEXT_BOX = color(150);
       break;
     default:
-      System.out.println("Unknown theme selected, error");
+       PRIMARY_COLOR = color(0, 50, 100);
+      SECONDARY_COLOR = color(200, 200, 255);
+      TERTIARY_COLOR = color(100, 200, 200);
+      BACKGROUND = color(230, 230, 230);
+      BUTTON_ON = color(100, 250, 100);
+      BUTTON_OFF = color(250, 100, 100);
+      TEXT_COLOR = color(0);
+      INACTIVE_TEXT_BOX = color(255);
       break;
     }
   }
