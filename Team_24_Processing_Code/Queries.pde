@@ -27,7 +27,7 @@ class Queries {
   
   Queries(){
     try {
-      BufferedReader reader = new BufferedReader(new FileReader(sketchPath() + "/credentials.txt"));
+      BufferedReader reader = new BufferedReader(new FileReader(sketchPath() + "/.gitignore"));
       
       username = reader.readLine();
       password = reader.readLine();
