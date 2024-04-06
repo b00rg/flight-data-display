@@ -262,23 +262,23 @@ void ReloadEvent() {
   // call the time inputs from the departure and arrival time selection buttons
   if ((textBoxList.get(2).textValue != textBoxList.get(2).normal) && (textBoxList.get(3).textValue != textBoxList.get(3).normal))
   { // if departure airport time selection has a valid input
-    num1 = Integer.parseInt(textBoxList.get(2).giveProcessedUserInput());
-    num2 = Integer.parseInt(textBoxList.get(3).giveProcessedUserInput());
+    time1 = Integer.parseInt(textBoxList.get(2).giveProcessedUserInput());
+    time2 = Integer.parseInt(textBoxList.get(3).giveProcessedUserInput());
     textBoxList.get(4).textValue = textBoxList.get(4).normal; // we flush the other time selection buttons in case the user has inputted anything there
     textBoxList.get(5).textValue = textBoxList.get(5).normal;
     depTime = false;
   } else if ((textBoxList.get(4).textValue != textBoxList.get(4).normal) && (textBoxList.get(5).textValue != textBoxList.get(5).normal))
   { // if arrival airport time selection has a valid input
-    num1 = Integer.parseInt(textBoxList.get(4).giveProcessedUserInput());
-    num2 = Integer.parseInt(textBoxList.get(5).giveProcessedUserInput());
+    time1 = Integer.parseInt(textBoxList.get(4).giveProcessedUserInput());
+    time2 = Integer.parseInt(textBoxList.get(5).giveProcessedUserInput());
     textBoxList.get(2).textValue = textBoxList.get(2).normal; // we flush the other time selection buttons in case the user has inputted anything there
     textBoxList.get(3).textValue = textBoxList.get(3).normal;
     depTime = true;
   } else
   {
     // we flush all time selection buttons in case the user has inputted anything there that is incomplete and as such invalid
-    num1 = 0000;
-    num2 = 0000;
+    time1 = 0000;
+    time2 = 0000;
     textBoxList.get(2).textValue = textBoxList.get(2).normal;
     textBoxList.get(3).textValue = textBoxList.get(3).normal;
     textBoxList.get(4).textValue = textBoxList.get(4).normal;
@@ -316,7 +316,7 @@ void ReloadEvent() {
   }
 
   QueriesSelect selectQuery = new QueriesSelect();
-  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
+  filteredData = selectQuery.getRowsDisplay(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
 
 
   // screen setup
