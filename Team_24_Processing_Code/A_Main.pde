@@ -248,9 +248,9 @@ void mouseClicked() {
 // to be compatible with our query system requirements, the filteredData is adjusted to contain the new data - Angelos
 void ReloadEvent() {
   // setup place holder values
-  boolean depTime;
-  int num1;
-  int num2;
+  boolean depTime = false;
+  int time1 = 0;
+  int time2 = 0;
 
   String selectedArrivalStation = "";
   String selectedDepartureStation = "";
@@ -258,6 +258,7 @@ void ReloadEvent() {
   String date2 = null;
 
   // TIME SELECTION
+
   // call the time inputs from the departure and arrival time selection buttons
   if ((textBoxList.get(2).textValue != textBoxList.get(2).normal) && (textBoxList.get(3).textValue != textBoxList.get(3).normal))
   { // if departure airport time selection has a valid input
@@ -313,7 +314,6 @@ void ReloadEvent() {
   } else {
     selectedDepartureStation = null;
   }
-  
 
   QueriesSelect selectQuery = new QueriesSelect();
   filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
