@@ -11,27 +11,31 @@ class QueriesSelect extends Queries {
     
     ArrayList<DisplayDataPoint> dataList = new ArrayList<>();
     //println(depTrue, lowerVal, upperVal, depAirport, arrAirport, startDateRange, endDateRange);
-
+    
     try {
-      Statement stmt = connection.createStatement();
-      String whereClause = whereClauseBuilder(depTrue, lowerVal, upperVal, depAirport, arrAirport, startDateRange, endDateRange);
-      String query = "SELECT FL_DATE, MKT_CARRIER, ORIGIN, DEST, DEP_TIME, ARR_TIME, CANCELLED, DIVERTED FROM " + super.tableName + whereClause;
-      println(query);
-      ResultSet resultSet = stmt.executeQuery(query);
+        String whereClause = whereClauseBuilder(depTrue, lowerVal, upperVal, depAirport, arrAirport, startDateRange, endDateRange);
         
-      while (resultSet.next()) {
-        DisplayDataPoint data = new DisplayDataPoint(resultSet);
-        dataList.add(data);
-      }
-       
-      resultSet.close();
-      stmt.close();
-    }
-    catch (SQLException e) {
-      println("SQLException: " + e.getMessage());
+        // Use a PreparedStatement for better performance and protection against SQL injection
+        String query = "SELECT FL_DATE, MKT_CARRIER, ORIGIN, DEST, DEP_TIME, ARR_TIME, CANCELLED, DIVERTED FROM " + super.tableName + whereClause;
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        
+        // Execute the query
+        ResultSet resultSet = pstmt.executeQuery();
+        println(query);
+        
+        while (resultSet.next()) {
+            DisplayDataPoint data = new DisplayDataPoint(resultSet);
+            dataList.add(data);
+        }
+        
+        resultSet.close();
+        pstmt.close();
+    } catch (SQLException e) {
+        println("SQLException: " + e.getMessage());
     }   
     return dataList;
   }
+
   
   
   //GRAPH 1 - BAR CHART - NUMBER OF FLIGHTS PER CARRIER
@@ -327,7 +331,7 @@ class QueriesSelect extends Queries {
     }
       
     String column = depTrue ? "DEP_TIME" : "ARR_TIME";  
-    // Time range filter
+    // Time range filter  
     if (lowerVal != 0 && upperVal != 0){
       if (whereClauseBuilder.length() > 0) {
         whereClauseBuilder.append(" AND ");
@@ -355,10 +359,16 @@ class QueriesSelect extends Queries {
         
     // Date range filter
     if (startDateRange != null && !startDateRange.isEmpty() && endDateRange != null && !endDateRange.isEmpty()) {
+        String first = startDateRange.substring(Math.max(0, startDateRange.length() - 2));
+        String second = endDateRange.substring(Math.max(0, endDateRange.length() - 2));
+
+        int date1 = Integer.parseInt(first);
+        int date2 = Integer.parseInt(second);
+
       if (whereClauseBuilder.length() > 0) {
         whereClauseBuilder.append(" AND ");
       }
-      if (lowerVal < upperVal) {
+      if (date1 < date2) {
         whereClauseBuilder.append("FL_DATE BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
       } 
       else {
