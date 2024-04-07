@@ -17,8 +17,8 @@ class GraphTimeAccuracy extends Graph {
   void drawAccuracyGraph(String[] carriers, int[] accuracy) {
     color boxColour = (50);
     color lineColour = (150);
-    int boxLength = 100;
-    int boxWidth = 20;
+    int boxLength = h;
+    int boxWidth = w;
     int lineThickness = 5;
     int minIncrements = 5;
     int incrementSpace = 20;
