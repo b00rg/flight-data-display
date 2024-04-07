@@ -1,33 +1,18 @@
-/*import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.HashMap;
 
-AirportGraph graph;
 AirportNode hoveredNode = null;
 boolean isDragging = false;
 float offsetX, offsetY;
 PFont labelFont;
 String selectedAirportName = null;
 int[] selectedAirportData = new int[3]; // Array to hold total, arrivals, and departures
-float prevSelectedNodeX;
-float prevSelectedNodeY;
+float prevSelectedNodeX, prevSelectedNodeY;
+int maxFlightCount = getMaxFlightCount(airports);
+//QueriesSelect queriesSelect = new QueriesSelect(); // Instantiate QueriesSelect object
+addNodesToGraph(airports, maxFlightCount);
 
-void setup() {
-  fullScreen(); // Set up full screen
-  labelFont = createFont("Arial", 14); // Create font for labels
-  graph = new AirportGraph(); // Initialize the airport graph
-  QueriesSelect queriesSelect = new QueriesSelect(); // Instantiate QueriesSelect object
-
-    // Fetching airport data
-    ArrayList<RouteDataPoint> airports = queriesSelect.getAllRoutes();
-  // Finding the maximum flight count
-  int maxFlightCount = getMaxFlightCount(airports);
-
-  // Adding nodes (airports) to the graph
-  addNodesToGraph(airports, maxFlightCount);
-}
-
-void draw() {
-  background(40); // Set background color to dark grey (similar to Obsidian)
+/*void draw() {
   graph.update(); // Update node positions and check for collisions
   graph.draw();
   
@@ -408,4 +393,4 @@ class AirportNode {
     float distance = sqrt(dx * dx + dy * dy);
     return distance < this.radius + other.radius;
   }
-}*/
+}/*

@@ -1,11 +1,11 @@
-class GraphBar extends Graph {
+/*class GraphBar extends Graph {
 
   GraphBar(int x, int y, int wide, int high) {
     super(x, y, wide, high);
   }
 
 
-  void drawBarChart(ArrayList<BarDataPoint> values) {
+  void drawBarChart(ArrayList<BarDataPoint1> values) {
     // Set up variables for bar width, spacing, margins, and color
     // Set up variables for bar width and spacing
     float barSpacing = 20;

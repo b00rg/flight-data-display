@@ -157,16 +157,16 @@ class Screen
     switch(displayedGraph)
     {
     case 0:
-      graphB.drawBarChart(valuesB);
+      //graphB.drawBarChart(valuesB);
       break;
     case 1:
-      graphP.drawPieChart(valuesP);
+      //graphP.drawPieChart(valuesP);
       break;
     case 2:
-      graphD.draw(valuesDS);
+      //graphD.draw(valuesDS);
       break;
     case 3:
-      graphS.draw(valuesDS);
+      //graphS.draw(valuesDS);
       break;
     case 4:
       //graphA.draw();

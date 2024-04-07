@@ -59,18 +59,18 @@ enum WIDGET_TEXT_TYPE {
     DATE
 }
 
-ArrayList<BarDataPoint> valuesB;
-GraphBar graphB;
+ArrayList<BarDataPoint2> valuesB;
+//GraphBar graphB;
 
 ArrayList<PieDataPoint> valuesP;
-GraphPie graphP;
+//GraphPie graphP;
 
 ArrayList<RouteDataPoint> valuesDS;
-DensityGraph graphD;
-SimpleGraph graphS;
+//DensityGraph graphD;
+//SimpleGraph graphS;
 
 ArrayList<RouteDataPoint> valuesA;
-Graph graphA;
+Graph graphA = new AirportGraph();;
 
 int displayedGraph = 0;
 
@@ -148,18 +148,19 @@ void setup() {
 
   // GRAPH SETUP
   QueriesSelect queries = new QueriesSelect();
-  valuesB = queries.getRowsBarGraph();
-  valuesP = queries.getRowsPieChart();
+  valuesB = queries.getRowsBarGraph2();
+  //valuesP = queries.getRowsPieChart(true/***********/, );
   valuesDS = queries.getBusyRoutes();
   valuesA = queries.getAllRoutes();
 
-  graphB = new GraphBar(600, 250, 1200, 700);
-  graphP = new GraphPie(1300, 560, 800, 800);
-  graphD = new DensityGraph(800, 150, 1200, 700);
-  graphS = new SimpleGraph(600, 500, 1200, 1000);
+  //graphB = new GraphBar(600, 250, 1200, 700);
+  //graphP = new GraphPie(1300, 560, 800, 800);
+  //graphD = new DensityGraph(800, 150, 1200, 700);
+  //graphS = new SimpleGraph(600, 500, 1200, 1000);
   // graphA = new AirportGraph(600, 500, 1200, 1000);
 
-  Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
+  //Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
+  Graph[] graphs = new Graph[6];
   screen.numberOfGraphs = graphs.length;
 }
 
@@ -292,7 +293,7 @@ void ReloadEvent() {
   {
     date1 = textBoxList.get(0).giveProcessedUserInput();
     date2 = textBoxList.get(1).giveProcessedUserInput();
-    println("The input i got for time selection is: \n date1 = " + date1 + "\ndate2 = " + date2);
+    //println("The input i got for time selection is: \n date1 = " + date1 + "\ndate2 = " + date2);
   } else
   {
     // if the user did not give a full date seelction we empty date selection, the dates are left null
