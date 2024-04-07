@@ -134,7 +134,7 @@ void setup() {
   dropDownList.add(arrivals);
 
   // RELOAD BUTTON SETUP
-  ReloadButton = new WidgetButton((int) (width * 0.025), (int) (height * 0.88), 400, 75, 1);
+  ReloadButton = new WidgetButton((int) (width * 0.025), (int) (height * 0.88), 75, 75, 1);
   reloadButton = loadImage("reload.png");
 
   // TAB BUTTON SETUP
@@ -167,7 +167,7 @@ void setup() {
   carrierWN = loadImage("wn.png");
   
   
-  /*
+ 
   cancelledFlights = new WidgetButton(width/20, height / 10 * 7, 50, 50, 20);
   delayedFlights = new WidgetButton(width/20 * 2, height / 10 * 7, 50, 50, 20);
   undisturbedFlights = new WidgetButton(width/20 * 3, height / 10 * 7, 50, 50, 20);
@@ -175,13 +175,14 @@ void setup() {
   cancelledButton = loadImage("cancelled.png");
   delayedButton = loadImage("diverted.png");
   undisturbedButton = loadImage("uninterrupted.png");
-   */
+  
   // Tab 1 setup
   // please do not move this outside of setup void, for some reason processing does not like that
 
   // Tab 2 setup
 
   // GRAPH SETUP
+  
   QueriesSelect queries = new QueriesSelect();
   valuesB = queries.getRowsBarGraph();
   valuesP = queries.getRowsPieChart();
@@ -200,9 +201,9 @@ void setup() {
 
 void draw() {
   
-  /*undisturbedFlights.render();
+  undisturbedFlights.render();
   cancelledFlights.render();
-  delayedFlights.render();*/
+  delayedFlights.render();
    
   background(screen.BACKGROUND);
 
@@ -216,14 +217,14 @@ void draw() {
   ReloadButton.render();
   screen.renderButtons();
   
-  /*image(cancelledButton, width/20, height / 10 * 7, 50, 50);
+  image(cancelledButton, width/20, height / 10 * 7, 50, 50);
   image(delayedButton, width/20 * 2, height / 10 * 7, 50, 50);
-  image(undisturbedButton, width/20 * 3, height / 10 * 7, 50, 50);*/
+  image(undisturbedButton, width/20 * 3, height / 10 * 7, 50, 50);
   
   image(leftButton, (int)(width * 0.572916), (int)(height * 0.925925), 50, 50);
   image(rightButton, (int)(width * 0.677083), (int)(height * 0.925925), 50, 50);
   
-  image(reloadButton, (int) (width * 0.025), (int) (height * 0.88), 400, 75);
+  image(reloadButton, (int) (width * 0.025), (int) (height * 0.88), 75, 75);
   
   switch (currentlyActiveTab) {
   case 0: // user is looking at tab 1
@@ -434,7 +435,7 @@ THEMES stringToEnum(String input) {
 }
 // This function simply ensures that only one of the 3 radio buttons at the bottom of the buttons display is active
 // And that if the user clicks on an active one they are all disabled - Angelos
-/*
+
 void radioButtonsFlightStatus() {
  if (cancelledFlights.isClicked()) {
  if (!cancelledFlights.active) {
@@ -470,4 +471,3 @@ void radioButtonsFlightStatus() {
  }
  }
 }
-*/
