@@ -5,33 +5,35 @@ class GraphPie extends Graph {
         super(x, y, wide, high);
     }
 
-    void drawPieChart(ArrayList<PieDataPoint> values) {
-        // Consolidate values to ensure no repeats
-        ArrayList<PieDataPoint> consolidatedValues = consolidateValues(values);
+   void drawPieChart(ArrayList<PieDataPoint> values) {
+    // Consolidate values to ensure no repeats
+    ArrayList<PieDataPoint> consolidatedValues = consolidateValues(values);
 
-        // Initialize variables for angles and legend
-        float total = sumCounts(consolidatedValues);
-        float startAngle = 0;
+    // Initialize variables for angles and legend
+    float total = sumCounts(consolidatedValues);
+    float startAngle = 0;
 
-        // Loop through each data point to draw the pie chart slices and legend
-        for (PieDataPoint data : consolidatedValues) {
-            float angle = radians(map(data.COUNT_CANCELLED + data.COUNT_DIVERTED + data.COUNT_EXPECTED, 0, total, 0, 360)); // Calculate angle for this slice
-            float endAngle = startAngle + angle; // Calculate end angle for this slice
+    // Loop through each data point to draw the pie chart slices and legend
+    for (PieDataPoint data : consolidatedValues) {
+        float angle = radians(map(data.COUNT_CANCELLED + data.COUNT_DIVERTED + data.COUNT_EXPECTED, 0, total, 0, 360)); // Calculate angle for this slice
+        float endAngle = startAngle + angle; // Calculate end angle for this slice
 
-            // Set color based on the type of data point
-            color sliceColor = getColorForDataPoint(consolidatedValues.indexOf(data));
-            fill(sliceColor);
+        // Set color based on the type of data point
+        color sliceColor = getColorForDataPoint(consolidatedValues.indexOf(data));
+        fill(sliceColor);
+        noStroke(); // Remove stroke to hide white lines
 
-            // Draw slice of the pie chart
-            arc(xpos, ypos, width, height, startAngle, endAngle);
+        // Draw slice of the pie chart
+        arc(xpos, ypos, width, height, startAngle, endAngle);
 
-            // Draw legend
-            drawLegend(consolidatedValues.indexOf(data), sliceColor);
+        // Draw legend
+        drawLegend(consolidatedValues.indexOf(data), sliceColor);
 
-            // Update start angle for next slice
-            startAngle += angle;
-        }
+        // Update start angle for next slice
+        startAngle += angle;
     }
+}
+
 
     // Method to consolidate values to avoid repeats
     ArrayList<PieDataPoint> consolidateValues(ArrayList<PieDataPoint> values) {
@@ -89,11 +91,11 @@ class GraphPie extends Graph {
     color getColorForDataPoint(int index) {
         // Set colors based on the index (you can modify this according to your preference)
         if (index == 0) {
-            return color(255, 0, 0); // Red for cancelled flights
+            return color(105,105,105); // Red for cancelled flights
         } else if (index == 1) {
-            return color(0, 255, 0); // Green for diverted flights
+            return color(220,220,220); // Green for diverted flights
         } else {
-            return color(0, 0, 255); // Blue for expected flights
+            return color(40,40,40); // Blue for expected flights
         }
     }
 }
