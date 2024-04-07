@@ -58,23 +58,27 @@ PImage carrierWN;
 
 static WidgetTextBox startDate;
 static WidgetTextBox endDate;
+enum WIDGET_TEXT_TYPE {
+    TIME,
+    DATE
+}
 
-static boolean[] statsShown = new boolean[18];
+// COLORS AND FONTS SETUP
 color ON = color(100, 255, 100);
 color OFF = color(255, 100, 100);
 PFont TextBoxFont, headingFont;
-ArrayList<DisplayDataPoint> filteredData;
 
+// GLOBAL UI VARIABLES SETUP
 Screen screen;
 int currentlyActiveTab = 0;
 boolean isDropDownActive = false;
 int WIDGET_ROUNDNESS = 10;
 
-enum WIDGET_TEXT_TYPE {
-  TIME,
-    DATE
-}
+// STATISTICAL VARIABLES SETUP
+static boolean[] statsShown = new boolean[18];
+ArrayList<DisplayDataPoint> filteredData;
 
+// GRAPH DECLERATIONS
 ArrayList<BarDataPoint> valuesB;
 GraphBar graphB;
 
@@ -148,11 +152,11 @@ void setup() {
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
 
-
-
   // SCROLL BUTTON SETUP
   moveLeft = new WidgetButton((int)(width * 0.572916), (int)(height * 0.925925), 50, 50, 5);
   moveRight = new WidgetButton((int)(width * 0.677083), (int)(height * 0.925925), 50, 50, 5);
+<<<<<<< HEAD
+=======
   
   leftButton = loadImage("left.png");
   rightButton = loadImage("right.png");
@@ -180,6 +184,7 @@ void setup() {
   // please do not move this outside of setup void, for some reason processing does not like that
 
   // Tab 2 setup
+>>>>>>> main
 
   // GRAPH SETUP
   
@@ -200,11 +205,14 @@ void setup() {
 }
 
 void draw() {
+<<<<<<< HEAD
+=======
   
   undisturbedFlights.render();
   cancelledFlights.render();
   delayedFlights.render();
    
+>>>>>>> main
   background(screen.BACKGROUND);
 
   noStroke();
@@ -241,7 +249,8 @@ void draw() {
   ThemeSelection.render();
 }
 
-// ADD COMMENT
+// Goes through every button on the screen and commands them to check if they have been clicked
+// This method always updated the tab and theme at the end aswell in case the user clicked anything relating to their selection - Angelos
 void mouseClicked() {
   if (ReloadButton.isClicked()) 
   {
@@ -290,7 +299,7 @@ void mouseClicked() {
 }
 
 // creates all query related data pieces and collect the data from input buttons, some of the data is also processed
-// to be compatible with our query system requirements, the filteredData is adjusted to contain the new data - Angelos
+// to be compatible with our query system requirements, the filteredData attaylist is then adjusted to contain the new data - Angelos
 void ReloadEvent() {
   // setup place holder values
   boolean depTime = false;
@@ -337,7 +346,6 @@ void ReloadEvent() {
   {
     date1 = textBoxList.get(0).giveProcessedUserInput();
     date2 = textBoxList.get(1).giveProcessedUserInput();
-    println("The input i got for time selection is: \n date1 = " + date1 + "\ndate2 = " + date2);
   } else
   {
     // if the user did not give a full date seelction we empty date selection, the dates are left null
@@ -359,10 +367,19 @@ void ReloadEvent() {
   } else {
     selectedDepartureStation = null;
   }
+<<<<<<< HEAD
+  long startTime = System.nanoTime();
+
+=======
+>>>>>>> main
 
   QueriesSelect selectQuery = new QueriesSelect();
   filteredData = selectQuery.getRowsDisplay(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
 
+  long endTime = System.nanoTime();
+  long elapsedTime = endTime - startTime;
+  double elapsedTimeInMs = (double) elapsedTime / 1_000_000.0;
+  println("Elapsed Time: " + elapsedTimeInMs + " milliseconds, that is how long it took to add the new data to the filteredData array");
 
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
@@ -378,6 +395,7 @@ void mouseWheel(MouseEvent event) {
   ThemeSelection.scroll((int)event.getCount());
 }
 
+// checks if the any buttons that can accept text input are active, if yes, it sends them the input to be processed - Angelos
 void keyPressed() {
   for (int i = 0, n = textBoxList.size(); i < n; i++) {
     if (textBoxList.get(i).active) {
@@ -406,7 +424,8 @@ void updateTabs() {
   }
 }
 
-// takes the input of the themes button and returns the selected enum, yes this is the only way to do this sorry
+// takes the input of the themes button and returns the selected enum
+// In java there are better ways to do this, but with processing this is as good as it gets - Angelos
 THEMES stringToEnum(String input) {
     switch(input) {
         case "DEFAULT":
