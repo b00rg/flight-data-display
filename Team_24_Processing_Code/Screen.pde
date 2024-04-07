@@ -321,7 +321,7 @@ class Screen
       INACTIVE_TEXT_BOX = color(150);
       break;
     default:
-       PRIMARY_COLOR = color(0, 50, 100);
+      PRIMARY_COLOR = color(0, 50, 100);
       SECONDARY_COLOR = color(200, 200, 255);
       TERTIARY_COLOR = color(100, 200, 200);
       BACKGROUND = color(230, 230, 230);
