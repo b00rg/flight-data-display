@@ -56,6 +56,30 @@ PImage carrierHA;
 PImage carrierNK;
 PImage carrierWN;
 
+// Takes in the name of a carrier and returns the associated image
+PImage nameToLogo(String name)
+{
+  switch(name)
+  {
+    case "AA":
+      return carrierAA;
+    case "AS":
+      return carrierAS;
+    case "B6":
+      return carrierB6;
+    case "G4":
+      return carrierG4;
+    case "HA":
+      return carrierHA;
+    case "NK":
+      return carrierNK;
+    case "WN":
+      return carrierWN;
+    default:
+      return null;
+  }
+}
+
 static WidgetTextBox startDate;
 static WidgetTextBox endDate;
 enum WIDGET_TEXT_TYPE {
@@ -155,20 +179,19 @@ void setup() {
   // SCROLL BUTTON SETUP
   moveLeft = new WidgetButton((int)(width * 0.572916), (int)(height * 0.925925), 50, 50, 5);
   moveRight = new WidgetButton((int)(width * 0.677083), (int)(height * 0.925925), 50, 50, 5);
-<<<<<<< HEAD
-=======
+
   
   leftButton = loadImage("left.png");
   rightButton = loadImage("right.png");
   
   
-  carrierAA = loadImage("aa.png");
-  carrierAS = loadImage("as.png");
-  carrierB6 = loadImage("b6.png");
-  carrierG4 = loadImage("G4.png");
-  carrierHA = loadImage("ha.png");
-  carrierNK = loadImage("NK.png");
-  carrierWN = loadImage("wn.png");
+  carrierAA = loadImage(sketchPath() +"/data/airline carriers/AA.png");
+  carrierAS = loadImage(sketchPath() +"/data/airline carriers/AS.png");
+  carrierB6 = loadImage(sketchPath() +"/data/airline carriers/B6.png");
+  carrierG4 = loadImage(sketchPath() +"/data/airline carriers/G4.png");
+  carrierHA = loadImage(sketchPath() +"/data/airline carriers/HA.png");
+  carrierNK = loadImage(sketchPath() +"/data/airline carriers/NK.png");
+  carrierWN = loadImage(sketchPath() +"/data/airline carriers/WN.png");
   
   
  
@@ -184,7 +207,7 @@ void setup() {
   // please do not move this outside of setup void, for some reason processing does not like that
 
   // Tab 2 setup
->>>>>>> main
+
 
   // GRAPH SETUP
   
@@ -205,14 +228,13 @@ void setup() {
 }
 
 void draw() {
-<<<<<<< HEAD
-=======
+
   
   undisturbedFlights.render();
   cancelledFlights.render();
   delayedFlights.render();
    
->>>>>>> main
+
   background(screen.BACKGROUND);
 
   noStroke();
@@ -367,11 +389,10 @@ void ReloadEvent() {
   } else {
     selectedDepartureStation = null;
   }
-<<<<<<< HEAD
+
   long startTime = System.nanoTime();
 
-=======
->>>>>>> main
+
 
   QueriesSelect selectQuery = new QueriesSelect();
   filteredData = selectQuery.getRowsDisplay(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
