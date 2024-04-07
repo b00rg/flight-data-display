@@ -1,60 +1,99 @@
-// This code defines a class GraphPie that extends the Graph class and implements a method to draw a pie chart based on provided PieDataPoint values:
-// It initializes variables for angles, label positions, and color.
-// It loops through each label to draw the pie chart slices.
-// It calculates the angle for each slice based on its position in the labels array.
-// It calculates the end angle for each slice.
-// It calculates the slice color based on its position in the labels array.
-// It draws each slice of the pie chart.
-// It draws labels for each slice.
-// It updates the start angle for the next slice.
-
-// Define a class GraphPie which extends the Graph class
-
-import java.util.ArrayList;
+import java.util.*;
 
 class GraphPie extends Graph {
-  GraphPie(int x, int y, int wide, int high){
-     super(x, y, wide, high);
-  }
-  // Method to draw a pie chart based on provided PieDataPoint values
- void drawPieChart(ArrayList<PieDataPoint> values){
-// Define labels for the slices of the pie chart
-    String[] labels = {"Flights Cancelled", "Flights Diverted", "Flights As Expected"};
-    // Initialize variables for angles, label positions, and color
-    int totalFlights = values.size();
-    float startAngle = 0; 
-
-    float labelX = xpos/2;
-    float labelY = ypos * 1.3;
-    float colour = 0.0, colourB = 150.00; 
-    // Loop through each label to draw the pie chart slices
-    for (int i = 0; i < labels.length; i++) {
-      float angle = radians(map(i, 0, labels.length, 0, 360)); ; // Calculate angle for this slice
-      // Calculate angle for this slice based on its position in the labels array
-      float endAngle = startAngle + angle;       // Calculate end angle for this slice
-
-      // Calculate slice color based on its position in the labels array
-
-      // Calculate slice color 
-      // ugly colours
-      //colorMode(HSB);
-      //fill(map(i, 0, labels.length, 0, 255), 255, 255);
-      // greyscale 
-
-      fill(map(i, 0, totalFlights, colour, colour), colour, colour);
-      colour += 255.0/totalFlights*2; // Increment color for next slice
-      
-       // Draw slice of the pie chart
-      arc(xpos, ypos, width, height, startAngle, endAngle);
-      
-      // Draw label for this slice
-      labelY += 25;
-
-      //textAlign(CENTER, CENTER);
-      text(labels[i], labelX, labelY);
-
-      // Update start angle for next slice
-      startAngle += angle;
+    GraphPie(int x, int y, int wide, int high) {
+        super(x, y, wide, high);
     }
-  }
+
+    void drawPieChart(ArrayList<PieDataPoint> values) {
+        // Consolidate values to ensure no repeats
+        ArrayList<PieDataPoint> consolidatedValues = consolidateValues(values);
+
+        // Initialize variables for angles and legend
+        float total = sumCounts(consolidatedValues);
+        float startAngle = 0;
+
+        // Loop through each data point to draw the pie chart slices and legend
+        for (PieDataPoint data : consolidatedValues) {
+            float angle = radians(map(data.COUNT_CANCELLED + data.COUNT_DIVERTED + data.COUNT_EXPECTED, 0, total, 0, 360)); // Calculate angle for this slice
+            float endAngle = startAngle + angle; // Calculate end angle for this slice
+
+            // Set color based on the type of data point
+            color sliceColor = getColorForDataPoint(consolidatedValues.indexOf(data));
+            fill(sliceColor);
+
+            // Draw slice of the pie chart
+            arc(xpos, ypos, width, height, startAngle, endAngle);
+
+            // Draw legend
+            drawLegend(consolidatedValues.indexOf(data), sliceColor);
+
+            // Update start angle for next slice
+            startAngle += angle;
+        }
+    }
+
+    // Method to consolidate values to avoid repeats
+    ArrayList<PieDataPoint> consolidateValues(ArrayList<PieDataPoint> values) {
+        ArrayList<PieDataPoint> consolidatedValues = new ArrayList<>();
+        HashMap<String, PieDataPoint> valueMap = new HashMap<>();
+
+        // Consolidate values using a hashmap to track repeats
+        for (PieDataPoint data : values) {
+            String key = data.toString();
+            if (valueMap.containsKey(key)) {
+                PieDataPoint existingData = valueMap.get(key);
+                existingData.COUNT_CANCELLED += data.COUNT_CANCELLED;
+                existingData.COUNT_DIVERTED += data.COUNT_DIVERTED;
+                existingData.COUNT_EXPECTED += data.COUNT_EXPECTED;
+            } else {
+                valueMap.put(key, data);
+            }
+        }
+
+        // Convert hashmap back to arraylist
+        consolidatedValues.addAll(valueMap.values());
+        return consolidatedValues;
+    }
+
+    // Method to draw legend
+    void drawLegend(int index, color sliceColor) {
+        String legendLabel = " ";
+        // Assign legend label based on index
+        if (index == 0 ) {
+            legendLabel = "Cancelled flights";
+        } else if (index == 1 ) {
+            legendLabel = "Diverted flights";
+        } else if(index == 2) {
+            legendLabel = "Expected flights";
+        }
+
+        // Draw legend
+        fill(0);
+        textSize(12);
+        textAlign(LEFT, CENTER);
+        fill(sliceColor);
+        text(legendLabel, 40, 27 + index * 20);
+    }
+
+    // Method to calculate the total count of all data points
+    int sumCounts(ArrayList<PieDataPoint> values) {
+        int sum = 0;
+        for (PieDataPoint data : values) {
+            sum += data.COUNT_CANCELLED + data.COUNT_DIVERTED + data.COUNT_EXPECTED;
+        }
+        return sum;
+    }
+
+    // Method to get color for a specific data point index
+    color getColorForDataPoint(int index) {
+        // Set colors based on the index (you can modify this according to your preference)
+        if (index == 0) {
+            return color(255, 0, 0); // Red for cancelled flights
+        } else if (index == 1) {
+            return color(0, 255, 0); // Green for diverted flights
+        } else {
+            return color(0, 0, 255); // Blue for expected flights
+        }
+    }
 }
