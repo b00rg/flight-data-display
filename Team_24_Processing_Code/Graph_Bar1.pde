@@ -19,7 +19,6 @@ void drawBarChart(ArrayList<BarDataPoint1> values) {
     // Loop through the ArrayList of BarDataPoint1 objects to draw each bar
     for (int i = 0; i < values.size(); i++) {
         BarDataPoint1 data = values.get(i);
-
         // Calculate the height of each bar relative to the canvas height
         float barHeight = map(data.FLIGHTS_COUNT, 0, maxVal, 0, height - topMargin);
 
