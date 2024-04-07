@@ -188,13 +188,13 @@ void setup() {
   rightButton = loadImage("right.png");
   
   
-  carrierAA = loadImage(sketchPath() +"/data/airline carriers/AA.png");
-  carrierAS = loadImage(sketchPath() +"/data/airline carriers/AS.png");
-  carrierB6 = loadImage(sketchPath() +"/data/airline carriers/B6.png");
+  carrierAA = loadImage(sketchPath() +"/data/airline carriers/aa.png");
+  carrierAS = loadImage(sketchPath() +"/data/airline carriers/as.png");
+  carrierB6 = loadImage(sketchPath() +"/data/airline carriers/b6.png");
   carrierG4 = loadImage(sketchPath() +"/data/airline carriers/G4.png");
-  carrierHA = loadImage(sketchPath() +"/data/airline carriers/HA.png");
+  carrierHA = loadImage(sketchPath() +"/data/airline carriers/ha.png");
   carrierNK = loadImage(sketchPath() +"/data/airline carriers/NK.png");
-  carrierWN = loadImage(sketchPath() +"/data/airline carriers/WN.png");
+  carrierWN = loadImage(sketchPath() +"/data/airline carriers/wn.png");
   
   
  
