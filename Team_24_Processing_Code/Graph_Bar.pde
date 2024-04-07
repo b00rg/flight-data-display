@@ -1,4 +1,4 @@
-class GraphBar extends Graph {
+/*class GraphBar extends Graph {
 
   GraphBar(int x, int y, int wide, int high) {
     super(x, y, wide, high);
@@ -60,4 +60,4 @@ class GraphBar extends Graph {
       text(nf(i * (step / 1000), 0, 1) + "k", xpos - 20, yPos + ypos);
     }
   }
-}
+}*/

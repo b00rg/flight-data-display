@@ -16,7 +16,7 @@ class QueriesSelect extends Queries {
       Statement stmt = connection.createStatement();
       String whereClause = whereClauseBuilder(depTrue, lowerVal, upperVal, depAirport, arrAirport, startDateRange, endDateRange);
       String query = "SELECT FL_DATE, MKT_CARRIER, ORIGIN, DEST, DEP_TIME, ARR_TIME, CANCELLED, DIVERTED FROM " + super.tableName + whereClause;
-      //println(query);
+      println(query);
       ResultSet resultSet = stmt.executeQuery(query);
         
       while (resultSet.next()) {
@@ -305,90 +305,85 @@ class QueriesSelect extends Queries {
   
   //FOR BUILDING DYNAMIC WHERE CLAUSE
   String whereClauseBuilder(boolean depTrue, int lowerVal, int upperVal, String depAirport, String arrAirport, String startDateRange, String endDateRange){
+
+    // Construct the WHERE clause dynamically
     String whereClause = "";
-    try {   
-      // Construct the WHERE clause dynamically
-      StringBuilder whereClauseBuilder = new StringBuilder();
+    StringBuilder whereClauseBuilder = new StringBuilder();
       
-      // Departure airport filter
-      if (depAirport != null && !depAirport.isEmpty()) {
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        whereClauseBuilder.append("ORIGIN = '").append(depAirport).append("'");
+    // Departure airport filter
+    if (depAirport != null && !depAirport.isEmpty()) {
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
       }
+      whereClauseBuilder.append("ORIGIN = '").append(depAirport).append("'");
+    }
         
-      // Arrival airport filter
-      if (arrAirport != null && !arrAirport.isEmpty()) {
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        whereClauseBuilder.append("DEST = '").append(arrAirport).append("'");
+    // Arrival airport filter
+    if (arrAirport != null && !arrAirport.isEmpty()) {
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
       }
+      whereClauseBuilder.append("DEST = '").append(arrAirport).append("'");
+    }
       
-      String column = depTrue ? "DEP_TIME" : "ARR_TIME";  
-      // Time range filter
-      if (lowerVal != 0 && upperVal != 0){
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }  
-        if (lowerVal < upperVal) {
-          whereClauseBuilder.append(column).append(" BETWEEN ").append(lowerVal).append(" AND ").append(upperVal);
-        } 
-        else {
-          whereClauseBuilder.append(column).append(" NOT BETWEEN ").append(upperVal).append(" AND ").append(lowerVal);
-        }
+    String column = depTrue ? "DEP_TIME" : "ARR_TIME";  
+    // Time range filter
+    if (lowerVal != 0 && upperVal != 0){
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
+      }  
+      if (lowerVal < upperVal) {
+        whereClauseBuilder.append(column).append(" BETWEEN ").append(lowerVal).append(" AND ").append(upperVal);
+      } 
+      else {
+        whereClauseBuilder.append(column).append(" NOT BETWEEN ").append(upperVal).append(" AND ").append(lowerVal);
       }
-      else if (lowerVal != 0){
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        whereClauseBuilder.append(column).append(" <= ").append(lowerVal);
+    }
+    else if (lowerVal != 0){
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
       }
-      else if (upperVal != 0){
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        whereClauseBuilder.append(column).append(" >= ").append(upperVal);
+      whereClauseBuilder.append(column).append(" <= ").append(lowerVal);
+    }
+    else if (upperVal != 0){
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
       }
+      whereClauseBuilder.append(column).append(" >= ").append(upperVal);
+    }
         
         
-      // Date range filter
-      if (startDateRange != null && !startDateRange.isEmpty() && endDateRange != null && !endDateRange.isEmpty()) {
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        if (lowerVal < upperVal) {
-          whereClauseBuilder.append("FL_DATE BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
-        } 
-        else {
-          whereClauseBuilder.append("FL_DATE NOT BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
-        }
+    // Date range filter
+    if (startDateRange != null && !startDateRange.isEmpty() && endDateRange != null && !endDateRange.isEmpty()) {
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
       }
-      else if (startDateRange != null && !startDateRange.isEmpty()){
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        whereClauseBuilder.append("FL_DATE <= '").append(startDateRange).append("'");
+      if (lowerVal < upperVal) {
+        whereClauseBuilder.append("FL_DATE BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
+      } 
+      else {
+        whereClauseBuilder.append("FL_DATE NOT BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
       }
-      else if (endDateRange != null && !endDateRange.isEmpty()){
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        whereClauseBuilder.append("FL_DATE >= '").append(endDateRange).append("'");
+    }
+    else if (startDateRange != null && !startDateRange.isEmpty()){
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
       }
-        
-      // Construct the full SQL query
-      whereClause = whereClauseBuilder.toString();
+      whereClauseBuilder.append("FL_DATE <= '").append(startDateRange).append("'");
     }
-    catch (SQLException e) {
-      println("SQLException: " + e.getMessage());
+    else if (endDateRange != null && !endDateRange.isEmpty()){
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
+      }
+      whereClauseBuilder.append("FL_DATE >= '").append(endDateRange).append("'");
     }
-    if (!whereClause.isEmpty()){
-      whereClause = " WHERE " + whereClause;
-    }
-    return whereClause;
+       
+    // Construct the full SQL query
+    whereClause = whereClauseBuilder.toString();    if (!whereClause.isEmpty()){
+    whereClause = " WHERE " + whereClause;
+  }
+  return whereClause;
     
-  }  
+}  
 
 }

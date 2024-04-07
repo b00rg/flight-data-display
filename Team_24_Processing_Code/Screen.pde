@@ -151,7 +151,7 @@ class Screen
     text("Carrier: " + D.MKT_CARRIER, xpos + w/2, ypos + h / 10);
     text("Date: " + D.FL_DATE, xpos + w/2, ypos + h / 10 *3);
   }
-
+/*
   void renderTab2()
   {
     switch(displayedGraph)
@@ -175,7 +175,7 @@ class Screen
       println("No graph found");
       break;
     }
-  }
+  }*/
 
   void pageSelectButtons()
   {

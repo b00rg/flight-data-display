@@ -1,4 +1,4 @@
-class DensityGraph extends Graph {
+/*class DensityGraph extends Graph {
   DensityGraph(int x, int y, int wide, int high) {
     super(x, y, wide, high);
   }
@@ -79,4 +79,4 @@ class DensityGraph extends Graph {
             text(airports.get(j), x, y);
         }
     }
-}
+}*/

@@ -14,7 +14,7 @@ import java.util.List;
 class Queries {
   
   // MySQL database connection parameters
-  String filename = sketchPath() + "/flights10k.csv";
+  String filename = sketchPath() + "/flights_full.csv";
   String url = "jdbc:mysql://localhost:3306/programming_project";
   String databaseName = "programming_project";
   String tableName = "flight_data";
@@ -29,8 +29,8 @@ class Queries {
     try {
       BufferedReader reader = new BufferedReader(new FileReader(sketchPath() + "/.gitignore"));
       
-      username = reader.readLine();
-      password = reader.readLine();
+      username = "root"; //reader.readLine();
+      password = "password1234!"; //reader.readLine();
       
       // If password is empty, set it to an empty string
       if (password == null || password.isEmpty()) {

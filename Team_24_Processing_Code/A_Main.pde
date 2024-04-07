@@ -58,7 +58,7 @@ enum WIDGET_TEXT_TYPE {
   TIME,
     DATE
 }
-
+/*
 ArrayList<BarDataPoint> valuesB;
 GraphBar graphB;
 
@@ -70,7 +70,7 @@ DensityGraph graphD;
 SimpleGraph graphS;
 
 ArrayList<RouteDataPoint> valuesA;
-Graph graphA;
+Graph graphA;*/
 
 int displayedGraph = 0;
 
@@ -83,11 +83,12 @@ void setup() {
   ThemeSelection = new WidgetDropDown(width / 6, 0, (int)(width * 0.10416), (int)(height*0.037037), TextBoxFont, themeNames, "DEFAULT");
   ThemeSelection.selectedValue = "DEFAULT";
   // DATA SETUP
+  /*
   QueriesInitial setupQuery = new QueriesInitial();
   setupQuery.createDatabase();
   setupQuery.useDatabase();
   setupQuery.dropAndCreateTable();
-  setupQuery.insertRows();
+  setupQuery.insertRows();*/
 
   TextBoxFont = loadFont("default.vlw");
   headingFont = loadFont("Heading.vlw");
@@ -148,6 +149,7 @@ void setup() {
 
   // GRAPH SETUP
   QueriesSelect queries = new QueriesSelect();
+  /*
   valuesB = queries.getRowsBarGraph();
   valuesP = queries.getRowsPieChart();
   valuesDS = queries.getBusyRoutes();
@@ -161,6 +163,7 @@ void setup() {
 
   Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
   screen.numberOfGraphs = graphs.length;
+  */
 }
 
 void draw() {
@@ -186,7 +189,7 @@ void draw() {
     screen.renderTab1();
     break;
   case 1: // user is looking at tab 2
-    screen.renderTab2();
+ //   screen.renderTab2();
     break;
   default:
     println("Tab not found");
