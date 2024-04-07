@@ -24,7 +24,7 @@ class WidgetTextBox extends Widget {
     rect(xpos, ypos, wide, high, roundness);
     fill(screen.TEXT_COLOR);
     textAlign(LEFT, CENTER);
-    textFont(font);
+    textFont(TextBoxFont);
     if ((myType == WIDGET_TEXT_TYPE.DATE && active || (textValue != "DD/MM/YYYY")&& myType == WIDGET_TEXT_TYPE.DATE)) {
       text(textValue + "/01/2022", xpos + 5, ypos + high/3);
     } else
@@ -47,7 +47,6 @@ class WidgetTextBox extends Widget {
           break;
         case 10:
           active = false; // user pressed enter
-          addColonAndCheckCompletion();
           break;
         case '0':
         case '1':
@@ -76,6 +75,11 @@ class WidgetTextBox extends Widget {
           break;
         case 10:
           active = false; // user pressed enter
+          if (!isStringValid())
+          {
+            userInputInvalid();
+          }
+          addColonAndCheckCompletion();
           break;
         case '0':
         case '1':
@@ -91,6 +95,10 @@ class WidgetTextBox extends Widget {
           textValue += key;
           if (textValue.length() == 2) {
             active = false;
+            if (!isStringValid())
+            {
+              userInputInvalid();
+            }
           }
           break;
         default:
@@ -183,7 +191,13 @@ class WidgetTextBox extends Widget {
       }
     } else
     {// button type is date
-      return true;
+      try {
+        return (Integer.parseInt(textValue) <= 31);
+      }
+      catch (Exception e)
+      {
+        return false;
+      }
     }
     return false; // unreachable code, processing still needs it for some reason though
   }
@@ -192,12 +206,22 @@ class WidgetTextBox extends Widget {
     if (myType == WIDGET_TEXT_TYPE.TIME)
     {
       return textValue.replace(":", "").trim();
-    } else 
+    } else
     {
-      String Day = textValue;
-      Day = (("2022/01/" + Day));
-      Day = Day.replace("/","-");
-      return Day;
+      try {
+        if (textValue == "" || textValue == null || textValue == normal) {
+          return null;
+        }
+        println("The textValue is atm = " + textValue);
+        String Day = textValue;
+        Day = (("2022/01/" + Day));
+        Day = Day.replace("/", "-");
+        return Day;
+      }
+      catch (Exception e)
+      {
+        return null;
+      }
     }
   }
 }
