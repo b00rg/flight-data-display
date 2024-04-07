@@ -1,7 +1,6 @@
 class GraphTimeAccuracy extends Graph {
-  int xpos, ypos, high, wide;
-  GraphTimeAccuracy(int x, int y, int h, int w) {
-    super(x, y, h, w);
+  GraphTimeAccuracy(int x, int y, int w, int h) {
+    super(x, y, w, h);
   }
   float calculateTimeAccuracy(int[] predDep, int[] actDep, int[] predArr, int[] actArr)
   {
@@ -17,8 +16,8 @@ class GraphTimeAccuracy extends Graph {
   void draw(String[] carriers, float[] accuracy) {
     color boxColour = (50);
     color lineColour = (150);
-    int boxLength = high;
-    int boxWidth = wide;
+    int boxLength = width;
+    int boxWidth = height;
     int lineThickness = 5;
     int minIncrements = 5;
     int incrementSpace = 20;
