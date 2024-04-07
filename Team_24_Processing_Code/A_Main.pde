@@ -280,7 +280,6 @@ void ReloadEvent() {
   {
     date1 = textBoxList.get(0).giveProcessedUserInput();
     date2 = textBoxList.get(1).giveProcessedUserInput();
-    println("The input i got for time selection is: \n date1 = " + date1 + "\ndate2 = " + date2);
   } else
   {
     // if the user did not give a full date seelction we empty date selection, the dates are left null
@@ -311,7 +310,7 @@ void ReloadEvent() {
   long endTime = System.nanoTime();
   long elapsedTime = endTime - startTime;
   double elapsedTimeInMs = (double) elapsedTime / 1_000_000.0;
-  println("Elapsed Time: " + elapsedTimeInMs + " milliseconds");
+  println("Elapsed Time: " + elapsedTimeInMs + " milliseconds, that is how long it took to add the new data to the filteredData array");
 
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
