@@ -40,6 +40,22 @@ static WidgetButton cancelledFlights;
 static WidgetButton delayedFlights;
 static WidgetButton undisturbedFlights;
 
+PImage reloadButton;
+PImage leftButton;
+PImage rightButton;
+
+PImage cancelledButton;
+PImage delayedButton;
+PImage undisturbedButton;
+
+PImage carrierAA;
+PImage carrierAS;
+PImage carrierB6;
+PImage carrierG4;
+PImage carrierHA;
+PImage carrierNK;
+PImage carrierWN;
+
 static WidgetTextBox startDate;
 static WidgetTextBox endDate;
 enum WIDGET_TEXT_TYPE {
@@ -122,7 +138,8 @@ void setup() {
   dropDownList.add(arrivals);
 
   // RELOAD BUTTON SETUP
-  ReloadButton = new WidgetButton((int) (width * 0.025), (int) (height * 0.88), 400, 75, 1);
+  ReloadButton = new WidgetButton((int) (width * 0.025), (int) (height * 0.88), 75, 75, 1);
+  reloadButton = loadImage("reload.png");
 
   // TAB BUTTON SETUP
   int totalTabWidth = screen.TAB_WIDTH + screen.TAB_BORDER_WIDTH;
@@ -138,8 +155,39 @@ void setup() {
   // SCROLL BUTTON SETUP
   moveLeft = new WidgetButton((int)(width * 0.572916), (int)(height * 0.925925), 50, 50, 5);
   moveRight = new WidgetButton((int)(width * 0.677083), (int)(height * 0.925925), 50, 50, 5);
+<<<<<<< HEAD
+=======
+  
+  leftButton = loadImage("left.png");
+  rightButton = loadImage("right.png");
+  
+  
+  carrierAA = loadImage("aa.png");
+  carrierAS = loadImage("as.png");
+  carrierB6 = loadImage("b6.png");
+  carrierG4 = loadImage("G4.png");
+  carrierHA = loadImage("ha.png");
+  carrierNK = loadImage("NK.png");
+  carrierWN = loadImage("wn.png");
+  
+  
+ 
+  cancelledFlights = new WidgetButton(width/20, height / 10 * 7, 50, 50, 20);
+  delayedFlights = new WidgetButton(width/20 * 2, height / 10 * 7, 50, 50, 20);
+  undisturbedFlights = new WidgetButton(width/20 * 3, height / 10 * 7, 50, 50, 20);
+  
+  cancelledButton = loadImage("cancelled.png");
+  delayedButton = loadImage("diverted.png");
+  undisturbedButton = loadImage("uninterrupted.png");
+  
+  // Tab 1 setup
+  // please do not move this outside of setup void, for some reason processing does not like that
+
+  // Tab 2 setup
+>>>>>>> main
 
   // GRAPH SETUP
+  
   QueriesSelect queries = new QueriesSelect();
   valuesB = queries.getRowsBarGraph();
   valuesP = queries.getRowsPieChart();
@@ -157,6 +205,14 @@ void setup() {
 }
 
 void draw() {
+<<<<<<< HEAD
+=======
+  
+  undisturbedFlights.render();
+  cancelledFlights.render();
+  delayedFlights.render();
+   
+>>>>>>> main
   background(screen.BACKGROUND);
 
   noStroke();
@@ -168,6 +224,15 @@ void draw() {
   
   ReloadButton.render();
   screen.renderButtons();
+  
+  image(cancelledButton, width/20, height / 10 * 7, 50, 50);
+  image(delayedButton, width/20 * 2, height / 10 * 7, 50, 50);
+  image(undisturbedButton, width/20 * 3, height / 10 * 7, 50, 50);
+  
+  image(leftButton, (int)(width * 0.572916), (int)(height * 0.925925), 50, 50);
+  image(rightButton, (int)(width * 0.677083), (int)(height * 0.925925), 50, 50);
+  
+  image(reloadButton, (int) (width * 0.025), (int) (height * 0.88), 75, 75);
   
   switch (currentlyActiveTab) {
   case 0: // user is looking at tab 1
@@ -237,9 +302,9 @@ void mouseClicked() {
 // to be compatible with our query system requirements, the filteredData attaylist is then adjusted to contain the new data - Angelos
 void ReloadEvent() {
   // setup place holder values
-  boolean depTime;
-  int num1;
-  int num2;
+  boolean depTime = false;
+  int time1 = 0;
+  int time2 = 0;
 
   String selectedArrivalStation = "";
   String selectedDepartureStation = "";
@@ -247,26 +312,27 @@ void ReloadEvent() {
   String date2 = null;
 
   // TIME SELECTION
+
   // call the time inputs from the departure and arrival time selection buttons
   if ((textBoxList.get(2).textValue != textBoxList.get(2).normal) && (textBoxList.get(3).textValue != textBoxList.get(3).normal))
   { // if departure airport time selection has a valid input
-    num1 = Integer.parseInt(textBoxList.get(2).giveProcessedUserInput());
-    num2 = Integer.parseInt(textBoxList.get(3).giveProcessedUserInput());
+    time1 = Integer.parseInt(textBoxList.get(2).giveProcessedUserInput());
+    time2 = Integer.parseInt(textBoxList.get(3).giveProcessedUserInput());
     textBoxList.get(4).textValue = textBoxList.get(4).normal; // we flush the other time selection buttons in case the user has inputted anything there
     textBoxList.get(5).textValue = textBoxList.get(5).normal;
     depTime = false;
   } else if ((textBoxList.get(4).textValue != textBoxList.get(4).normal) && (textBoxList.get(5).textValue != textBoxList.get(5).normal))
   { // if arrival airport time selection has a valid input
-    num1 = Integer.parseInt(textBoxList.get(4).giveProcessedUserInput());
-    num2 = Integer.parseInt(textBoxList.get(5).giveProcessedUserInput());
+    time1 = Integer.parseInt(textBoxList.get(4).giveProcessedUserInput());
+    time2 = Integer.parseInt(textBoxList.get(5).giveProcessedUserInput());
     textBoxList.get(2).textValue = textBoxList.get(2).normal; // we flush the other time selection buttons in case the user has inputted anything there
     textBoxList.get(3).textValue = textBoxList.get(3).normal;
     depTime = true;
   } else
   {
     // we flush all time selection buttons in case the user has inputted anything there that is incomplete and as such invalid
-    num1 = 0000;
-    num2 = 0000;
+    time1 = 0000;
+    time2 = 0000;
     textBoxList.get(2).textValue = textBoxList.get(2).normal;
     textBoxList.get(3).textValue = textBoxList.get(3).normal;
     textBoxList.get(4).textValue = textBoxList.get(4).normal;
@@ -301,11 +367,14 @@ void ReloadEvent() {
   } else {
     selectedDepartureStation = null;
   }
+<<<<<<< HEAD
   long startTime = System.nanoTime();
 
+=======
+>>>>>>> main
 
   QueriesSelect selectQuery = new QueriesSelect();
-  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
+  filteredData = selectQuery.getRowsDisplay(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
 
   long endTime = System.nanoTime();
   long elapsedTime = endTime - startTime;
@@ -385,7 +454,7 @@ THEMES stringToEnum(String input) {
 }
 // This function simply ensures that only one of the 3 radio buttons at the bottom of the buttons display is active
 // And that if the user clicks on an active one they are all disabled - Angelos
-/*
+
 void radioButtonsFlightStatus() {
  if (cancelledFlights.isClicked()) {
  if (!cancelledFlights.active) {
@@ -421,4 +490,3 @@ void radioButtonsFlightStatus() {
  }
  }
 }
-*/
