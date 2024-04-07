@@ -3,10 +3,10 @@ class GraphTimeAccuracy extends Graph {
   GraphTimeAccuracy(int x, int y, int h, int w) {
     super(x, y, h, w);
   }
-  int calculateTimeAccuracy(int[] predDep, int[] actDep, int[] predArr, int[] actArr)
+  float calculateTimeAccuracy(int[] predDep, int[] actDep, int[] predArr, int[] actArr)
   {
     int timeDiffSum = 0;
-    int avgTimeDiff = 0;
+    float avgTimeDiff = 0;
     for(int i=0; i<predDep.length; i++) {
        timeDiffSum+=(actDep[i]-predDep[i])+(actArr[i]-predArr[i]);
      }
@@ -14,11 +14,11 @@ class GraphTimeAccuracy extends Graph {
      return avgTimeDiff;
   }
   
-  void drawAccuracyGraph(String[] carriers, int[] accuracy) {
+  void draw(String[] carriers, float[] accuracy) {
     color boxColour = (50);
     color lineColour = (150);
-    int boxLength = h;
-    int boxWidth = w;
+    int boxLength = high;
+    int boxWidth = wide;
     int lineThickness = 5;
     int minIncrements = 5;
     int incrementSpace = 20;

@@ -72,6 +72,8 @@ SimpleGraph graphS;
 ArrayList<RouteDataPoint> valuesA;
 Graph graphA;
 
+Graph graphT;
+
 int displayedGraph = 0;
 
 // SETUP FUNCTION
@@ -157,9 +159,10 @@ void setup() {
   graphP = new GraphPie(1300, 560, 800, 800);
   graphD = new DensityGraph(800, 150, 1200, 700);
   graphS = new SimpleGraph(600, 500, 1200, 1000);
+  graphT = new GraphTimeAccuracy(600, 500, 1200, 500);
   // graphA = new AirportGraph(600, 500, 1200, 1000);
 
-  Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
+  Graph[] graphs = {graphB, graphP, graphD, graphS, graphA, graphT};
   screen.numberOfGraphs = graphs.length;
 }
 
@@ -316,7 +319,7 @@ void ReloadEvent() {
   }
 
   QueriesSelect selectQuery = new QueriesSelect();
-  filteredData = selectQuery.getRowsDisplay(depTime, num1, num2, selectedArrivalStation, selectedDepartureStation, date1, date2);
+  filteredData = selectQuery.getRowsDisplay(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
 
 
   // screen setup
