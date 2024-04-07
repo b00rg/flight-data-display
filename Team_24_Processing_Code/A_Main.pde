@@ -159,7 +159,7 @@ void setup() {
   graphP = new GraphPie(1300, 560, 800, 800);
   graphD = new DensityGraph(800, 150, 1200, 700);
   graphS = new SimpleGraph(600, 500, 1200, 1000);
-  graphT = new GraphTimeAccuracy(1000, 500, 1200, 100);
+  graphT = new GraphTimeAccuracy(700, 500, 800, 100);
   // graphA = new AirportGraph(600, 500, 1200, 1000);
 
   Graph[] graphs = {graphB, graphP, graphD, graphS, graphA, graphT};

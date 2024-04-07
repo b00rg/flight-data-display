@@ -15,37 +15,33 @@ class GraphTimeAccuracy extends Graph {
   
   void draw(String[] carriers, float[] accuracy) {
     color boxColour = (50);
-    color lineColour = (150);
+    color lineColour = (200);
     int boxLength = width;
     int boxWidth = height;
-    int lineThickness = 5;
+    int lineThickness = 3;
     int minIncrements = 5;
-    int incrementSpace = 20;
+    int incrementSpace = 60;
     
     fill(boxColour);
     rect(xpos, ypos, boxLength, boxWidth);
     fill(255);
-    rect(xpos+(boxLength/2), ypos, 10, boxWidth);
+    rect(xpos+(boxLength/2), ypos, 5, boxWidth);
     
-    
-    for(int i=0; i<carriers.length; i++){
-      fill(lineColour);
-      rect(xpos+(boxLength/2)+((incrementSpace/minIncrements)*accuracy[i]), ypos, lineThickness, boxWidth);
-      
-      textAlign(CENTER, TOP);
-      text(carriers[i], xpos+(boxLength/2)+((incrementSpace/minIncrements)*accuracy[i]), ypos+boxWidth);
-      
+    fill(boxColour);
+    textAlign(CENTER, BOTTOM);
+    for (int i=1; i*incrementSpace<boxLength/2; i++)
+    {
+      rect(xpos+(boxLength/2)+(i*incrementSpace), ypos-10, lineThickness, 10);
+      text("+" + i*minIncrements, xpos+(boxLength/2)+(i*incrementSpace), ypos-10);
+      rect(xpos+(boxLength/2)-(i*incrementSpace), ypos-10, lineThickness, 10);
+      text("-" + i*minIncrements, xpos+(boxLength/2)-(i*incrementSpace), ypos-10);
     }
-    rect(xpos, ypos, boxLength, boxWidth);
-    fill(255);
-    rect(xpos+(boxLength/2), ypos, 10, boxWidth);
     
-    
+    textAlign(CENTER, TOP);    
     for(int i=0; i<carriers.length; i++){
       fill(lineColour);
       rect(xpos+(boxLength/2)+((incrementSpace/minIncrements)*accuracy[i]), ypos, lineThickness, boxWidth);
       
-      textAlign(CENTER, TOP);
       text(carriers[i], xpos+(boxLength/2)+((incrementSpace/minIncrements)*accuracy[i]), ypos+boxWidth);
       
     }
