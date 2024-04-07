@@ -212,7 +212,6 @@ class WidgetTextBox extends Widget {
         if (textValue == "" || textValue == null || textValue == normal) {
           return null;
         }
-        println("The textValue is atm = " + textValue);
         String Day = textValue;
         Day = (("2022/01/" + Day));
         Day = Day.replace("/", "-");
