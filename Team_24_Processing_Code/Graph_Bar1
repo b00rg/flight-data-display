@@ -1,0 +1,57 @@
+class GraphBar1 extends Graph {
+  float maxVal = 1000; // this is the scale for the bar chart - feel free to change if it is too small / too big 
+  GraphBar1(int x, int y, int wide, int high) {
+    super(x, y, wide, high);
+  }
+
+void drawBarChart(ArrayList<BarDataPoint1> values) {
+    // Set up variables for bar width, spacing, margins, and color
+    float barSpacing = 20;
+    float topMargin = 50;
+    float leftMargin = 50;
+    int barColour = color(50); // Assuming you want the bar color to be gray
+    float barWidth = (width - leftMargin) / values.size() - barSpacing;
+
+
+
+    // Loop through the ArrayList of BarDataPoint1 objects to draw each bar
+    for (int i = 0; i < values.size(); i++) {
+        BarDataPoint1 data = values.get(i);
+        // Calculate the height of each bar relative to the canvas height
+        float barHeight = map(data.FLIGHTS_COUNT, 0, maxVal, 0, 0); // FLIGHTS_COUNT should give the number of flights per carrier
+
+
+        // Calculate the position of each bar
+        float x = xpos + leftMargin + i * (barWidth + barSpacing);
+        float y = ypos + height - barHeight;
+
+        // Draw the bar
+        fill(barColour);
+        rect(x, y, barWidth, barHeight);
+
+        // Draw the label
+        textAlign(CENTER, CENTER - 20);
+        text(data.MKT_CARRIER, x + barWidth/2, y - 10);
+    }
+    // Draw the scale based on the maximum value and top margin
+    drawScale(maxVal, topMargin);
+}
+
+  // Method to draw the scale for the bar chart
+   void drawScale(float maxValue, float topMargin) {
+      float step = maxValue / 5; // Determine the step size for the scale
+  
+      // Draw tick marks and labels
+      for (int i = 0; i <= 5; i++) {
+          float yPos = map(ypos + (i * step), 0, maxValue, height, 0);
+  
+          // Draw tick mark
+          line(xpos + 10, yPos, xpos, yPos);
+  
+          // Draw label
+          textAlign(LEFT, CENTER);
+          text(nf(i * (step / 1000), 0, 1) + "k", xpos - 20, yPos + ypos);
+      }
+  }
+
+}
