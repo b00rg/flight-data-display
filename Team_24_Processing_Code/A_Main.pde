@@ -524,9 +524,7 @@ void radioButtonsFlightStatus() {
 
 
 void mousePressed()
-{
-  print(1);
-  
+{ 
   if (graphA.hoveredNode != null) 
   {
     graphA.selectAirport();
