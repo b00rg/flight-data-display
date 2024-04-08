@@ -104,18 +104,18 @@ static boolean[] statsShown = new boolean[18];
 ArrayList<DisplayDataPoint> filteredData;
 
 // GRAPH DECLERATIONS
-ArrayList<BarDataPoint> valuesB;
-GraphBar graphB;
+//ArrayList<BarDataPoint> valuesB;
+//GraphBar graphB;
 
 ArrayList<PieDataPoint> valuesP;
-GraphPie graphP;
+//GraphPie graphP;
 
 ArrayList<RouteDataPoint> valuesDS;
-DensityGraph graphD;
-SimpleGraph graphS;
+//DensityGraph graphD;
+//SimpleGraph graphS;
 
 ArrayList<RouteDataPoint> valuesA;
-Graph graphA;
+AirportGraph graphA;
 
 GraphTimeAccuracy graphT;
 
@@ -215,19 +215,20 @@ void setup() {
   // GRAPH SETUP
   
   QueriesSelect queries = new QueriesSelect();
-  valuesB = queries.getRowsBarGraph();
-  valuesP = queries.getRowsPieChart();
+  //valuesB = queries.getRowsBarGraph2();
+  //valuesP = queries.getRowsPieChart(true/***********/, );
   valuesDS = queries.getBusyRoutes();
   valuesA = queries.getAllRoutes();
 
-  graphB = new GraphBar(600, 250, 1200, 700);
-  graphP = new GraphPie(1300, 560, 800, 800);
-  graphD = new DensityGraph(800, 150, 1200, 700);
-  graphS = new SimpleGraph(600, 500, 1200, 1000);
+  //graphB = new GraphBar(600, 250, 1200, 700);
+  //graphP = new GraphPie(1300, 560, 800, 800);
+  //graphD = new DensityGraph(800, 150, 1200, 700);
+  //graphS = new SimpleGraph(600, 500, 1200, 1000);
   graphT = new GraphTimeAccuracy(700, 500, 800, 100);
-  // graphA = new AirportGraph(600, 500, 1200, 1000);
+  graphA = new AirportGraph(600, 250, 1200, 700);
 
-  Graph[] graphs = {graphB, graphP, graphD, graphS, graphA, graphT};
+  //Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
+  Graph[] graphs = new Graph[6];
   screen.numberOfGraphs = graphs.length;
 }
 
@@ -267,6 +268,9 @@ void draw() {
     break;
   case 1: // user is looking at tab 2
     screen.renderTab2();
+    break;
+  case 2: // user is looking at tab 2
+    screen.renderTab3();
     break;
   default:
     println("Tab not found");
@@ -394,10 +398,8 @@ void ReloadEvent() {
   } else {
     selectedDepartureStation = null;
   }
-
+  
   long startTime = System.nanoTime();
-
-
 
   QueriesSelect selectQuery = new QueriesSelect();
   filteredData = selectQuery.getRowsDisplay(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
@@ -516,4 +518,80 @@ void radioButtonsFlightStatus() {
  undisturbedFlights.active = false;
  }
  }
-}*/
+}
+*/
+
+
+
+void mousePressed()
+{
+  print(1);
+  
+  if (graphA.hoveredNode != null) 
+  {
+    graphA.selectAirport();
+    graphA.isDragging = true;
+    graphA.offsetX = mouseX - graphA.hoveredNode.x;
+    graphA.offsetY = mouseY - graphA.hoveredNode.y;
+  } 
+  else
+  graphA.deselectAirport();
+}
+
+void mouseReleased()
+{
+  // Stop dragging when the mouse is released
+  graphA.isDragging = false;
+}
+
+void mouseMoved()
+{
+  graphA.hoveredNode = graphA.getNodeUnderMouse();
+}
+
+void mouseDragged() {
+  if (graphA.isDragging && graphA.hoveredNode != null)
+  {
+    // Calculate the difference between the current and previous mouse positions
+    float deltaX = mouseX - pmouseX;
+    float deltaY = mouseY - pmouseY;
+     // Update position of the main dragged node
+    graphA.hoveredNode.x += deltaX;
+    graphA.hoveredNode.y += deltaY;
+
+    // Update positions of connected nodes (neighbors)
+    for (AirportNode neighbor : graphA.hoveredNode.neighbors.keySet())
+    {
+      // Calculate dampening factors based on the size of the nodes
+      float nodeSizeRatio = graphA.hoveredNode.radius / neighbor.radius; // Calculate size ratio
+      float dampeningFactor = 0.2 * nodeSizeRatio; // Adjust the dampening factor based on size ratio
+      
+      // Apply dampening effect to the movement of connected nodes
+      float neighborDeltaX = deltaX * dampeningFactor; // Apply dampening to the horizontal movement
+      float neighborDeltaY = deltaY * dampeningFactor; // Apply dampening to the vertical movement
+      
+      // Update position of the connected node
+      neighbor.x += neighborDeltaX;
+      neighbor.y += neighborDeltaY;
+      
+      // Update positions of nodes connected to the connected node
+      for (AirportNode nestedNeighbor : neighbor.neighbors.keySet()) {
+        // Calculate nested dampening factors based on the size of the nodes
+        float nestedNodeSizeRatio = neighbor.radius / nestedNeighbor.radius; // Calculate size ratio
+        float nestedDampeningFactor = 0.1 * nestedNodeSizeRatio; // Adjust the nested dampening factor based on size ratio
+        
+        // Apply further dampening effect to the movement of nested connected nodes
+        float nestedNeighborDeltaX = neighborDeltaX * nestedDampeningFactor; // Apply dampening to the horizontal movement
+        float nestedNeighborDeltaY = neighborDeltaY * nestedDampeningFactor; // Apply dampening to the vertical movement
+       
+        // Update position of the nested connected node
+        nestedNeighbor.x += nestedNeighborDeltaX;
+        nestedNeighbor.y += nestedNeighborDeltaY;
+      }
+    }
+    
+      // Update the original mouse position
+    graphA.offsetX = mouseX - graphA.hoveredNode.x;
+    graphA.offsetY = mouseY - graphA.hoveredNode.y;
+  }
+}
