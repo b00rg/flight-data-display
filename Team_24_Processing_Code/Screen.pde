@@ -148,7 +148,13 @@ class Screen
       text("CANCELLED", xpos+ w/2, ypos + h / 2);
     }
     fill(TEXT_COLOR);
-    text("Carrier: " + D.MKT_CARRIER, xpos + w/2, ypos + h / 10);
+    if(nameToLogo(D.MKT_CARRIER) != null)
+    {
+      text("Carrier: " + D.MKT_CARRIER, xpos + w/2, ypos + h / 10);
+      image(nameToLogo(D.MKT_CARRIER), xpos + w/1.2,ypos + h / 2.5, (int)(width * 0.02604 * 2), (int)(height * 0.04629 * 2));
+    } else {
+      text("Carrier: " + D.MKT_CARRIER, xpos + w/2, ypos + h / 10);
+    }
     text("Date: " + D.FL_DATE, xpos + w/2, ypos + h / 10 *3);
   }
 
@@ -168,6 +174,10 @@ class Screen
     case 3:
       //graphS.draw(valuesDS);
       break;
+    case 5:
+      String[] carriers = {"A", "B", "C"};
+      float[] averages = {6.012, 12.98, -16.43};
+      graphT.draw(carriers, averages);
     default:
       println("No graph found");
       break;
@@ -321,7 +331,7 @@ class Screen
       INACTIVE_TEXT_BOX = color(150);
       break;
     default:
-       PRIMARY_COLOR = color(0, 50, 100);
+      PRIMARY_COLOR = color(0, 50, 100);
       SECONDARY_COLOR = color(200, 200, 255);
       TERTIARY_COLOR = color(100, 200, 200);
       BACKGROUND = color(230, 230, 230);

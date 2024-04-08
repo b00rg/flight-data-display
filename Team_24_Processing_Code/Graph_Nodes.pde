@@ -270,16 +270,16 @@ class AirportGraph extends Graph
         float textBoxY = idealTextBoxY;
       
         // If the node collides with the left or right edge of the screen, move the bounding box left or right
-        if (selectedNode.x - textBoxWidth / 2 < 0)
-          textBoxX = 0;
-        else if (selectedNode.x + textBoxWidth / 2 > width)
-        textBoxX = width - textBoxWidth;
+        if (selectedNode.x - textBoxWidth / 2 < xpos)
+          textBoxX = xpos;
+        else if (selectedNode.x + textBoxWidth / 2 > width + xpos)
+          textBoxX = width + xpos - textBoxWidth;
       
         // If the node collides with the top or bottom edge of the screen, move the bounding box up or down
-        if (selectedNode.y - selectedNode.radius - textBoxHeight - 20 < 0)
-          textBoxY = 0;
-        else if (selectedNode.y - selectedNode.radius - textBoxHeight - 20 > height)
-            textBoxY = height - textBoxHeight;
+        if (selectedNode.y - selectedNode.radius - textBoxHeight - 20 < ypos)
+          textBoxY = ypos;
+        else if (selectedNode.y - selectedNode.radius - 20 > height + ypos)
+          textBoxY = height + ypos - textBoxHeight;
 
         fill(0, 0, 0, 100); // Transparent black with alpha at 100 (adjust for desired level)
         stroke(0, 0, 0, 150); // Dark grey border with some transparency (adjust alpha)
