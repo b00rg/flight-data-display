@@ -21,7 +21,7 @@ class Queries {
   
   // CHECK IF EMPTY
   String username = "root";
-  String password = "RubberDuck!";
+  String password = "";
   
   Connection connection;
   
