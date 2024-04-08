@@ -19,7 +19,7 @@ class Widget{
     }
   }
 
-  /*boolean isInputValidtimeRange(String input){ // Checks if the inputed "XX:XX" string is a vald 24 hour clock representation
+  boolean isInputValidtimeRange(String input){ // Checks if the inputed "XX:XX" string is a vald 24 hour clock representation
     try{
       String regex = "^(?:[01]?[0-9]|2[0-3]):[0-5][0-9]$";
       Pattern pattern = Pattern.compile(regex);
@@ -29,5 +29,5 @@ class Widget{
     {
       return false; //if anytihng goes wrong with this most likely the user's input is bad
     }
-  }*/
+  }
 }

@@ -163,19 +163,16 @@ class Screen
     switch(displayedGraph)
     {
     case 0:
-      graphB.drawBarChart(valuesB);
+      //graphB.drawBarChart(valuesB);
       break;
     case 1:
-      graphP.drawPieChart(valuesP);
+      //graphP.drawPieChart(valuesP);
       break;
     case 2:
-      graphD.draw(valuesDS);
+      //graphD.draw(valuesDS);
       break;
     case 3:
-      graphS.draw(valuesDS);
-      break;
-    case 4:
-      //graphA.draw();
+      //graphS.draw(valuesDS);
       break;
     case 5:
       String[] carriers = {"A", "B", "C"};
@@ -185,6 +182,15 @@ class Screen
       println("No graph found");
       break;
     }
+  }
+  
+  void renderTab3()
+  {
+    graphA.update(); // Update node positions and check for collisions
+    graphA.draw();
+    
+    graphA.displayHoveredNodeLabel();
+    graphA.displaySelectedAirportData();
   }
 
   void pageSelectButtons()

@@ -6,10 +6,13 @@ class GraphPie extends Graph {
     String[] labels = {"Flights Cancelled", "Flights Diverted", "Flights As Expected"};
     int totalFlights = values.size();
     float startAngle = 0; 
-    float labelX = 10;
-    float labelY = 5;
-    float colour = 0.0; 
-    for (int i = 0; i < labels.length; i++) {
+
+    float labelX = xpos/2;
+    float labelY = ypos * 1.3;
+    float colour = 0.0, colourB = 150.00; 
+    // Loop through each label to draw the pie chart slices
+    for (int i = 0; i < labels.length; i++) 
+    {
       float angle = radians(map(i, 0, labels.length, 0, 360)); ; // Calculate angle for this slice
       float endAngle = startAngle + angle;
       
