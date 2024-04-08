@@ -157,16 +157,19 @@ class Screen
     }
     text("Date: " + D.FL_DATE, xpos + w/2, ypos + h / 10 *3);
   }
-
+  
+  QueriesSelect queries = new QueriesSelect();
+  
   void renderTab2()
-  {
+  { 
     switch(displayedGraph)
     {
     case 0:
       //graphB.drawBarChart(valuesB);
       break;
     case 1:
-      //graphP.drawPieChart(valuesP);
+      valuesP = queries.getRowsPieChart(true, 0000, 2300, null, null, null, null);
+      graphP.drawPieChart(valuesP);
       break;
     case 2:
       //graphD.draw(valuesDS);
