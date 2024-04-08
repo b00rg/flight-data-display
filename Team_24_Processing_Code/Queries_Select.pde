@@ -197,9 +197,8 @@ class QueriesSelect extends Queries {
     ArrayList<DelaysDataPoint> dataList = new ArrayList<DelaysDataPoint>();
     try {
         Statement stmt = connection.createStatement();
-        String query = "SELECT MKT_CARRIER, DEP_TIME, ARR_TIME, CRS_DEP_TIME, CRS_ARR_TIME " +
-                       "FROM " + super.tableName +
-                       " GROUP BY MKT_CARRIER;";
+        String query = "SELECT MKT_CARRIER, AVG((DEP_TIME - CRS_DEP_TIME) + (ARR_TIME - CRS_ARR_TIME)) AS AVG_DELAY FROM " +
+          super.tableName + " GROUP BY MKT_CARRIER;";
         ResultSet resultSet = stmt.executeQuery(query);
         
         while (resultSet.next()) {

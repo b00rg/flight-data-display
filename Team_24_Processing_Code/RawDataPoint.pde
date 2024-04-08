@@ -211,19 +211,13 @@ class RouteDataPoint extends RawDataPoint {
 class DelaysDataPoint extends RawDataPoint {
   
   String MKT_CARRIER = null;
-  int CRS_DEP_TIME = 0; 
-  int DEP_TIME = 0;
-  int CRS_ARR_TIME = 0;
-  int ARR_TIME = 0;
+  int AVG_DELAY = 0;
 
   DelaysDataPoint(ResultSet resultSet) {
     super(resultSet); // Call superclass constructor
     try {
       MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
-      DEP_TIME = columnExists(resultSet, "DEP_TIME") ? resultSet.getInt("DEP_TIME") : 0;
-      ARR_TIME = columnExists(resultSet, "ARR_TIME") ? resultSet.getInt("ARR_TIME") : 0;
-      CRS_DEP_TIME = columnExists(resultSet, "CRS_DEP_TIME") ? resultSet.getInt("DEP_TIME") : 0;
-      CRS_ARR_TIME = columnExists(resultSet, "CRS_ARR_TIME") ? resultSet.getInt("ARR_TIME") : 0;
+      AVG_DELAY = columnExists(resultSet, "AVG_DELAY") ? resultSet.getInt("AVG_DELAY") : 0;
     } catch (SQLException e) {
       println("SQLException: " + e.getMessage());
     }
