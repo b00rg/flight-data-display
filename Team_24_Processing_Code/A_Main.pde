@@ -117,6 +117,8 @@ SimpleGraph graphS;
 ArrayList<RouteDataPoint> valuesA;
 Graph graphA;
 
+GraphTimeAccuracy graphT;
+
 int displayedGraph = 0;
 
 // SETUP FUNCTION
@@ -186,13 +188,13 @@ void setup() {
   rightButton = loadImage("right.png");
   
   
-  carrierAA = loadImage(sketchPath() +"/data/airline carriers/AA.png");
-  carrierAS = loadImage(sketchPath() +"/data/airline carriers/AS.png");
-  carrierB6 = loadImage(sketchPath() +"/data/airline carriers/B6.png");
+  carrierAA = loadImage(sketchPath() +"/data/airline carriers/aa.png");
+  carrierAS = loadImage(sketchPath() +"/data/airline carriers/as.png");
+  carrierB6 = loadImage(sketchPath() +"/data/airline carriers/b6.png");
   carrierG4 = loadImage(sketchPath() +"/data/airline carriers/G4.png");
-  carrierHA = loadImage(sketchPath() +"/data/airline carriers/HA.png");
+  carrierHA = loadImage(sketchPath() +"/data/airline carriers/ha.png");
   carrierNK = loadImage(sketchPath() +"/data/airline carriers/NK.png");
-  carrierWN = loadImage(sketchPath() +"/data/airline carriers/WN.png");
+  carrierWN = loadImage(sketchPath() +"/data/airline carriers/wn.png");
   
   
  
@@ -222,9 +224,10 @@ void setup() {
   graphP = new GraphPie(1300, 560, 800, 800);
   graphD = new DensityGraph(800, 150, 1200, 700);
   graphS = new SimpleGraph(600, 500, 1200, 1000);
+  graphT = new GraphTimeAccuracy(700, 500, 800, 100);
   // graphA = new AirportGraph(600, 500, 1200, 1000);
 
-  Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
+  Graph[] graphs = {graphB, graphP, graphD, graphS, graphA, graphT};
   screen.numberOfGraphs = graphs.length;
 }
 
