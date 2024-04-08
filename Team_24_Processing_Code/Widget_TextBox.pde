@@ -238,7 +238,6 @@ class WidgetTextBox extends Widget {
     return false; // Unreachable code, added for completeness
   }
 
-
   /**
    * Returns a string representation of the button's input.
    *
