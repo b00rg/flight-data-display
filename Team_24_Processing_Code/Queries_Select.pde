@@ -46,7 +46,7 @@ class QueriesSelect extends Queries {
       Statement stmt = connection.createStatement();
       String whereClause = whereClauseBuilder(depTrue, lowerVal, upperVal, depAirport, arrAirport, startDateRange, endDateRange);
       String query = "SELECT MKT_CARRIER, COUNT(*) AS FLIGHT_COUNT FROM " + super.tableName + whereClause + " GROUP BY MKT_CARRIER;";
-      
+      println(query);
       ResultSet resultSet = stmt.executeQuery(query);
       
       while (resultSet.next()) {

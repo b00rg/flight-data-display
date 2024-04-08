@@ -74,10 +74,9 @@ enum WIDGET_TEXT_TYPE {
   TIME,
     DATE
 }
+ArrayList<BarDataPoint1> valuesB;
+GraphBar1 graphB;
 /*
-ArrayList<BarDataPoint> valuesB;
-GraphBar graphB;
-
 ArrayList<PieDataPoint> valuesP;
 GraphPie graphP;
 
@@ -185,8 +184,10 @@ void setup() {
   // GRAPH SETUP
   
   QueriesSelect queries = new QueriesSelect();
+  
+  
   /*
-  valuesB = queries.getRowsBarGraph();
+  valuesB = queries.getRowsBarGraph1();
   valuesP = queries.getRowsPieChart();
   valuesDS = queries.getBusyRoutes();
   valuesA = queries.getAllRoutes();
@@ -340,7 +341,6 @@ void ReloadEvent() {
   {
     date1 = textBoxList.get(0).giveProcessedUserInput();
     date2 = textBoxList.get(1).giveProcessedUserInput();
-    println("The input i got for time selection is: \n date1 = " + date1 + "\ndate2 = " + date2);
   } else
   {
     // if the user did not give a full date seelction we empty date selection, the dates are left null
@@ -365,7 +365,13 @@ void ReloadEvent() {
 
   QueriesSelect selectQuery = new QueriesSelect();
   filteredData = selectQuery.getRowsDisplay(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
-
+  
+  // EMMA OVER HERE 
+  valuesB = selectQuery.getRowsBarGraph1(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
+  for (int i = 0; i < valuesB.size(); i++){
+    BarDataPoint1 data = valuesB.get(i);
+    println(data.FLIGHT_COUNT);
+  }
 
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data

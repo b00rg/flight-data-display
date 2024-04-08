@@ -107,13 +107,13 @@ class DisplayDataPoint extends RawDataPoint {
 class BarDataPoint1 extends RawDataPoint {
   
   String MKT_CARRIER = null;
-  int FLIGHTS_COUNT = 0;
+  int FLIGHT_COUNT = 0;
 
   BarDataPoint1(ResultSet resultSet) {
     super(resultSet); // Call superclass constructor
     try {
       MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
-      FLIGHTS_COUNT = columnExists(resultSet, "FLIGHTS_COUNT") ? resultSet.getInt("FLIGHTS_COUNT") : 0;
+      FLIGHT_COUNT = columnExists(resultSet, "FLIGHT_COUNT") ? resultSet.getInt("FLIGHT_COUNT") : 0;
     } catch (SQLException e) {
       println("SQLException: " + e.getMessage());
     }

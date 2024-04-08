@@ -14,13 +14,16 @@ void drawBarChart(ArrayList<BarDataPoint1> values) {
     float barWidth = (width - leftMargin) / values.size() - barSpacing;
 
     // Get the maximum flight count
-    int maxFlightCount = 100;
+    int maxFlightCount = 0;
+    for (BarDataPoint1 data : values) {
+      maxFlightCount = Math.max(maxFlightCount, data.FLIGHT_COUNT);
+    }
 
     // Loop through the ArrayList of BarDataPoint1 objects to draw each bar
     for (int i = 0; i < values.size(); i++) {
         BarDataPoint1 data = values.get(i);
         // Calculate the height of each bar relative to the canvas height
-        float barHeight = map(data.FLIGHTS_COUNT, 0, maxVal, 0, height - topMargin);
+        float barHeight = map(data.FLIGHT_COUNT, 0, maxVal, 0, height - topMargin);
 
         // Calculate the position of each bar
         float x = xpos + leftMargin + i * (barWidth + barSpacing);
