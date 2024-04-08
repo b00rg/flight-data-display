@@ -235,7 +235,7 @@ class Screen {
       break;
     case 1:
       // If displayedGraph is 1, draw a pie chart using valuesP
-      graphP.drawPieChart(valuesP);
+      graphP.render();
       break;
     case 2:
       // If displayedGraph is 2, draw a specific type of graph using valuesDS

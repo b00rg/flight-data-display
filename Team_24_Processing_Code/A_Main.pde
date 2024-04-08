@@ -7,6 +7,7 @@ import java.util.regex.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import processing.core.PApplet;
 
 // THEMES
 
@@ -198,7 +199,7 @@ void setup() {
   valuesA = queries.getAllRoutes();
 
   graphB = new GraphBar(600, 250, 1200, 700);
-  graphP = new GraphPie(1300, 560, 800, 800);
+  graphP = new GraphPie(1000, 360, 800, 800);
   graphD = new DensityGraph(800, 150, 1200, 700);
   graphS = new SimpleGraph(600, 500, 1200, 1000);
   graphT = new GraphTimeAccuracy(700, 500, 800, 100);
@@ -389,6 +390,8 @@ void ReloadEvent() {
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
   screen.selectedPage = 1;
+  
+  graphP.calculateFlights(filteredData);
 }
 
 // check user scroll input, and apply the scroll to all active drop down buttons, inactive drop down buttons simply ignore this call - Angelos
