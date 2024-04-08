@@ -60,4 +60,4 @@
       text(nf(i * (step / 1000), 0, 1) + "k", xpos - 20, yPos + ypos);
     }
   }
-}
+}*/

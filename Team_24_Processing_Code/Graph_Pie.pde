@@ -28,7 +28,8 @@ class GraphPie extends Graph {
     float labelY = ypos * 1.3;
     float colour = 0.0, colourB = 150.00; 
     // Loop through each label to draw the pie chart slices
-    for (int i = 0; i < labels.length; i++) {
+    for (int i = 0; i < labels.length; i++) 
+    {
       float angle = radians(map(i, 0, labels.length, 0, 360)); ; // Calculate angle for this slice
       // Calculate angle for this slice based on its position in the labels array
       float endAngle = startAngle + angle;       // Calculate end angle for this slice

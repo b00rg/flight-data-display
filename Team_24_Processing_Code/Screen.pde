@@ -168,13 +168,19 @@ class Screen
     case 3:
       //graphS.draw(valuesDS);
       break;
-    case 4:
-      //graphA.draw();
-      break;
     default:
       println("No graph found");
       break;
     }
+  }
+  
+  void renderTab3()
+  {
+    graphA.update(); // Update node positions and check for collisions
+    graphA.draw();
+    
+    graphA.displayHoveredNodeLabel();
+    graphA.displaySelectedAirportData();
   }
 
   void pageSelectButtons()
