@@ -108,7 +108,7 @@ ArrayList<DisplayDataPoint> filteredData;
 //GraphBar graphB;
 
 ArrayList<PieDataPoint> valuesP;
-//GraphPie graphP;
+GraphPie graphP;
 
 ArrayList<RouteDataPoint> valuesDS;
 //DensityGraph graphD;
@@ -216,20 +216,22 @@ void setup() {
   
   QueriesSelect queries = new QueriesSelect();
   //valuesB = queries.getRowsBarGraph2();
-  //valuesP = queries.getRowsPieChart(true/***********/, );
+  valuesP = queries.getRowsPieChart(true, 0000, 2300, null, null, null, null);
   valuesDS = queries.getBusyRoutes();
   valuesA = queries.getAllRoutes();
 
   //graphB = new GraphBar(600, 250, 1200, 700);
-  //graphP = new GraphPie(1300, 560, 800, 800);
+  graphP = new GraphPie(1300, 560, 800, 800);
   //graphD = new DensityGraph(800, 150, 1200, 700);
   //graphS = new SimpleGraph(600, 500, 1200, 1000);
   graphT = new GraphTimeAccuracy(700, 500, 800, 100);
-  graphA = new AirportGraph(600, 250, 1200, 700);
 
   //Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
   Graph[] graphs = new Graph[6];
   screen.numberOfGraphs = graphs.length;
+  
+  // Tab 3 setup
+  graphA = new AirportGraph(600, 250, 1200, 700);
 }
 
 void draw() {
@@ -288,7 +290,7 @@ void mouseClicked() {
     ReloadButton.active = true;
     ReloadButton.render();
     ReloadEvent();
-    screen.renderTab1();
+    //screen.renderTab1();
     ReloadButton.active = false;
     ReloadButton.render();
   }
@@ -524,9 +526,7 @@ void radioButtonsFlightStatus() {
 
 
 void mousePressed()
-{
-  print(1);
-  
+{ 
   if (graphA.hoveredNode != null) 
   {
     graphA.selectAirport();
