@@ -124,7 +124,7 @@ int displayedGraph = 0;
 // SETUP FUNCTION
 void setup() {
   fullScreen();
-  screen = new Screen(width, height);
+  screen = new Screen();
   // THEME SETUP
   screen.changeTheme(THEMES.DEFAULT);
   ThemeSelection = new WidgetDropDown(width / 6, 0, (int)(width * 0.10416), (int)(height*0.037037), TextBoxFont, themeNames, "DEFAULT");
@@ -337,7 +337,6 @@ void ReloadEvent() {
   String selectedDepartureStation = "";
   String date1 = null;
   String date2 = null;
-
   // TIME SELECTION
 
   // call the time inputs from the departure and arrival time selection buttons
