@@ -1,11 +1,11 @@
-/*class GraphBar extends Graph {
+class GraphBar extends Graph {
 
   GraphBar(int x, int y, int wide, int high) {
     super(x, y, wide, high);
   }
 
 
-  void drawBarChart(ArrayList<BarDataPoint1> values) {
+  void drawBarChart(ArrayList<BarDataPoint2> values) {
     // Set up variables for bar width, spacing, margins, and color
     // Set up variables for bar width and spacing
     float barSpacing = 20;
@@ -16,13 +16,13 @@
 
     float maxVal = 0;
     // Find the maximum value in the dataset
-    for (BarDataPoint data : values) {
+    for (BarDataPoint2 data : values) {
       maxVal = max(maxVal, data.getTOTAL_DIST());
     }
 
     // Loop through the ArrayList of BarDataPoint objects to draw each bar
     for (int i = 0; i < values.size(); i++) {
-      BarDataPoint data = values.get(i);
+      BarDataPoint2 data = values.get(i);
       // Calculate the height of each bar relative to the canvas height
       float barHeight = map(data.getTOTAL_DIST(), 0, maxVal, 0, height - topMargin);
 
@@ -60,4 +60,4 @@
       text(nf(i * (step / 1000), 0, 1) + "k", xpos - 20, yPos + ypos);
     }
   }
-}*/
+}

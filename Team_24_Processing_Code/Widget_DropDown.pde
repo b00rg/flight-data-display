@@ -69,6 +69,7 @@ class WidgetDropDown extends Widget {
     {
       fill(screen.TEXT_COLOR);
       textAlign(LEFT, CENTER);
+      textSize(20);
       text(selectedValue, xpos + 5, ypos + high/3);
     }
   }
