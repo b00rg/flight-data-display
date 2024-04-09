@@ -211,7 +211,7 @@ void setup() {
   carrierNK = loadImage(sketchPath() +"/data/airline carriers/NK.png");
   carrierWN = loadImage(sketchPath() +"/data/airline carriers/WN.png");
   carrierUA = loadImage(sketchPath() +"/data/airline carriers/UA.png");
-  carrierDL = loadImage(sketchPath() +"/data/airline carriera/DL.png");
+  carrierDL = loadImage(sketchPath() +"/data/airline carriers/DL.png");
   
   /*cancelledFlights = new WidgetButton(width/20, height / 10 * 7, 50, 50, 20);
   delayedFlights = new WidgetButton(width/20 * 2, height / 10 * 7, 50, 50, 20);
