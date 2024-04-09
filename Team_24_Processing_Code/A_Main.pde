@@ -104,32 +104,40 @@ static boolean[] statsShown = new boolean[18];
 ArrayList<DisplayDataPoint> filteredData;
 
 // GRAPH DECLERATIONS
-//ArrayList<BarDataPoint> valuesB;
-//GraphBar graphB;
 
 ArrayList<PieDataPoint> valuesP;
 GraphPie graphP;
 
+ArrayList<BarDataPoint1> valuesB1;
+GraphBar1 graphB1;
+
 ArrayList<RouteDataPoint> valuesDS;
-//DensityGraph graphD;
+DensityGraph graphD;
 //SimpleGraph graphS;
+
+ArrayList<BarDataPoint2> valuesB2;
+GraphBar graphB2;
+
+GraphTimeAccuracy graphT;
 
 ArrayList<RouteDataPoint> valuesA;
 AirportGraph graphA;
 
-GraphTimeAccuracy graphT;
 
 int displayedGraph = 0;
 
-// SETUP FUNCTION
+//SETUP FUNCTION
 void setup() {
   fullScreen();
   screen = new Screen(width, height);
+  
   // THEME SETUP
   screen.changeTheme(THEMES.DEFAULT);
   ThemeSelection = new WidgetDropDown(width / 6, 0, (int)(width * 0.10416), (int)(height*0.037037), TextBoxFont, themeNames, "DEFAULT");
   ThemeSelection.selectedValue = "DEFAULT";
-  // DATA SETUP
+  
+  //DATA SETUP
+
   QueriesInitial setupQuery = new QueriesInitial();
   setupQuery.createDatabase();
   setupQuery.useDatabase();
@@ -215,21 +223,25 @@ void setup() {
   // GRAPH SETUP
   
   QueriesSelect queries = new QueriesSelect();
-  //valuesB = queries.getRowsBarGraph2();
-  valuesP = queries.getRowsPieChart(true, 0000, 2300, null, null, null, null);
+  
+  
+  valuesP = queries.getRowsPieChart(depTime, 0000, 2300, departures.selectedValue, arrivals.selectedValue, startDate.num1, endDate.num1);
+  valuesB1 = queries.getRowsBarGraph1(true, 0000, 2300, departures.selectedValue, arrivals.selectedValue, startDate.num1, endDate.num1);
+  valuesB2 = queries.getRowsBarGraph2();
   valuesDS = queries.getBusyRoutes();
   valuesA = queries.getAllRoutes();
 
-  //graphB = new GraphBar(600, 250, 1200, 700);
-  graphP = new GraphPie(1300, 560, 800, 800);
-  //graphD = new DensityGraph(800, 150, 1200, 700);
+  graphP = new GraphPie(1300, 600, 700, 700);
+  graphB1 = new GraphBar1(600, 250, 1200, 700);
+  graphB2 = new GraphBar(600, 250, 1200, 700);
+  graphD = new DensityGraph(850, 250, 650, 650);
   //graphS = new SimpleGraph(600, 500, 1200, 1000);
   graphT = new GraphTimeAccuracy(700, 500, 800, 100);
 
   //Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
   Graph[] graphs = new Graph[6];
   screen.numberOfGraphs = graphs.length;
-  
+
   // Tab 3 setup
   graphA = new AirportGraph(600, 250, 1200, 700);
 }
@@ -293,6 +305,10 @@ void mouseClicked() {
     //screen.renderTab1();
     ReloadButton.active = false;
     ReloadButton.render();
+    
+    QueriesSelect queries = new QueriesSelect();
+    valuesP = queries.getRowsPieChart(true, 0000, 2300, dropDownList.get(0).selectedValue, dropDownList.get(1).selectedValue, startDate.num1, endDate.num1);
+    valuesB1 = queries.getRowsBarGraph1(true, 0000, 2300, dropDownList.get(0).selectedValue, dropDownList.get(1).selectedValue, startDate.num1, endDate.num1);
   }
   for (int i = 0; i < TabButtons.size(); i++) 
   { // we first investigate if the user is trying to change tabs
@@ -328,16 +344,18 @@ void mouseClicked() {
       dropDownList.get(i).isClicked();
     }
   }
+
   screen.changeTheme(stringToEnum(ThemeSelection.selectedValue));
 }
 
+// setup place holder values
+boolean depTime = false;
+int time1 = 0;
+int time2 = 0;
+  
 // creates all query related data pieces and collect the data from input buttons, some of the data is also processed
 // to be compatible with our query system requirements, the filteredData attaylist is then adjusted to contain the new data - Angelos
 void ReloadEvent() {
-  // setup place holder values
-  boolean depTime = false;
-  int time1 = 0;
-  int time2 = 0;
 
   String selectedArrivalStation = "";
   String selectedDepartureStation = "";
@@ -410,7 +428,13 @@ void ReloadEvent() {
   long elapsedTime = endTime - startTime;
   double elapsedTimeInMs = (double) elapsedTime / 1_000_000.0;
   println("Elapsed Time: " + elapsedTimeInMs + " milliseconds, that is how long it took to add the new data to the filteredData array");
-
+  
+  // EMMA OVER HERE 
+  valuesB1 = selectQuery.getRowsBarGraph1(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
+  for (int i = 0; i < valuesB1.size(); i++){
+    BarDataPoint1 data = valuesB1.get(i);
+    println(data.FLIGHT_COUNT);
+  }
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
@@ -482,6 +506,7 @@ THEMES stringToEnum(String input) {
             return THEMES.DEFAULT;
     }
 }
+
 // This function simply ensures that only one of the 3 radio buttons at the bottom of the buttons display is active
 // And that if the user clicks on an active one they are all disabled - Angelos
 
@@ -589,9 +614,27 @@ void mouseDragged() {
         nestedNeighbor.y += nestedNeighborDeltaY;
       }
     }
-    
       // Update the original mouse position
     graphA.offsetX = mouseX - graphA.hoveredNode.x;
     graphA.offsetY = mouseY - graphA.hoveredNode.y;
+  }
+}
+
+// In modern java an enum can be associated to a number, not in processing, this function converts the index of the theme that the user has selected
+// in the theme selection button to the curresponding theme in the enum, this is a product of using processing unfortunetly
+THEMES indexToTheme(int index)
+{
+  switch(index)
+  {
+    case 1:
+      return THEMES.GIRLBOSS;
+    case 2:
+      return THEMES.BOYBOSS;
+    case 3:
+      return THEMES.DAY;
+    case 4:
+      return THEMES.DUSK;
+    default:
+      return THEMES.DEFAULT;
   }
 }

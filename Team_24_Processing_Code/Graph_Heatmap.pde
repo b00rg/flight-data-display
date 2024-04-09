@@ -6,12 +6,13 @@ class DensityGraph extends Graph {
         // Set up variables for drawing
         float topMargin = 50;
         float leftMargin = 50;
-        float cellSize = 120;
+        float cellSize;
 
-  void draw(ArrayList<RouteDataPoint> values) {
-    
+  void draw(ArrayList<RouteDataPoint> values)
+  {
         // Find the unique origin and destination airports
         ArrayList<String> airports = new ArrayList<>();
+        
         for (RouteDataPoint data : values) {
             if (!airports.contains(data.ORIGIN)) {
                 airports.add(data.ORIGIN);
@@ -21,6 +22,8 @@ class DensityGraph extends Graph {
             }
         }
         airports.sort(String::compareTo);
+        
+        cellSize = width/airports.size();
 
         // Calculate the maximum flight count
         int maxFlightCount = 0;
