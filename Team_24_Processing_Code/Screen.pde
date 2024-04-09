@@ -179,9 +179,7 @@ class Screen
       graphD.draw(valuesDS);
       break;
     case 5:
-      String[] carriers = {"A", "B", "C"};
-      float[] averages = {6.012, 12.98, -16.43};
-      graphT.draw(carriers, averages);
+      graphT.draw(valuesT);
     default:
       println("No graph found");
       break;
