@@ -56,6 +56,8 @@ PImage carrierG4;
 PImage carrierHA;
 PImage carrierNK;
 PImage carrierWN;
+PImage carrierUA;
+PImage carrierDL;
 
 // Takes in the name of a carrier and returns the associated image
 PImage nameToLogo(String name)
@@ -76,6 +78,10 @@ PImage nameToLogo(String name)
       return carrierNK;
     case "WN":
       return carrierWN;
+    case "UA":
+      return carrierUA;
+    case "DL":
+      return carrierDL;
     default:
       return null;
   }
@@ -197,16 +203,16 @@ void setup() {
   rightButton = loadImage("right.png");
   
   
-  carrierAA = loadImage(sketchPath() +"/data/airline carriers/aa.png");
-  carrierAS = loadImage(sketchPath() +"/data/airline carriers/as.png");
-  carrierB6 = loadImage(sketchPath() +"/data/airline carriers/b6.png");
+  carrierAA = loadImage(sketchPath() +"/data/airline carriers/AA.png");
+  carrierAS = loadImage(sketchPath() +"/data/airline carriers/AS.png");
+  carrierB6 = loadImage(sketchPath() +"/data/airline carriers/B6.png");
   carrierG4 = loadImage(sketchPath() +"/data/airline carriers/G4.png");
-  carrierHA = loadImage(sketchPath() +"/data/airline carriers/ha.png");
+  carrierHA = loadImage(sketchPath() +"/data/airline carriers/HA.png");
   carrierNK = loadImage(sketchPath() +"/data/airline carriers/NK.png");
-  carrierWN = loadImage(sketchPath() +"/data/airline carriers/wn.png");
+  carrierWN = loadImage(sketchPath() +"/data/airline carriers/WN.png");
+  carrierUA = loadImage(sketchPath() +"/data/airline carriers/UA.png");
+  carrierDL = loadImage(sketchPath() +"/data/airline carriera/DL.png");
   
-  
- 
   /*cancelledFlights = new WidgetButton(width/20, height / 10 * 7, 50, 50, 20);
   delayedFlights = new WidgetButton(width/20 * 2, height / 10 * 7, 50, 50, 20);
   undisturbedFlights = new WidgetButton(width/20 * 3, height / 10 * 7, 50, 50, 20);
