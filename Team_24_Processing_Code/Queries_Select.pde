@@ -392,7 +392,6 @@ class QueriesSelect extends Queries {
     whereClause = " WHERE " + whereClause;
   }
   return whereClause;
-    
 }  
 
 }

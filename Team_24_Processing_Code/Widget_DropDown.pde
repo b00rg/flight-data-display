@@ -39,11 +39,19 @@ class WidgetDropDown extends Widget {
   void scroll(int i) {
     scrollIndex += i;
     if (scrollIndex < 0) {
-      scrollIndex = 0 ;
+      scrollIndex = 0;
     }
-    if (scrollIndex > - numOfDropsToDisplay + elements.length)
+    if (scrollIndex > - numOfDropsToDisplay + validData.size())
     {
-      scrollIndex = elements.length - numOfDropsToDisplay;
+      scrollIndex = validData.size() - numOfDropsToDisplay;
+    }
+    if (validData.size() <= scrollIndex)
+    {
+      scrollIndex = 0;
+    }
+    if(validData.size() <= 5)
+    {
+      scrollIndex = 0;
     }
   }
   
@@ -61,6 +69,7 @@ class WidgetDropDown extends Widget {
     {
       fill(screen.TEXT_COLOR);
       textAlign(LEFT, CENTER);
+      textSize(20);
       text(selectedValue, xpos + 5, ypos + high/3);
     }
   }
@@ -81,8 +90,7 @@ class WidgetDropDown extends Widget {
         text(validData.get(i + scrollIndex), xpos + 5, ypos + high/3 + high * (i + 1)); // now we render the text again over the box
       }
       catch (Exception e)
-      {
-        println("error reach " + e);
+      {;
         break; // we reached the end and have no more elements to display
       }
     }

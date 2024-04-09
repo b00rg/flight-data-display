@@ -148,34 +148,52 @@ class Screen
       text("CANCELLED", xpos+ w/2, ypos + h / 2);
     }
     fill(TEXT_COLOR);
-    text("Carrier: " + D.MKT_CARRIER, xpos + w/2, ypos + h / 10);
+    if(nameToLogo(D.MKT_CARRIER) != null)
+    {
+      text("Carrier: " + D.MKT_CARRIER, xpos + w/2, ypos + h / 10);
+      image(nameToLogo(D.MKT_CARRIER), xpos + w/1.2,ypos + h / 2.5, (int)(width * 0.02604 * 2), (int)(height * 0.04629 * 2));
+    } else {
+      text("Carrier: " + D.MKT_CARRIER, xpos + w/2, ypos + h / 10);
+    }
     text("Date: " + D.FL_DATE, xpos + w/2, ypos + h / 10 *3);
   }
-/*
+  QueriesSelect queries = new QueriesSelect();
+
   void renderTab2()
-  {
+  { 
     switch(displayedGraph)
     {
     case 0:
-      graphB.drawBarChart(valuesB);
-      break;
-    case 1:
       graphP.drawPieChart(valuesP);
       break;
+    case 1:
+      graphB1.drawBarChart(valuesB1);
+      break;
     case 2:
-      graphD.draw(valuesDS);
+      //graphS.draw(valuesDS);
       break;
     case 3:
-      graphS.draw(valuesDS);
+      graphB2.drawBarChart(valuesB2);
       break;
     case 4:
-      //graphA.draw();
+      graphD.draw(valuesDS);
       break;
+    case 5:
+      graphT.draw(valuesT);
     default:
       println("No graph found");
       break;
     }
-  }*/
+  }
+  
+  void renderTab3()
+  {
+    graphA.update(); // Update node positions and check for collisions
+    graphA.draw();
+    
+    graphA.displayHoveredNodeLabel();
+    graphA.displaySelectedAirportData();
+  }
 
   void pageSelectButtons()
   {
@@ -315,7 +333,7 @@ class Screen
       INACTIVE_TEXT_BOX = color(150);
       break;
     default:
-       PRIMARY_COLOR = color(0, 50, 100);
+      PRIMARY_COLOR = color(0, 50, 100);
       SECONDARY_COLOR = color(200, 200, 255);
       TERTIARY_COLOR = color(100, 200, 200);
       BACKGROUND = color(230, 230, 230);
