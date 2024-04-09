@@ -79,7 +79,6 @@ class GraphPie extends Graph {
 
   void render()
   {
-    println(totalFlights);
     if (totalFlights != 0) {
       float[] angles = new float[3];
       angles[0] = PApplet.map(cancelledFlights, 0, totalFlights, 0, PApplet.TWO_PI);
