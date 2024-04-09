@@ -11,7 +11,7 @@ void drawBarChart(ArrayList<BarDataPoint1> values) {
     float topMargin = 50;
     float leftMargin = 50;
     int barColour = color(50); // Assuming you want the bar color to be gray
-    float barWidth = (width - leftMargin) / values.size() - barSpacing;
+    float barWidth = ((width - leftMargin) / values.size()) - barSpacing;
 
     // Get the maximum flight count
     int maxFlightCount = 0;

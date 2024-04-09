@@ -105,20 +105,23 @@ ArrayList<DisplayDataPoint> filteredData;
 
 // GRAPH DECLERATIONS
 
-ArrayList<BarDataPoint1> valuesB;
-GraphBar1 graphB;
-
 ArrayList<PieDataPoint> valuesP;
 GraphPie graphP;
 
+ArrayList<BarDataPoint1> valuesB1;
+GraphBar1 graphB1;
+
 ArrayList<RouteDataPoint> valuesDS;
-//DensityGraph graphD;
+DensityGraph graphD;
 //SimpleGraph graphS;
+
+ArrayList<BarDataPoint2> valuesB2;
+GraphBar graphB2;
+
+GraphTimeAccuracy graphT;
 
 ArrayList<RouteDataPoint> valuesA;
 AirportGraph graphA;
-
-GraphTimeAccuracy graphT;
 
 
 int displayedGraph = 0;
@@ -221,16 +224,16 @@ void setup() {
   
   QueriesSelect queries = new QueriesSelect();
   
-  //valuesB = queries.getRowsBarGraph2();
-  //valuesP = queries.getRowsPieChart(true, 0000, 2300, null, null, null, null);
-  //valuesB = queries.getRowsBarGraph1();
-  //valuesP = queries.getRowsPieChart();
+  valuesP = queries.getRowsPieChart(true, 0000, 2300, null, null, null, null);
+  valuesB1 = queries.getRowsBarGraph1(true, 0000, 2300, null, null, null, null);
+  valuesB2 = queries.getRowsBarGraph2();
   valuesDS = queries.getBusyRoutes();
   valuesA = queries.getAllRoutes();
 
-  //graphB = new GraphBar(600, 250, 1200, 700);
-  graphP = new GraphPie(1300, 560, 800, 800);
-  //graphD = new DensityGraph(800, 150, 1200, 700);
+  graphP = new GraphPie(1300, 600, 700, 700);
+  graphB1 = new GraphBar1(600, 250, 1200, 700);
+  graphB2 = new GraphBar(600, 250, 1200, 700);
+  graphD = new DensityGraph(850, 250, 650, 650);
   //graphS = new SimpleGraph(600, 500, 1200, 1000);
   graphT = new GraphTimeAccuracy(700, 500, 800, 100);
 
@@ -277,7 +280,7 @@ void draw() {
     screen.renderTab1();
     break;
   case 1: // user is looking at tab 2
- //   screen.renderTab2();
+    screen.renderTab2();
     break;
   case 2: // user is looking at tab 2
     screen.renderTab3();
@@ -421,9 +424,9 @@ void ReloadEvent() {
   println("Elapsed Time: " + elapsedTimeInMs + " milliseconds, that is how long it took to add the new data to the filteredData array");
   
   // EMMA OVER HERE 
-  valuesB = selectQuery.getRowsBarGraph1(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
-  for (int i = 0; i < valuesB.size(); i++){
-    BarDataPoint1 data = valuesB.get(i);
+  valuesB1 = selectQuery.getRowsBarGraph1(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
+  for (int i = 0; i < valuesB1.size(); i++){
+    BarDataPoint1 data = valuesB1.get(i);
     println(data.FLIGHT_COUNT);
   }
   // screen setup

@@ -21,12 +21,12 @@ class Queries {
   
   // CHECK IF EMPTY
   String username = "root";
-  String password = "PASSWORD";
+  String password = "DKTX0rk7fg5+";
   
   Connection connection;
   
   Queries(){
-    try {
+    /*try {
       BufferedReader reader = new BufferedReader(new FileReader(sketchPath() + "/credentials.txt"));
       
       username = "root"; //reader.readLine();
@@ -42,7 +42,7 @@ class Queries {
     catch (IOException e) {
       println("Error cannot find file credentials.txt");
       exit();
-    }
+    }*/
     
     try {
       connection = DriverManager.getConnection(url, username, password);

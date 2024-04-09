@@ -72,10 +72,10 @@ class GraphPie extends Graph {
 
         // Draw legend
         fill(0);
-        textSize(12);
+        textSize(24);
         textAlign(LEFT, CENTER);
         fill(sliceColor);
-        text(legendLabel, 40, 27 + index * 20);
+        text(legendLabel, xpos - (width*0.75),  ypos + (height*0.4) + (index*30));
     }
 
     // Method to calculate the total count of all data points
@@ -91,11 +91,11 @@ class GraphPie extends Graph {
     color getColorForDataPoint(int index) {
         // Set colors based on the index (you can modify this according to your preference)
         if (index == 0) {
-            return color(105,105,105); // Red for cancelled flights
+            return color(200, 0, 0); // Red for cancelled flights
         } else if (index == 1) {
-            return color(220,220,220); // Green for diverted flights
+            return color(0, 200, 0); // Green for diverted flights
         } else {
-            return color(40,40,40); // Blue for expected flights
+            return color(0, 0, 200); // Blue for expected flights
         }
     }
 }

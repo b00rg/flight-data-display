@@ -1,4 +1,3 @@
-/*
 // This SimpleGraph class, extending Graph, draws a simple graph based on provided route data points:
 // It initializes drawing variables and calculates point spacing.
 // It finds the maximum flight count among the data points.
@@ -69,4 +68,4 @@ SimpleGraph(int x, int y, int wide, int high){
             text(nf(i * step, 0, 1), xpos, yPos + 10);
         }
     }
-}*/
+}
