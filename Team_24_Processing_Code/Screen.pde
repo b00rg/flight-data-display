@@ -259,7 +259,7 @@ class Screen
       BACKGROUND = color(134, 134, 203);
       BUTTON_ON = color(2, 0, 157);
       BUTTON_OFF = color(1, 0, 100);
-      TEXT_COLOR = color(0);
+      TEXT_COLOR = color(255);
       INACTIVE_TEXT_BOX = color(150);
       break;
     case DAY:
@@ -279,7 +279,7 @@ class Screen
       BACKGROUND = color(84, 50, 113);
       BUTTON_ON = color(75, 21, 124);
       BUTTON_OFF = color(35, 0, 67);
-      TEXT_COLOR = color(0);
+      TEXT_COLOR = color(255);
       INACTIVE_TEXT_BOX = color(150);
       break;
     case COSMIC:
