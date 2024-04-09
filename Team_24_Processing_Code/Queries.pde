@@ -45,7 +45,7 @@ class Queries {
     }*/
     
     try {
-      connection = DriverManager.getConnection(url, "root", "Inktopsscc#1");
+      connection = DriverManager.getConnection(url, username, password);
       println("Connected!");
     }
     catch (Exception e) {
