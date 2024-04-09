@@ -11,27 +11,31 @@ class QueriesSelect extends Queries {
     
     ArrayList<DisplayDataPoint> dataList = new ArrayList<>();
     //println(depTrue, lowerVal, upperVal, depAirport, arrAirport, startDateRange, endDateRange);
-
+    
     try {
-      Statement stmt = connection.createStatement();
-      String whereClause = whereClauseBuilder(depTrue, lowerVal, upperVal, depAirport, arrAirport, startDateRange, endDateRange);
-      String query = "SELECT FL_DATE, MKT_CARRIER, ORIGIN, DEST, DEP_TIME, ARR_TIME, CANCELLED, DIVERTED FROM " + super.tableName + whereClause;
-      //println(query);
-      ResultSet resultSet = stmt.executeQuery(query);
+        String whereClause = whereClauseBuilder(depTrue, lowerVal, upperVal, depAirport, arrAirport, startDateRange, endDateRange);
         
-      while (resultSet.next()) {
-        DisplayDataPoint data = new DisplayDataPoint(resultSet);
-        dataList.add(data);
-      }
-       
-      resultSet.close();
-      stmt.close();
-    }
-    catch (SQLException e) {
-      println("SQLException: " + e.getMessage());
+        // Use a PreparedStatement for better performance and protection against SQL injection
+        String query = "SELECT FL_DATE, MKT_CARRIER, ORIGIN, DEST, DEP_TIME, ARR_TIME, CANCELLED, DIVERTED FROM " + super.tableName + whereClause;
+        PreparedStatement pstmt = connection.prepareStatement(query);
+        
+        // Execute the query
+        ResultSet resultSet = pstmt.executeQuery();
+        println(query);
+        
+        while (resultSet.next()) {
+            DisplayDataPoint data = new DisplayDataPoint(resultSet);
+            dataList.add(data);
+        }
+        
+        resultSet.close();
+        pstmt.close();
+    } catch (SQLException e) {
+        println("SQLException: " + e.getMessage());
     }   
     return dataList;
   }
+
   
   
   //GRAPH 1 - BAR CHART - NUMBER OF FLIGHTS PER CARRIER
@@ -42,7 +46,7 @@ class QueriesSelect extends Queries {
       Statement stmt = connection.createStatement();
       String whereClause = whereClauseBuilder(depTrue, lowerVal, upperVal, depAirport, arrAirport, startDateRange, endDateRange);
       String query = "SELECT MKT_CARRIER, COUNT(*) AS FLIGHT_COUNT FROM " + super.tableName + whereClause + " GROUP BY MKT_CARRIER;";
-      
+      println(query);
       ResultSet resultSet = stmt.executeQuery(query);
       
       while (resultSet.next()) {
@@ -193,9 +197,8 @@ class QueriesSelect extends Queries {
     ArrayList<DelaysDataPoint> dataList = new ArrayList<DelaysDataPoint>();
     try {
         Statement stmt = connection.createStatement();
-        String query = "SELECT MKT_CARRIER, DEP_TIME, ARR_TIME, CRS_DEP_TIME, CRS_ARR_TIME " +
-                       "FROM " + super.tableName +
-                       " GROUP BY MKT_CARRIER;";
+        String query = "SELECT MKT_CARRIER, AVG((DEP_TIME - CRS_DEP_TIME) + (ARR_TIME - CRS_ARR_TIME)) AS AVG_DELAY FROM " +
+          super.tableName + " GROUP BY MKT_CARRIER;";
         ResultSet resultSet = stmt.executeQuery(query);
         
         while (resultSet.next()) {
@@ -305,91 +308,90 @@ class QueriesSelect extends Queries {
   
   //FOR BUILDING DYNAMIC WHERE CLAUSE
   String whereClauseBuilder(boolean depTrue, int lowerVal, int upperVal, String depAirport, String arrAirport, String startDateRange, String endDateRange){
+
+    // Construct the WHERE clause dynamically
     String whereClause = "";
-    
-    //try {   
-      // Construct the WHERE clause dynamically
-      StringBuilder whereClauseBuilder = new StringBuilder();
+    StringBuilder whereClauseBuilder = new StringBuilder();
       
-      // Departure airport filter
-      if (depAirport != null && !depAirport.isEmpty()) {
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        whereClauseBuilder.append("ORIGIN = '").append(depAirport).append("'");
+    // Departure airport filter
+    if (depAirport != null && !depAirport.isEmpty()) {
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
       }
-        
-      // Arrival airport filter
-      if (arrAirport != null && !arrAirport.isEmpty()) {
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        whereClauseBuilder.append("DEST = '").append(arrAirport).append("'");
-      }
-      
-      String column = depTrue ? "DEP_TIME" : "ARR_TIME";  
-      // Time range filter
-      if (lowerVal != 0 && upperVal != 0){
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }  
-        if (lowerVal < upperVal) {
-          whereClauseBuilder.append(column).append(" BETWEEN ").append(lowerVal).append(" AND ").append(upperVal);
-        } 
-        else {
-          whereClauseBuilder.append(column).append(" NOT BETWEEN ").append(upperVal).append(" AND ").append(lowerVal);
-        }
-      }
-      else if (lowerVal != 0){
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        whereClauseBuilder.append(column).append(" <= ").append(lowerVal);
-      }
-      else if (upperVal != 0){
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        whereClauseBuilder.append(column).append(" >= ").append(upperVal);
-      }
-        
-        
-      // Date range filter
-      if (startDateRange != null && !startDateRange.isEmpty() && endDateRange != null && !endDateRange.isEmpty()) {
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        if (lowerVal < upperVal) {
-          whereClauseBuilder.append("FL_DATE BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
-        } 
-        else {
-          whereClauseBuilder.append("FL_DATE NOT BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
-        }
-      }
-      else if (startDateRange != null && !startDateRange.isEmpty()){
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        whereClauseBuilder.append("FL_DATE <= '").append(startDateRange).append("'");
-      }
-      else if (endDateRange != null && !endDateRange.isEmpty()){
-        if (whereClauseBuilder.length() > 0) {
-          whereClauseBuilder.append(" AND ");
-        }
-        whereClauseBuilder.append("FL_DATE >= '").append(endDateRange).append("'");
-      }
-        
-      // Construct the full SQL query
-      whereClause = whereClauseBuilder.toString();
-    //}
-    //catch (SQLException e) {
-    //  println("SQLException: " + e.getMessage());
-    //}
-    if (!whereClause.isEmpty()){
-      whereClause = " WHERE " + whereClause;
+      whereClauseBuilder.append("ORIGIN = '").append(depAirport).append("'");
     }
-    return whereClause;
-    
-  }  
+        
+    // Arrival airport filter
+    if (arrAirport != null && !arrAirport.isEmpty()) {
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
+      }
+      whereClauseBuilder.append("DEST = '").append(arrAirport).append("'");
+    }
+      
+    String column = depTrue ? "DEP_TIME" : "ARR_TIME";  
+    // Time range filter  
+    if (lowerVal != 0 && upperVal != 0){
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
+      }  
+      if (lowerVal < upperVal) {
+        whereClauseBuilder.append(column).append(" BETWEEN ").append(lowerVal).append(" AND ").append(upperVal);
+      } 
+      else {
+        whereClauseBuilder.append(column).append(" NOT BETWEEN ").append(upperVal).append(" AND ").append(lowerVal);
+      }
+    }
+    else if (lowerVal != 0){
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
+      }
+      whereClauseBuilder.append(column).append(" <= ").append(lowerVal);
+    }
+    else if (upperVal != 0){
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
+      }
+      whereClauseBuilder.append(column).append(" >= ").append(upperVal);
+    }
+        
+        
+    // Date range filter
+    if (startDateRange != null && !startDateRange.isEmpty() && endDateRange != null && !endDateRange.isEmpty()) {
+        String first = startDateRange.substring(Math.max(0, startDateRange.length() - 2));
+        String second = endDateRange.substring(Math.max(0, endDateRange.length() - 2));
+
+        int date1 = Integer.parseInt(first);
+        int date2 = Integer.parseInt(second);
+
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
+      }
+      if (date1 < date2) {
+        whereClauseBuilder.append("FL_DATE BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
+      } 
+      else {
+        whereClauseBuilder.append("FL_DATE NOT BETWEEN '").append(startDateRange).append("' AND '").append(endDateRange).append("'");
+      }
+    }
+    else if (startDateRange != null && !startDateRange.isEmpty()){
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
+      }
+      whereClauseBuilder.append("FL_DATE <= '").append(startDateRange).append("'");
+    }
+    else if (endDateRange != null && !endDateRange.isEmpty()){
+      if (whereClauseBuilder.length() > 0) {
+        whereClauseBuilder.append(" AND ");
+      }
+      whereClauseBuilder.append("FL_DATE >= '").append(endDateRange).append("'");
+    }
+       
+    // Construct the full SQL query
+    whereClause = whereClauseBuilder.toString();    if (!whereClause.isEmpty()){
+    whereClause = " WHERE " + whereClause;
+  }
+  return whereClause;
+}  
 
 }

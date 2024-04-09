@@ -157,9 +157,8 @@ class Screen
     }
     text("Date: " + D.FL_DATE, xpos + w/2, ypos + h / 10 *3);
   }
-  
   QueriesSelect queries = new QueriesSelect();
-  
+
   void renderTab2()
   { 
     switch(displayedGraph)
