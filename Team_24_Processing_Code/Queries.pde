@@ -14,14 +14,14 @@ import java.util.List;
 class Queries {
   
   // MySQL database connection parameters
-  String filename = sketchPath() + "/flights2k.csv";
+  String filename = sketchPath() + "/flights100k.csv";
   String url = "jdbc:mysql://localhost:3306/programming_project";
   String databaseName = "programming_project";
   String tableName = "flight_data";
   
   // CHECK IF EMPTY
   String username = "root";
-  String password = "DKTX0rk7fg5+";
+  String password = "";
   
   Connection connection;
   

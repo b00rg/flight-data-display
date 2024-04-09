@@ -164,7 +164,6 @@ class Screen
     switch(displayedGraph)
     {
     case 0:
-      //valuesP = queries.getRowsPieChart(true, 0000, 2300, null, null, null, null);
       graphP.drawPieChart(valuesP);
       break;
     case 1:

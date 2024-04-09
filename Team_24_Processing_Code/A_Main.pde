@@ -224,8 +224,9 @@ void setup() {
   
   QueriesSelect queries = new QueriesSelect();
   
-  valuesP = queries.getRowsPieChart(true, 0000, 2300, null, null, null, null);
-  valuesB1 = queries.getRowsBarGraph1(true, 0000, 2300, null, null, null, null);
+  
+  valuesP = queries.getRowsPieChart(depTime, 0000, 2300, departures.selectedValue, arrivals.selectedValue, startDate.num1, endDate.num1);
+  valuesB1 = queries.getRowsBarGraph1(true, 0000, 2300, departures.selectedValue, arrivals.selectedValue, startDate.num1, endDate.num1);
   valuesB2 = queries.getRowsBarGraph2();
   valuesDS = queries.getBusyRoutes();
   valuesA = queries.getAllRoutes();
@@ -304,6 +305,10 @@ void mouseClicked() {
     //screen.renderTab1();
     ReloadButton.active = false;
     ReloadButton.render();
+    
+    QueriesSelect queries = new QueriesSelect();
+    valuesP = queries.getRowsPieChart(true, 0000, 2300, dropDownList.get(0).selectedValue, dropDownList.get(1).selectedValue, startDate.num1, endDate.num1);
+    valuesB1 = queries.getRowsBarGraph1(true, 0000, 2300, dropDownList.get(0).selectedValue, dropDownList.get(1).selectedValue, startDate.num1, endDate.num1);
   }
   for (int i = 0; i < TabButtons.size(); i++) 
   { // we first investigate if the user is trying to change tabs
@@ -343,13 +348,14 @@ void mouseClicked() {
   screen.changeTheme(stringToEnum(ThemeSelection.selectedValue));
 }
 
+// setup place holder values
+boolean depTime = false;
+int time1 = 0;
+int time2 = 0;
+  
 // creates all query related data pieces and collect the data from input buttons, some of the data is also processed
 // to be compatible with our query system requirements, the filteredData attaylist is then adjusted to contain the new data - Angelos
 void ReloadEvent() {
-  // setup place holder values
-  boolean depTime = false;
-  int time1 = 0;
-  int time2 = 0;
 
   String selectedArrivalStation = "";
   String selectedDepartureStation = "";
