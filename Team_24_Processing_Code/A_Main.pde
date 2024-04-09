@@ -199,7 +199,7 @@ void setup() {
   valuesA = queries.getAllRoutes();
 
   graphB = new GraphBar(600, 250, 1200, 700);
-  graphP = new GraphPie(1000, 360, 800, 800);
+  graphP = new GraphPie((int)(width*(0.416666666)), (int)(height * 0.148148), 800, 800);
   graphD = new DensityGraph(800, 150, 1200, 700);
   graphS = new SimpleGraph(600, 500, 1200, 1000);
   graphT = new GraphTimeAccuracy(700, 500, 800, 100);
