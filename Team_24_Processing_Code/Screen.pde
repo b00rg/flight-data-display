@@ -141,7 +141,7 @@ class Screen
       text("Time: " + D.ARR_TIME, xpos, ypos + h / 10 * 3);
       text("Time: " + D.DEP_TIME, xpos, ypos + h/2 + h/4);
       fill(BUTTON_OFF);
-      text("Diverted", xpos+ w/2, ypos + h / 2);
+      text("DIVERTED", xpos+ w/2, ypos + h / 2);
     } else
     {
       fill(BUTTON_OFF);
