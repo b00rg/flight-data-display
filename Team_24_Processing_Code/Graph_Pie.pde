@@ -1,107 +1,101 @@
-/*
-class GraphPie extends Graph {
- GraphPie(int x,int y,int w,int h){
- super(x,y,w,h);
- }
- void drawPieChart(ArrayList<PieDataPoint> values){
- String[] labels = {"Flights Cancelled", "Flights Diverted", "Flights As Expected"};
- int totalFlights = values.size();
- float startAngle = 0;
- float labelX = 10;
- float labelY = 5;
- float colour = 0.0;
- for (int i = 0; i < labels.length; i++) {
- float angle = radians(map(i, 0, labels.length, 0, 360)); ; // Calculate angle for this slice
- float endAngle = startAngle + angle;
- 
- // Calculate slice color
- // ugly colours
- //colorMode(HSB);
- //fill(map(i, 0, labels.length, 0, 255), 255, 255);
- // greyscale
- fill(map(i, 0, totalFlights, colour, colour), colour, colour);
- colour += 255.0/totalFlights*2;
- 
- // Draw slice
- arc(width/2, height/2, 300, 300, startAngle, endAngle);
- 
- // Draw label
- labelY += 15;
- //textAlign(CENTER, CENTER);
- text(labels[i], labelX, labelY);
- 
- startAngle += angle;
- }
- }
- }
- */
- 
- 
-//Experemental alternative version of graph pie by angelos
+import java.util.*;
 
 class GraphPie extends Graph {
-  int cancelledFlights;
-  int divertedFlights;
-  int indistrbedFlights;
-  int totalFlights;
-  String[] labels = {"Flights Cancelled", "Flights Diverted", "Flights As Expected"};
-  GraphPie(int x, int y, int w, int h) {
-    super(x, y, w, h);
-  }
+    GraphPie(int x, int y, int wide, int high) {
+        super(x, y, wide, high);
+    }
 
-  void calculateFlights(ArrayList<DisplayDataPoint> newData)
-  {
-    if (newData == null || newData.size() == 0)
-    {
-      cancelledFlights = 0;
-      divertedFlights = 0;
-      indistrbedFlights = 0;
-      totalFlights = 0; // avoid divide by 0
-    } else
-    {
-      cancelledFlights = 0;
-      divertedFlights = 0;
-      indistrbedFlights = 0;
-      totalFlights = newData.size();
+   void drawPieChart(ArrayList<PieDataPoint> values) {
+    // Consolidate values to ensure no repeats
+    ArrayList<PieDataPoint> consolidatedValues = consolidateValues(values);
 
-      for (DisplayDataPoint data : newData)
-      {
-        if (data.CANCELLED == 1) {
-          cancelledFlights++;
-        } else if (data.DIVERTED == 1) {
-          divertedFlights++;
-        } else {
-          indistrbedFlights++;
+    // Initialize variables for angles and legend
+    float total = sumCounts(consolidatedValues);
+    float startAngle = 0;
+
+    // Loop through each data point to draw the pie chart slices and legend
+    for (PieDataPoint data : consolidatedValues) {
+        float angle = radians(map(data.COUNT_CANCELLED + data.COUNT_DIVERTED + data.COUNT_EXPECTED, 0, total, 0, 360)); // Calculate angle for this slice
+        float endAngle = startAngle + angle; // Calculate end angle for this slice
+
+        // Set color based on the type of data point
+        color sliceColor = getColorForDataPoint(consolidatedValues.indexOf(data));
+        fill(sliceColor);
+        noStroke(); // Remove stroke to hide white lines
+
+        // Draw slice of the pie chart
+        arc(xpos, ypos, width, height, startAngle, endAngle);
+
+        // Draw legend
+        drawLegend(consolidatedValues.indexOf(data), sliceColor);
+
+        // Update start angle for next slice
+        startAngle += angle;
+    }
+}
+
+
+    // Method to consolidate values to avoid repeats
+    ArrayList<PieDataPoint> consolidateValues(ArrayList<PieDataPoint> values) {
+        ArrayList<PieDataPoint> consolidatedValues = new ArrayList<>();
+        HashMap<String, PieDataPoint> valueMap = new HashMap<>();
+
+        // Consolidate values using a hashmap to track repeats
+        for (PieDataPoint data : values) {
+            String key = data.toString();
+            if (valueMap.containsKey(key)) {
+                PieDataPoint existingData = valueMap.get(key);
+                existingData.COUNT_CANCELLED += data.COUNT_CANCELLED;
+                existingData.COUNT_DIVERTED += data.COUNT_DIVERTED;
+                existingData.COUNT_EXPECTED += data.COUNT_EXPECTED;
+            } else {
+                valueMap.put(key, data);
+            }
         }
-      }
+
+        // Convert hashmap back to arraylist
+        consolidatedValues.addAll(valueMap.values());
+        return consolidatedValues;
     }
-  }
 
-  void render()
-  {
-    if (totalFlights != 0) {
-      float[] angles = new float[3];
-      angles[0] = PApplet.map(cancelledFlights, 0, totalFlights, 0, PApplet.TWO_PI);
-      angles[1] = PApplet.map(divertedFlights, 0, totalFlights, 0, PApplet.TWO_PI);
-      angles[2] = PApplet.map(indistrbedFlights, 0, totalFlights, 0, PApplet.TWO_PI);
+    // Method to draw legend
+    void drawLegend(int index, color sliceColor) {
+        String legendLabel = " ";
+        // Assign legend label based on index
+        if (index == 0 ) {
+            legendLabel = "Cancelled flights";
+        } else if (index == 1 ) {
+            legendLabel = "Diverted flights";
+        } else if(index == 2) {
+            legendLabel = "Expected flights";
+        }
 
-      float lastAngle = 0;
-      for (int i = 0; i < angles.length; i++) {
-        if(i == 0){fill(screen.PRIMARY_COLOR);}
-        if(i == 1){fill(screen.SECONDARY_COLOR);}
-        if(i == 2){fill(screen.TERTIARY_COLOR);}
-        arc(xpos + width/2, ypos + height/2, width, height, lastAngle, lastAngle + angles[i]);
-        lastAngle += angles[i];
-      }
-
-      // Display legend
-      for (int i = 0; i < labels.length; i++) {
-        if(i == 0){fill(screen.PRIMARY_COLOR);}
-        if(i == 1){fill(screen.SECONDARY_COLOR);}
-        if(i == 2){fill(screen.TERTIARY_COLOR);}
-        rect(xpos + width + 10, ypos + i * 20, 10, 10);
-        text(labels[i], xpos + width + 25, ypos + i * 20 + 10);
-      }
+        // Draw legend
+        fill(0);
+        textSize(24);
+        textAlign(LEFT, CENTER);
+        fill(sliceColor);
+        text(legendLabel, xpos - (width*0.75),  ypos + (height*0.4) + (index*30));
     }
-  }
+
+    // Method to calculate the total count of all data points
+    int sumCounts(ArrayList<PieDataPoint> values) {
+        int sum = 0;
+        for (PieDataPoint data : values) {
+            sum += data.COUNT_CANCELLED + data.COUNT_DIVERTED + data.COUNT_EXPECTED;
+        }
+        return sum;
+    }
+
+    // Method to get color for a specific data point index
+    color getColorForDataPoint(int index) {
+        // Set colors based on the index (you can modify this according to your preference)
+        if (index == 0) {
+            return color(200, 0, 0); // Red for cancelled flights
+        } else if (index == 1) {
+            return color(0, 200, 0); // Green for diverted flights
+        } else {
+            return color(0, 0, 200); // Blue for expected flights
+        }
+    }
 }

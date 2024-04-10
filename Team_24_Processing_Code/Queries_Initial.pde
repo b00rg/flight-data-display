@@ -77,8 +77,8 @@ class QueriesInitial extends Queries {
                 + "DEP_TIME DECIMAL, "
                 + "CRS_ARR_TIME DECIMAL, "
                 + "ARR_TIME DECIMAL, "
-                + "CANCELLED VARCHAR(50), "
-                + "DIVERTED VARCHAR(50), "
+                + "CANCELLED DECIMAL, "
+                + "DIVERTED DECIMAL, "
                 + "DISTANCE DECIMAL)";
         statement.executeUpdate(createQuery);
         System.out.println("Table " +  super.tableName + " created successfully.");
@@ -91,14 +91,16 @@ class QueriesInitial extends Queries {
 
   
   // INSERT INTO flight_data VALUES (...);
-  void insertRows() {
+void insertRows() {
     try {
         Statement statement = connection.createStatement();
         BufferedReader reader = new BufferedReader(new FileReader(filename));
         boolean skipHeader = true; // Flag to skip the first line (header)
         String queryPrefix = "INSERT INTO " + super.tableName + " VALUES ";
         List<String> queries = new ArrayList<>();
+        int totalRecords = 0; // Variable to count total records read from the file
 
+        // Read data from the file and construct insert queries
         while (reader.ready()) {
             String line = reader.readLine();
             if (skipHeader) {
@@ -112,49 +114,60 @@ class QueriesInitial extends Queries {
             for (int i = 0; i < data.length; i++) {
                 if (data[i].isEmpty()) {
                     queryBuilder.append("NULL");
-                } 
-                else {
-                    if (i == 0){
-                      String originalString = data[i];
-                      int indexOfSpace = originalString.indexOf(' ');
-                      String modifiedString = indexOfSpace != -1 ? originalString.substring(0, indexOfSpace) : originalString;
-                      String[] parts = modifiedString.split("/");
-                      int j = parts.length - 1;
-                      String rearrangedString = parts[j] + "-" + parts[j-2] + "-" + parts[j-1] ;
-                      queryBuilder.append("'").append(rearrangedString).append("'");
-
-
-                    }
-                    else if (i == 2 || i == 6 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17) { // Integer fields
+                } else {
+                    if (i == 0) {
+                        // Handle date format conversion
+                        // Assuming your date is in the first column
+                        String originalString = data[i];
+                        int indexOfSpace = originalString.indexOf(' ');
+                        String modifiedString = indexOfSpace != -1 ? originalString.substring(0, indexOfSpace) : originalString;
+                        String[] parts = modifiedString.split("/");
+                        int j = parts.length - 1;
+                        String rearrangedString = parts[j] + "-" + parts[j - 2] + "-" + parts[j - 1];
+                        queryBuilder.append("'").append(rearrangedString).append("'");
+                    } else if (i == 2 || i == 6 || i == 11 || i == 12 || i == 13 || i == 14 || i == 15 || i == 16 || i == 17) { // Integer fields
                         queryBuilder.append(Double.parseDouble(data[i]));
-                    }
-                    else {
+                    } else {
                         queryBuilder.append("'").append(data[i]).append("'");
                     }
                 }
-                
+
                 if (i < data.length - 1) {
                     queryBuilder.append(",");
                 }
             }
             queryBuilder.append(")");
             queries.add(queryBuilder.toString());
+
+            totalRecords++; // Increment total records counter
         }
 
-        // Constructing the final batch insert query
-        StringBuilder batchQuery = new StringBuilder(queryPrefix);
-        for (int i = 0; i < queries.size(); i++) {
-            batchQuery.append(queries.get(i));
-            if (i < queries.size() - 1) {
-                batchQuery.append(",");
-            }
-            else {
-                batchQuery.append(";");
-            }
+        // Calculate the number of times to run the insert query
+        int iterations = totalRecords / 100000; // For records of size 100,000
+        if (totalRecords % 100000 != 0) {
+            iterations++; // If there are remaining records, add one more iteration
         }
-        
-        statement.addBatch(batchQuery.toString());
-        statement.executeBatch();
+
+        // Execute the insert query loop for the calculated number of iterations
+        for (int i = 0; i < iterations; i++) {
+            // Construct the batch insert query for this iteration
+            StringBuilder batchQuery = new StringBuilder(queryPrefix);
+            int startIdx = i * 100000;
+            int endIdx = Math.min((i + 1) * 100000, queries.size());
+            for (int j = startIdx; j < endIdx; j++) {
+                batchQuery.append(queries.get(j));
+                if (j < endIdx - 1) {
+                    batchQuery.append(",");
+                } else {
+                    batchQuery.append(";");
+                }
+            }
+
+            // Execute the batch insert query
+            statement.executeUpdate(batchQuery.toString());
+        }
+
+        // Close resources
         reader.close();
         statement.close();
         connection.close();
@@ -163,7 +176,8 @@ class QueriesInitial extends Queries {
     } catch (Exception e) {
         e.printStackTrace();
     }
-  }
+}
+
   
   
   // Read CSV line into table

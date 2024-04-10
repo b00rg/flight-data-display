@@ -65,63 +65,10 @@ class RawDataPoint {
         return false;
     }
   }
-
 }
 
-class BarDataPoint extends RawDataPoint {
-  
-  String MKT_CARRIER = null;
-  int TOTAL_DIST = 0;
 
-  BarDataPoint(ResultSet resultSet) {
-    super(resultSet); // Call superclass constructor
-    try {
-      MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
-      TOTAL_DIST = columnExists(resultSet, "TOTAL_DIST") ? resultSet.getInt("TOTAL_DIST") : 0;
-    } catch (SQLException e) {
-      println("SQLException: " + e.getMessage());
-    }
-  }
-  public int getTOTAL_DIST() {
-    return TOTAL_DIST;
-  }
-  public String getMKT_CARRIER() {
-    return MKT_CARRIER;
-  }
-}
-
-class PieDataPoint extends RawDataPoint {
-  
-  String MKT_CARRIER = null;
-  int COUNT_CANCELLED = 0;
-  int COUNT_DIVERTED = 0;
-  int COUNT_EXPECTED = 0;
-
-  PieDataPoint(ResultSet resultSet) {
-    super(resultSet); // Call superclass constructor
-    try {
-      MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
-      COUNT_CANCELLED = columnExists(resultSet, "COUNT_CANCELLED") ? resultSet.getInt("COUNT_CANCELLED") : 0;
-      COUNT_DIVERTED = columnExists(resultSet, "COUNT_DIVERTED") ? resultSet.getInt("COUNT_DIVERTED") : 0;
-      COUNT_EXPECTED = columnExists(resultSet, "COUNT_EXPECTED") ? resultSet.getInt("COUNT_EXPECTED") : 0;
-    } catch (SQLException e) {
-      println("SQLException: " + e.getMessage());
-    }
-  }
-  public int getCOUNT_CANCELLED() {
-    return COUNT_CANCELLED;
-  }
-  public int getCOUNT_DIVERTED() {
-    return COUNT_DIVERTED;
-  }
-  public int getCOUNT_EXPECTED() {
-    return COUNT_EXPECTED;
-  }
-  public String getMTK_CARRIER() {
-    return MKT_CARRIER;
-  }
-}
-
+// FOR RECORDS
 class DisplayDataPoint extends RawDataPoint {
   
   String FL_DATE = null;
@@ -155,6 +102,92 @@ class DisplayDataPoint extends RawDataPoint {
 }
 
 
+
+// FOR GRAPH 1
+class BarDataPoint1 extends RawDataPoint {
+  
+  String MKT_CARRIER = null;
+  int FLIGHT_COUNT = 0;
+
+  BarDataPoint1(ResultSet resultSet) {
+    super(resultSet); // Call superclass constructor
+    try {
+      MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
+      FLIGHT_COUNT = columnExists(resultSet, "FLIGHT_COUNT") ? resultSet.getInt("FLIGHT_COUNT") : 0;
+    } catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+  }
+}
+
+
+// FOR GRAPH 2
+class PieDataPoint extends RawDataPoint {
+  
+  String MKT_CARRIER = null;
+  int COUNT_CANCELLED = 0;
+  int COUNT_DIVERTED = 0;
+  int COUNT_EXPECTED = 0;
+
+  PieDataPoint(ResultSet resultSet) {
+    super(resultSet); // Call superclass constructor
+    try {
+      MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
+      COUNT_CANCELLED = columnExists(resultSet, "COUNT_CANCELLED") ? resultSet.getInt("COUNT_CANCELLED") : 0;
+      COUNT_DIVERTED = columnExists(resultSet, "COUNT_DIVERTED") ? resultSet.getInt("COUNT_DIVERTED") : 0;
+      COUNT_EXPECTED = columnExists(resultSet, "COUNT_EXPECTED") ? resultSet.getInt("COUNT_EXPECTED") : 0;
+    } catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+  }
+}
+
+
+// FOR GRAPH 3
+class LineDataPoint extends RawDataPoint {
+
+  int HOUR = 0;
+  String EVENT_TYPE = null;
+  int FLIGHT_COUNT = 0;
+
+  LineDataPoint(ResultSet resultSet) {
+    super(resultSet); // Call superclass constructor
+    try {
+      HOUR = columnExists(resultSet, "HOUR") ? resultSet.getInt("HOUR") : 0;
+      EVENT_TYPE = columnExists(resultSet, "EVENT_TYPE") ? resultSet.getString("EVENT_TYPE") : null;
+      FLIGHT_COUNT = columnExists(resultSet, "FLIGHT_COUNT") ? resultSet.getInt("FLIGHT_COUNT") : 0;
+    } catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+  }
+}
+
+
+// FOR GRAPH 4
+class BarDataPoint2 extends RawDataPoint {
+  
+  String MKT_CARRIER = null;
+  int TOTAL_DIST = 0;
+
+  BarDataPoint2(ResultSet resultSet) {
+    super(resultSet); // Call superclass constructor
+    try {
+      MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
+      TOTAL_DIST = columnExists(resultSet, "TOTAL_DIST") ? resultSet.getInt("TOTAL_DIST") : 0;
+    } catch (SQLException e) {
+      println("SQLException: " + e.getMessage());
+    }
+  }
+  public int getTOTAL_DIST() {
+    return TOTAL_DIST;
+  }
+  public String getMKT_CARRIER() {
+    return MKT_CARRIER;
+  }
+}
+
+
+// FOR GRAPH 5
 class RouteDataPoint extends RawDataPoint {
   
   String ORIGIN = null;
@@ -173,22 +206,18 @@ class RouteDataPoint extends RawDataPoint {
   }
 }
 
+
+// FOR GRAPH 6
 class DelaysDataPoint extends RawDataPoint {
   
   String MKT_CARRIER = null;
-  int CRS_DEP_TIME = 0; 
-  int DEP_TIME = 0;
-  int CRS_ARR_TIME = 0;
-  int ARR_TIME = 0;
+  int AVG_DELAY = 0;
 
   DelaysDataPoint(ResultSet resultSet) {
     super(resultSet); // Call superclass constructor
     try {
       MKT_CARRIER = columnExists(resultSet, "MKT_CARRIER") ? resultSet.getString("MKT_CARRIER") : null;
-      DEP_TIME = columnExists(resultSet, "DEP_TIME") ? resultSet.getInt("DEP_TIME") : 0;
-      ARR_TIME = columnExists(resultSet, "ARR_TIME") ? resultSet.getInt("ARR_TIME") : 0;
-      CRS_DEP_TIME = columnExists(resultSet, "CRS_DEP_TIME") ? resultSet.getInt("DEP_TIME") : 0;
-      CRS_ARR_TIME = columnExists(resultSet, "CRS_ARR_TIME") ? resultSet.getInt("ARR_TIME") : 0;
+      AVG_DELAY = columnExists(resultSet, "AVG_DELAY") ? resultSet.getInt("AVG_DELAY") : 0;
     } catch (SQLException e) {
       println("SQLException: " + e.getMessage());
     }

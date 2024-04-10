@@ -14,19 +14,19 @@ import java.util.List;
 class Queries {
   
   // MySQL database connection parameters
-  String filename = sketchPath() + "/flights10k.csv";
+  String filename = sketchPath() + "/flights2k.csv";
   String url = "jdbc:mysql://localhost:3306/programming_project";
   String databaseName = "programming_project";
   String tableName = "flight_data";
   
   // CHECK IF EMPTY
-  String username = "root";
+  String username = "";
   String password = "";
   
   Connection connection;
   
   Queries(){
-    /*try {
+    try {
       BufferedReader reader = new BufferedReader(new FileReader(sketchPath() + "/credentials.txt"));
       
       username = reader.readLine();
@@ -42,7 +42,7 @@ class Queries {
     catch (IOException e) {
       println("Error cannot find file credentials.txt");
       exit();
-    }*/
+    }
     
     try {
       connection = DriverManager.getConnection(url, username, password);

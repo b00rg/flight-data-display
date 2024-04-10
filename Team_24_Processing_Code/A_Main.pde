@@ -52,6 +52,8 @@ PImage carrierG4;
 PImage carrierHA;
 PImage carrierNK;
 PImage carrierWN;
+PImage carrierUA;
+PImage carrierDL;
 
 // Takes in the name of a carrier and returns the associated image
 PImage nameToLogo(String name) {
@@ -98,24 +100,30 @@ static boolean[] statsShown = new boolean[18];
 ArrayList<DisplayDataPoint> filteredData;
 
 // GRAPH DECLERATIONS
-ArrayList<BarDataPoint> valuesB;
-GraphBar graphB;
 
 ArrayList<PieDataPoint> valuesP;
 GraphPie graphP;
+
+ArrayList<BarDataPoint1> valuesB1;
+GraphBar1 graphB1;
 
 ArrayList<RouteDataPoint> valuesDS;
 DensityGraph graphD;
 SimpleGraph graphS;
 
-ArrayList<RouteDataPoint> valuesA;
-Graph graphA;
+ArrayList<BarDataPoint2> valuesB2;
+GraphBar graphB2;
 
+ArrayList<DelaysDataPoint> valuesT;
 GraphTimeAccuracy graphT;
+
+ArrayList<RouteDataPoint> valuesA;
+AirportGraph graphA;
+
 
 int displayedGraph = 0;
 
-// SETUP FUNCTION
+//SETUP FUNCTION
 void setup() {
   fullScreen();
   screen = new Screen();
@@ -123,12 +131,14 @@ void setup() {
   screen.changeTheme(THEMES.DEFAULT);
   ThemeSelection = new WidgetDropDown(width / 6, 0, (int)(width * 0.10416), (int)(height*0.037037), TextBoxFont, themeNames, "DEFAULT");
   ThemeSelection.selectedValue = "DEFAULT";
-  // DATA SETUP
-  QueriesInitial setupQuery = new QueriesInitial();
+  
+  //DATA SETUP
+
+  /*QueriesInitial setupQuery = new QueriesInitial();
   setupQuery.createDatabase();
   setupQuery.useDatabase();
   setupQuery.dropAndCreateTable();
-  setupQuery.insertRows();
+  setupQuery.insertRows();*/
 
   TextBoxFont = loadFont("default.vlw");
   headingFont = loadFont("Heading.vlw");
@@ -159,7 +169,7 @@ void setup() {
   dropDownList.add(arrivals);
 
   // RELOAD BUTTON SETUP
-  ReloadButton = new WidgetButton((int) (width * 0.025), (int) (height * 0.88), 75, 75, 1);
+  ReloadButton = new WidgetButton((int) (width * 0.025), (int) (height * 0.88), 75, 75, 1, null);
   reloadButton = loadImage("reload.png");
 
   // TAB BUTTON SETUP
@@ -169,19 +179,24 @@ void setup() {
   for (int i = 0; i < 3; i++) // We lerp through the upper tab, adding the tab buttons at intervals to make sure they are equally spaced
   {
     int x = (int) (lerp(totalTabWidth, width, (float)(((float)i / (float)3))));    // We use lerop to find the range of the buttons and add them;
-    TabButtons.add(new WidgetButton(x, 0, tabRange/3, (int)(height / 10), 0));
+    TabButtons.add(new WidgetButton(x, 0, tabRange/3, (int)(height / 10), 0, null));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
+  
+  // Set tab button text
+  TabButtons.get(0).buttonText = "Scheduled flights";
+  TabButtons.get(1).buttonText = "Graphs";
+  TabButtons.get(2).buttonText = "Conncting Flights";
 
   // SCROLL BUTTON SETUP
-  moveLeft = new WidgetButton((int)(width * 0.572916), (int)(height * 0.925925), 50, 50, 5);
-  moveRight = new WidgetButton((int)(width * 0.677083), (int)(height * 0.925925), 50, 50, 5);
+  moveLeft = new WidgetButton((int)(width * 0.572916), (int)(height * 0.925925), 50, 50, 5, null);
+  moveRight = new WidgetButton((int)(width * 0.677083), (int)(height * 0.925925), 50, 50, 5, null);
 
 
   leftButton = loadImage("left.png");
   rightButton = loadImage("right.png");
-
-
+  
+  
   carrierAA = loadImage(sketchPath() +"/data/airline carriers/AA.png");
   carrierAS = loadImage(sketchPath() +"/data/airline carriers/AS.png");
   carrierB6 = loadImage(sketchPath() +"/data/airline carriers/B6.png");
@@ -189,24 +204,34 @@ void setup() {
   carrierHA = loadImage(sketchPath() +"/data/airline carriers/HA.png");
   carrierNK = loadImage(sketchPath() +"/data/airline carriers/NK.png");
   carrierWN = loadImage(sketchPath() +"/data/airline carriers/WN.png");
+  carrierUA = loadImage(sketchPath() +"/data/airline carriers/UA.png");
+  carrierDL = loadImage(sketchPath() +"/data/airline carriers/DL.png");
+
 
   // GRAPH SETUP
 
   QueriesSelect queries = new QueriesSelect();
-  valuesB = queries.getRowsBarGraph();
-  valuesP = queries.getRowsPieChart();
+  
+  
+  valuesP = queries.getRowsPieChart(depTime, time1, time2, departures.selectedValue, arrivals.selectedValue, startDate.num1, endDate.num1);
+  valuesB1 = queries.getRowsBarGraph1(depTime, time1, time2, departures.selectedValue, arrivals.selectedValue, startDate.num1, endDate.num1);
   valuesDS = queries.getBusyRoutes();
+  valuesB2 = queries.getRowsBarGraph2();
+  valuesT = queries.getRowsDelayGraph();
   valuesA = queries.getAllRoutes();
 
-  graphB = new GraphBar(600, 250, 1200, 700);
-  graphP = new GraphPie((int)(width*(0.416666666)), (int)(height * 0.148148), 800, 800);
-  graphD = new DensityGraph(800, 150, 1200, 700);
-  graphS = new SimpleGraph(600, 500, 1200, 1000);
-  graphT = new GraphTimeAccuracy(700, 500, 800, 100);
-  // graphA = new AirportGraph(600, 500, 1200, 1000);
+  graphP = new GraphPie(1300, 600, 700, 700);
+  graphB1 = new GraphBar1(600, 250, 1200, 700);
+  graphS = new SimpleGraph(550, 300, 1300, 550);
+  graphB2 = new GraphBar(600, 250, 1200, 700);
+  graphD = new DensityGraph(850, 250, 650, 650);
+  graphT = new GraphTimeAccuracy(600, 500, 1200, 300);
 
-  Graph[] graphs = {graphB, graphP, graphD, graphS, graphA, graphT};
+  Graph[] graphs = {graphP, graphB1, graphS, graphB2, graphD, graphT};
   screen.numberOfGraphs = graphs.length;
+
+  // Tab 3 setup
+  graphA = new AirportGraph(600, 250, 1200, 700);
 }
 
 void draw() {
@@ -234,6 +259,9 @@ void draw() {
     break;
   case 1: // user is looking at tab 2
     screen.renderTab2();
+    break;
+  case 2: // user is looking at tab 3
+    screen.renderTab3();
     break;
   default:
     println("Tab not found");
@@ -289,29 +317,19 @@ void mouseClicked() {
       dropDownList.get(i).isClicked();
     }
   }
+
   screen.changeTheme(stringToEnum(ThemeSelection.selectedValue));
   updateTabs();
-  switch (currentlyActiveTab) {
-  case 0: // user is looking at tab 1
-    screen.renderTab1();
-    break;
-  case 1: // user is looking at tab 2
-    screen.renderTab2();
-    break;
-  default:
-    println("Tab not found");
-    currentlyActiveTab = 0;
-    break;
-  }
 }
 
+// setup place holder values
+boolean depTime = false;
+int time1 = 0;
+int time2 = 0;
+  
 // creates all query related data pieces and collect the data from input buttons, some of the data is also processed
 // to be compatible with our query system requirements, the filteredData arrayList is then adjusted to contain the new data - Angelos
 void ReloadEvent() {
-  // setup place holder values
-  boolean depTime = false;
-  int time1 = 0;
-  int time2 = 0;
 
   String selectedArrivalStation = "";
   String selectedDepartureStation = "";
@@ -373,10 +391,8 @@ void ReloadEvent() {
   } else {
     selectedDepartureStation = null;
   }
-
+  
   long startTime = System.nanoTime();
-
-
 
   QueriesSelect selectQuery = new QueriesSelect();
   filteredData = selectQuery.getRowsDisplay(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
@@ -384,14 +400,22 @@ void ReloadEvent() {
   long endTime = System.nanoTime();
   long elapsedTime = endTime - startTime;
   double elapsedTimeInMs = (double) elapsedTime / 1_000_000.0;
-  println("Elapsed Time: " + elapsedTimeInMs + " milliseconds, that is how long it took to add the new data to the filteredData arrayList");
-
+  println("Elapsed Time: " + elapsedTimeInMs + " milliseconds, that is how long it took to add the new data to the filteredData array");
+  
+  // EMMA OVER HERE 
+  valuesB1 = selectQuery.getRowsBarGraph1(depTime, time1, time2, selectedArrivalStation, selectedDepartureStation, date1, date2);
+  for (int i = 0; i < valuesB1.size(); i++){
+    BarDataPoint1 data = valuesB1.get(i);
+    //println(data.FLIGHT_COUNT);
+  }
   // screen setup
   screen.numberOfPages = (int)(filteredData.size() / 10); // number of pages = the number of pages that we need to display the data
   screen.numberOfPages++; // add 1 to take into account 0, i.e what if we have 7 elements to display, we still need 1 page
   screen.selectedPage = 1;
   
-  graphP.calculateFlights(filteredData);
+  QueriesSelect queries = new QueriesSelect();
+  valuesP = queries.getRowsPieChart(depTime, time1, time2, dropDownList.get(0).selectedValue, dropDownList.get(1).selectedValue, startDate.num1, endDate.num1);
+  valuesB1 = queries.getRowsBarGraph1(depTime, time1, time2, dropDownList.get(0).selectedValue, dropDownList.get(1).selectedValue, startDate.num1, endDate.num1);
 }
 
 // check user scroll input, and apply the scroll to all active drop down buttons, inactive drop down buttons simply ignore this call - Angelos
@@ -457,5 +481,75 @@ THEMES stringToEnum(String input) {
     return THEMES.COLOURBLIND;
   default:
     return THEMES.DEFAULT;
+  }
+}
+
+void mousePressed()
+{ 
+  if (graphA.hoveredNode != null) 
+  {
+    graphA.selectAirport();
+    graphA.isDragging = true;
+    graphA.offsetX = mouseX - graphA.hoveredNode.x;
+    graphA.offsetY = mouseY - graphA.hoveredNode.y;
+  } 
+  else
+  graphA.deselectAirport();
+}
+
+void mouseReleased()
+{
+  // Stop dragging when the mouse is released
+  graphA.isDragging = false;
+}
+
+void mouseMoved()
+{
+  graphA.hoveredNode = graphA.getNodeUnderMouse();
+}
+
+void mouseDragged() {
+  if (graphA.isDragging && graphA.hoveredNode != null)
+  {
+    // Calculate the difference between the current and previous mouse positions
+    float deltaX = mouseX - pmouseX;
+    float deltaY = mouseY - pmouseY;
+     // Update position of the main dragged node
+    graphA.hoveredNode.x += deltaX;
+    graphA.hoveredNode.y += deltaY;
+
+    // Update positions of connected nodes (neighbors)
+    for (AirportNode neighbor : graphA.hoveredNode.neighbors.keySet())
+    {
+      // Calculate dampening factors based on the size of the nodes
+      float nodeSizeRatio = graphA.hoveredNode.radius / neighbor.radius; // Calculate size ratio
+      float dampeningFactor = 0.2 * nodeSizeRatio; // Adjust the dampening factor based on size ratio
+      
+      // Apply dampening effect to the movement of connected nodes
+      float neighborDeltaX = deltaX * dampeningFactor; // Apply dampening to the horizontal movement
+      float neighborDeltaY = deltaY * dampeningFactor; // Apply dampening to the vertical movement
+      
+      // Update position of the connected node
+      neighbor.x += neighborDeltaX;
+      neighbor.y += neighborDeltaY;
+      
+      // Update positions of nodes connected to the connected node
+      for (AirportNode nestedNeighbor : neighbor.neighbors.keySet()) {
+        // Calculate nested dampening factors based on the size of the nodes
+        float nestedNodeSizeRatio = neighbor.radius / nestedNeighbor.radius; // Calculate size ratio
+        float nestedDampeningFactor = 0.1 * nestedNodeSizeRatio; // Adjust the nested dampening factor based on size ratio
+        
+        // Apply further dampening effect to the movement of nested connected nodes
+        float nestedNeighborDeltaX = neighborDeltaX * nestedDampeningFactor; // Apply dampening to the horizontal movement
+        float nestedNeighborDeltaY = neighborDeltaY * nestedDampeningFactor; // Apply dampening to the vertical movement
+       
+        // Update position of the nested connected node
+        nestedNeighbor.x += nestedNeighborDeltaX;
+        nestedNeighbor.y += nestedNeighborDeltaY;
+      }
+    }
+      // Update the original mouse position
+    graphA.offsetX = mouseX - graphA.hoveredNode.x;
+    graphA.offsetY = mouseY - graphA.hoveredNode.y;
   }
 }

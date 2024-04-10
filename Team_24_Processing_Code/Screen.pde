@@ -203,8 +203,9 @@ class Screen {
       text("Time: " + D.ARR_TIME, xpos, ypos + h / 10 * 3);
       text("Time: " + D.DEP_TIME, xpos, ypos + h/2 + h/4);
       fill(BUTTON_OFF);
-      text("Diverted", xpos+ w/2, ypos + h / 2);
-    } else {
+      text("DIVERTED", xpos+ w/2, ypos + h / 2);
+    } else
+    {
       fill(BUTTON_OFF);
       text("CANCELLED", xpos+ w/2, ypos + h / 2);
     }
@@ -221,45 +222,56 @@ class Screen {
     // Display flight date
     text("Date: " + D.FL_DATE, xpos + w/2, ypos + h / 10 * 3);
   }
+  QueriesSelect queries = new QueriesSelect();
 
-  /**
-   * Renders the appropriate graph based on the value of displayedGraph.
-   * This method switches between different types of graphs and draws them accordingly.
-   */
-  void renderTab2() {
-    // Switch statement to determine which graph to render based on displayedGraph value
-    switch(displayedGraph) {
+  void renderTab2()
+  { 
+    textAlign(CENTER,CENTER);
+    textFont(headingFont);
+    switch(displayedGraph)
+    {
     case 0:
-      // If displayedGraph is 0, draw a bar chart using valuesB
-      graphB.drawBarChart(valuesB);
+      text("FLIGHT EXPECTANCY", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
+      graphP.drawPieChart(valuesP);
       break;
     case 1:
-      // If displayedGraph is 1, draw a pie chart using valuesP
-      graphP.render();
+      text("FLIGHTS PER CARRIER", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
+      graphB1.drawBarChart(valuesB1);
       break;
     case 2:
-      // If displayedGraph is 2, draw a specific type of graph using valuesDS
-      graphD.draw(valuesDS);
+    text("FLIGHTS PER HOUR", (displayWidth+TAB_WIDTH)/2, height*0.16);
+    textFont(TextBoxFont);
+      //graphS.draw(valuesDS);
       break;
     case 3:
-      // If displayedGraph is 3, draw a different type of graph using valuesDS
-      graphS.draw(valuesDS);
+      text("DISTANCE PER CARRIER", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
+      graphB2.drawBarChart(valuesB2);
       break;
     case 4:
-      // If displayedGraph is 4, do nothing (graphA is not implemented)
-      // graphA.draw();
+      text("HEATMAP OF ROUTES", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
+      graphD.draw(valuesA, valuesDS);
       break;
     case 5:
-      // If displayedGraph is 5, draw a customized graph using predefined carriers and averages
-      String[] carriers = {"A", "B", "C"};
-      float[] averages = {6.012, 12.98, -16.43};
-      graphT.draw(carriers, averages);
-      break;
+      text("AVERAGE TIME DELAY PER CARRIER (MIN)", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
+      graphT.draw(valuesT);
     default:
-      // If displayedGraph is not within the defined cases, print a message indicating no graph found
-      println("No graph found");
+      //println("No graph found");
       break;
     }
+  }
+  
+  void renderTab3()
+  {
+    graphA.update(); // Update node positions and check for collisions
+    graphA.draw();
+    
+    graphA.displayHoveredNodeLabel();
+    graphA.displaySelectedAirportData();
   }
 
   /**
@@ -345,7 +357,7 @@ class Screen {
       BACKGROUND = color(134, 134, 203);
       BUTTON_ON = color(2, 0, 157);
       BUTTON_OFF = color(1, 0, 100);
-      TEXT_COLOR = color(0);
+      TEXT_COLOR = color(255);
       INACTIVE_TEXT_BOX = color(150);
       break;
     case DAY:
@@ -365,7 +377,7 @@ class Screen {
       BACKGROUND = color(84, 50, 113);
       BUTTON_ON = color(75, 21, 124);
       BUTTON_OFF = color(35, 0, 67);
-      TEXT_COLOR = color(0);
+      TEXT_COLOR = color(255);
       INACTIVE_TEXT_BOX = color(150);
       break;
     case COSMIC:
