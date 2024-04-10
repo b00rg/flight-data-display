@@ -20,7 +20,7 @@ class Queries {
   String tableName = "flight_data";
   
   // CHECK IF EMPTY
-  String username = "root";
+  String username = "";
   String password = "";
   
   Connection connection;
