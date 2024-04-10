@@ -181,7 +181,7 @@ class Screen
       graphS.draw(valuesDS);
       break;
     case 3:
-      text("CO2 EMMISIONS PER CARRIER", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      text("CO2 EMMISIONS PER CARRIER (POUNDS)", (displayWidth+TAB_WIDTH)/2, height*0.16);
       textFont(TextBoxFont);
       graphB2.drawBarChart(valuesB2);
       break;
