@@ -249,7 +249,7 @@ void setup() {
   graphB2 = new GraphBar(600, 250, 1200, 700);
   graphD = new DensityGraph(850, 250, 650, 650);
   //graphS = new SimpleGraph(600, 500, 1200, 1000);
-  graphT = new GraphTimeAccuracy(600, 500, 1400, 140);
+  graphT = new GraphTimeAccuracy(530, 500, 1380, 140);
 
   //Graph[] graphs = {graphB, graphP, graphD, graphS, graphA};
   Graph[] graphs = new Graph[6];

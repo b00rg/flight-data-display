@@ -30,7 +30,7 @@ class Queries {
       BufferedReader reader = new BufferedReader(new FileReader(sketchPath() + "/credentials.txt"));
       
       username = "root"; //reader.readLine();
-      password = "password1234!"; //reader.readLine();
+      password = "RubberDuck!"; //reader.readLine();
       
       // If password is empty, set it to an empty string
       if (password == null || password.isEmpty()) {

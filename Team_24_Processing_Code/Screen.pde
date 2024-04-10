@@ -166,7 +166,7 @@ class Screen
     switch(displayedGraph)
     {
     case 0:
-      text("FLIGHTS THAT TOOK PLACE", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      text("FLIGHT EXPECTANCY", (displayWidth+TAB_WIDTH)/2, height*0.16);
       textFont(TextBoxFont);
       graphP.drawPieChart(valuesP);
       break;
@@ -191,7 +191,7 @@ class Screen
       graphD.draw(valuesA, valuesDS);
       break;
     case 5:
-      text("TIME DELAY PER CARRIER", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      text("AVERAGE TIME DELAY PER CARRIER (MIN)", (displayWidth+TAB_WIDTH)/2, height*0.16);
       textFont(TextBoxFont);
       graphT.draw(valuesT);
     default:
