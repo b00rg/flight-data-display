@@ -161,24 +161,38 @@ class Screen
 
   void renderTab2()
   { 
+    textAlign(CENTER,CENTER);
+    textFont(headingFont);
     switch(displayedGraph)
     {
     case 0:
+      text("FLIGHTS THAT TOOK PLACE", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
       graphP.drawPieChart(valuesP);
       break;
     case 1:
+      text("BAR CHART", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
       graphB1.drawBarChart(valuesB1);
       break;
     case 2:
+    text("FLIGHTS PER HOUR", (displayWidth+TAB_WIDTH)/2, height*0.16);
+    textFont(TextBoxFont);
       //graphS.draw(valuesDS);
       break;
     case 3:
+      text("BAR CHART", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
       graphB2.drawBarChart(valuesB2);
       break;
     case 4:
+      text("HEATMAP OF ROUTES", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
       graphD.draw(valuesA, valuesDS);
       break;
     case 5:
+      text("TIME DELAY PER CARRIER", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      textFont(TextBoxFont);
       graphT.draw(valuesT);
     default:
       println("No graph found");
