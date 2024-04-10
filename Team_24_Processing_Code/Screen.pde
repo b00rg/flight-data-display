@@ -181,12 +181,12 @@ class Screen
       graphS.draw(valuesDS);
       break;
     case 3:
-      text("FLIGHTS PER ROUTE", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      text("CO2 EMMISIONS PER CARRIER", (displayWidth+TAB_WIDTH)/2, height*0.16);
       textFont(TextBoxFont);
       graphB2.drawBarChart(valuesB2);
       break;
     case 4:
-      text("HEATMAP OF ROUTES", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      text("FREQUENCY OF ROUTES", (displayWidth+TAB_WIDTH)/2, height*0.16);
       textFont(TextBoxFont);
       graphD.draw(valuesA, valuesDS);
       break;
