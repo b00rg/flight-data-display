@@ -178,10 +178,10 @@ class Screen
     case 2:
     text("FLIGHTS PER HOUR", (displayWidth+TAB_WIDTH)/2, height*0.16);
     textFont(TextBoxFont);
-      //graphS.draw(valuesDS);
+      graphS.draw(valuesDS);
       break;
     case 3:
-      text("DISTANCE PER CARRIER", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      text("FLIGHTS PER ROUTE", (displayWidth+TAB_WIDTH)/2, height*0.16);
       textFont(TextBoxFont);
       graphB2.drawBarChart(valuesB2);
       break;
