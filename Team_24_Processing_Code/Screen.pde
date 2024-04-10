@@ -223,7 +223,10 @@ class Screen {
     text("Date: " + D.FL_DATE, xpos + w/2, ypos + h / 10 * 3);
   }
   QueriesSelect queries = new QueriesSelect();
-
+  /**
+   * Controls the renderings of all graphs
+   * Uses information on which graph is currently selected and renders only that graph
+   */
   void renderTab2()
   { 
     textAlign(CENTER,CENTER);
@@ -264,14 +267,17 @@ class Screen {
       break;
     }
   }
-  
+  /**
+   * Renders the third tab when selected
+   * Also commands the third tab to execute its motion calculations every frame
+   */
   void renderTab3()
   {
     graphA.update(); // Update node positions and check for collisions
-    graphA.draw();
+    graphA.draw(); // Render the nodes
     
-    graphA.displayHoveredNodeLabel();
-    graphA.displaySelectedAirportData();
+    graphA.displayHoveredNodeLabel(); // Dispaly data over a node if the user is hovering over it
+    graphA.displaySelectedAirportData(); // Display percise data of data point if selected
   }
 
   /**
@@ -304,7 +310,10 @@ class Screen {
       }
     }
 
-    // Check if the "moveRight" button is clicked
+    /**
+     * Is Called to check fi the user has clicked a buttons such as to go from one page to another
+     * Adjusts the currently selected page accordingly
+     */
     if (moveRight.isClicked()) {
       // Switch statement to determine the action based on the currently active tab
       switch(currentlyActiveTab) {
