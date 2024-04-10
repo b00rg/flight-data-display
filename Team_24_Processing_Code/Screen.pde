@@ -176,7 +176,7 @@ class Screen
       graphB1.drawBarChart(valuesB1);
       break;
     case 2:
-    text("FLIGHTS PER HOUR", (displayWidth+TAB_WIDTH)/2, height*0.16);
+    text("FLIGHTS PER ROUTE", (displayWidth+TAB_WIDTH)/2, height*0.16);
     textFont(TextBoxFont);
       graphS.draw(valuesDS);
       break;
