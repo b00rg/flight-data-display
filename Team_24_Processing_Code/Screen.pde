@@ -195,7 +195,7 @@ class Screen
       textFont(TextBoxFont);
       graphT.draw(valuesT);
     default:
-      println("No graph found");
+      //println("No graph found");
       break;
     }
   }
