@@ -138,11 +138,11 @@ void setup() {
   
   //DATA SETUP
 
-  QueriesInitial setupQuery = new QueriesInitial();
+  /*QueriesInitial setupQuery = new QueriesInitial();
   setupQuery.createDatabase();
   setupQuery.useDatabase();
   setupQuery.dropAndCreateTable();
-  setupQuery.insertRows();
+  setupQuery.insertRows();*/
 
   TextBoxFont = loadFont("default.vlw");
   headingFont = loadFont("Heading.vlw");
@@ -173,7 +173,7 @@ void setup() {
   dropDownList.add(arrivals);
 
   // RELOAD BUTTON SETUP
-  ReloadButton = new WidgetButton((int) (width * 0.025), (int) (height * 0.88), 75, 75, 1);
+  ReloadButton = new WidgetButton((int) (width * 0.025), (int) (height * 0.88), 75, 75, 1, null);
   reloadButton = loadImage("reload.png");
 
   // TAB BUTTON SETUP
@@ -183,13 +183,18 @@ void setup() {
   for (int i = 0; i < 3; i++) // We lerp through the upper tab, adding the tab buttons at intervals to make sure they are equally spaced
   {
     int x = (int) (lerp(totalTabWidth, width, (float)(((float)i / (float)3))));    // We use lerop to find the range of the buttons and add them;
-    TabButtons.add(new WidgetButton(x, 0, tabRange/3, (int)(height / 10), 0));
+    TabButtons.add(new WidgetButton(x, 0, tabRange/3, (int)(height / 10), 0, null));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
+  
+  // Set tab button text
+  TabButtons.get(0).buttonText = "Scheduled flights";
+  TabButtons.get(1).buttonText = "Graphs";
+  TabButtons.get(2).buttonText = "Conncting Flights";
 
   // SCROLL BUTTON SETUP
-  moveLeft = new WidgetButton((int)(width * 0.572916), (int)(height * 0.925925), 50, 50, 5);
-  moveRight = new WidgetButton((int)(width * 0.677083), (int)(height * 0.925925), 50, 50, 5);
+  moveLeft = new WidgetButton((int)(width * 0.572916), (int)(height * 0.925925), 50, 50, 5, null);
+  moveRight = new WidgetButton((int)(width * 0.677083), (int)(height * 0.925925), 50, 50, 5, null);
 
   
   leftButton = loadImage("left.png");
