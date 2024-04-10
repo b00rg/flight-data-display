@@ -171,7 +171,7 @@ class Screen
       graphP.drawPieChart(valuesP);
       break;
     case 1:
-      text("BAR CHART", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      text("FLIGHTS PER CARRIER", (displayWidth+TAB_WIDTH)/2, height*0.16);
       textFont(TextBoxFont);
       graphB1.drawBarChart(valuesB1);
       break;
@@ -181,7 +181,7 @@ class Screen
       //graphS.draw(valuesDS);
       break;
     case 3:
-      text("BAR CHART", (displayWidth+TAB_WIDTH)/2, height*0.16);
+      text("DISTANCE PER CARRIER", (displayWidth+TAB_WIDTH)/2, height*0.16);
       textFont(TextBoxFont);
       graphB2.drawBarChart(valuesB2);
       break;
