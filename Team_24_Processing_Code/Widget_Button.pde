@@ -1,8 +1,10 @@
 class WidgetButton extends Widget
 {
-  WidgetButton(int xpos,int ypos, int W, int H,int R)
+  String buttonText;
+  WidgetButton(int xpos,int ypos, int W, int H,int R, String text)
   {
     super(xpos, ypos, W, H, R);
+    buttonText = text;
   }
   boolean isClicked()
   {
@@ -20,6 +22,13 @@ class WidgetButton extends Widget
       fill(screen.BUTTON_OFF);
     }
     rect(xpos, ypos, wide, high, roundness);
+    
+    if(buttonText != null)
+    {
+      fill(screen.TEXT_COLOR);
+      textSize(high*0.25);
+      text(buttonText, xpos+ wide*0.05, ypos + high*0.5);
+    }
   }
   
   void linkedListCheck(ArrayList<WidgetButton> buttonGroup){ // This functions is used for lists of butons where only one button may be on at a time

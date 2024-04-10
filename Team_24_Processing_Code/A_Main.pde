@@ -56,6 +56,8 @@ PImage carrierG4;
 PImage carrierHA;
 PImage carrierNK;
 PImage carrierWN;
+PImage carrierUA;
+PImage carrierDL;
 
 // Takes in the name of a carrier and returns the associated image
 PImage nameToLogo(String name)
@@ -76,6 +78,10 @@ PImage nameToLogo(String name)
       return carrierNK;
     case "WN":
       return carrierWN;
+    case "UA":
+      return carrierUA;
+    case "DL":
+      return carrierDL;
     default:
       return null;
   }
@@ -139,11 +145,11 @@ void setup() {
   
   //DATA SETUP
 
-  QueriesInitial setupQuery = new QueriesInitial();
+  /*QueriesInitial setupQuery = new QueriesInitial();
   setupQuery.createDatabase();
   setupQuery.useDatabase();
   setupQuery.dropAndCreateTable();
-  setupQuery.insertRows();
+  setupQuery.insertRows();*/
 
   TextBoxFont = loadFont("default.vlw");
   headingFont = loadFont("Heading.vlw");
@@ -174,7 +180,7 @@ void setup() {
   dropDownList.add(arrivals);
 
   // RELOAD BUTTON SETUP
-  ReloadButton = new WidgetButton((int) (width * 0.025), (int) (height * 0.88), 75, 75, 1);
+  ReloadButton = new WidgetButton((int) (width * 0.025), (int) (height * 0.88), 75, 75, 1, null);
   reloadButton = loadImage("reload.png");
 
   // TAB BUTTON SETUP
@@ -184,29 +190,34 @@ void setup() {
   for (int i = 0; i < 3; i++) // We lerp through the upper tab, adding the tab buttons at intervals to make sure they are equally spaced
   {
     int x = (int) (lerp(totalTabWidth, width, (float)(((float)i / (float)3))));    // We use lerop to find the range of the buttons and add them;
-    TabButtons.add(new WidgetButton(x, 0, tabRange/3, (int)(height / 10), 0));
+    TabButtons.add(new WidgetButton(x, 0, tabRange/3, (int)(height / 10), 0, null));
   }
   TabButtons.get(0).active = true; // Tab 1 is on by default at the start
+  
+  // Set tab button text
+  TabButtons.get(0).buttonText = "Scheduled flights";
+  TabButtons.get(1).buttonText = "Graphs";
+  TabButtons.get(2).buttonText = "Conncting Flights";
 
   // SCROLL BUTTON SETUP
-  moveLeft = new WidgetButton((int)(width * 0.572916), (int)(height * 0.925925), 50, 50, 5);
-  moveRight = new WidgetButton((int)(width * 0.677083), (int)(height * 0.925925), 50, 50, 5);
+  moveLeft = new WidgetButton((int)(width * 0.572916), (int)(height * 0.925925), 50, 50, 5, null);
+  moveRight = new WidgetButton((int)(width * 0.677083), (int)(height * 0.925925), 50, 50, 5, null);
 
   
   leftButton = loadImage("left.png");
   rightButton = loadImage("right.png");
   
   
-  carrierAA = loadImage(sketchPath() +"/data/airline carriers/aa.png");
-  carrierAS = loadImage(sketchPath() +"/data/airline carriers/as.png");
-  carrierB6 = loadImage(sketchPath() +"/data/airline carriers/b6.png");
+  carrierAA = loadImage(sketchPath() +"/data/airline carriers/AA.png");
+  carrierAS = loadImage(sketchPath() +"/data/airline carriers/AS.png");
+  carrierB6 = loadImage(sketchPath() +"/data/airline carriers/B6.png");
   carrierG4 = loadImage(sketchPath() +"/data/airline carriers/G4.png");
-  carrierHA = loadImage(sketchPath() +"/data/airline carriers/ha.png");
+  carrierHA = loadImage(sketchPath() +"/data/airline carriers/HA.png");
   carrierNK = loadImage(sketchPath() +"/data/airline carriers/NK.png");
-  carrierWN = loadImage(sketchPath() +"/data/airline carriers/wn.png");
+  carrierWN = loadImage(sketchPath() +"/data/airline carriers/WN.png");
+  carrierUA = loadImage(sketchPath() +"/data/airline carriers/UA.png");
+  carrierDL = loadImage(sketchPath() +"/data/airline carriers/DL.png");
   
-  
- 
   /*cancelledFlights = new WidgetButton(width/20, height / 10 * 7, 50, 50, 20);
   delayedFlights = new WidgetButton(width/20 * 2, height / 10 * 7, 50, 50, 20);
   undisturbedFlights = new WidgetButton(width/20 * 3, height / 10 * 7, 50, 50, 20);
