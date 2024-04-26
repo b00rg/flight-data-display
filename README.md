@@ -1,3 +1,5 @@
+## Team project for CSU11013 module: displaying flight data using SQL and Processing
+
 ### Setting up the SQL database
 1. Install MySQL
 2. Create a server under the name programming_project and connect it to port 3306
