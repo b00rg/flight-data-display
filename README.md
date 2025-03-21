@@ -1,5 +1,8 @@
 # Team project for CSU11013 module: displaying flight data using SQL and Processing
 
+https://github.com/user-attachments/assets/7c9b4c02-a551-45b4-87f2-23914681ad9a
+
+Dynamic Node Graph
 ## Screenshots 
 <img width="721" alt="Screenshot 2024-09-02 at 20 16 53" src="https://github.com/user-attachments/assets/88b6cd87-41a1-4c78-a2d9-e6d2173ef890">
 
@@ -25,9 +28,7 @@ Graph Displays
 
 Filtering Data for Graphs 
 
-https://github.com/user-attachments/assets/7c9b4c02-a551-45b4-87f2-23914681ad9a
 
-Dynamic Node Graph
 
 ### Setting up the SQL database
 1. Install MySQL
